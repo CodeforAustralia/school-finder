@@ -9,12 +9,12 @@
     <link rel="icon" href="../../favicon.ico">
 
 
-    <!-- debug <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" /> -->
+     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
 
     <link rel="stylesheet" href="/jumbotron-narrow.css" />
 
     <link rel="stylesheet" href="/style.css" />
-    <!-- debug <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
 
     <!--[if lte IE 8]>
       <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
@@ -36,7 +36,7 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body onload="init()">
 
     <div class="container">
       <div class="header">
@@ -52,23 +52,24 @@
         <h3 class="text-muted">NSW SchoolFinder</h3>
       </div>
 
-      <div class="jumbotron">
+      <div class="jumbotron block-intro">
         <h1>I'm looking for:</h1>
-        <p class="lead">Select your school type below. Note that by using this, you agree to not sue the NSW Dept of Ed.</p>
+        <p class="lead">Select your school type below. Information subject to change; by using this, you agree to not sue the NSW Dept of Ed.</p>
         <p>
-          <a class="btn btn-lg btn-success" href="#" role="button">Primary school</a>
-          <a class="btn btn-lg btn-success" href="#" role="button">Secondary school</a>
+          <a class="btn btn-lg btn-success primary" href="#" role="button">Primary school</a>
+          <a class="btn btn-lg btn-success secondary" href="#" role="button">Secondary school</a>
         </p>
       </div>
 
-      <div class="jumbotron">
+      <div class="jumbotron block-address">
         <h1>I live at:</h1>
         <p class="lead">Provide an address so we can look up nearby schools:</p>
-        <input type="text" class="form-control" placeholder="Home address">
-        <div>
-          <a class="btn btn-lg btn-success" href="#" role="button">Search</a>
-        </div>
+        <p><input type="text" class="form-control" placeholder="Home address"></p>
+        <a class="btn btn-lg btn-success search" href="#" role="button">Search</a>
       </div>
+
+      <div id="cartodb-map"></div>
+
 
       <!--
 
@@ -104,8 +105,13 @@
     </div> <!-- /container -->
 
 
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script src="app.js"></script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
   </body>
 </html>
