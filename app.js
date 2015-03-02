@@ -1,5 +1,21 @@
 var app = {};
 
+$(document).ready(function (){
+
+  $(".btn.primary").click(function(e) {
+    e.preventDefault();
+    $('html, body').animate({
+        scrollTop: $(".block-address").offset().top
+    }, 500);
+  });
+  $(".btn.search").click(function(e) {
+    e.preventDefault();
+    $('html, body').animate({
+        scrollTop: $("#cartodb-map").offset().top
+    }, 500);
+  });
+});
+
 function init(){
 
   // initiate leaflet map
