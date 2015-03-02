@@ -1,6 +1,8 @@
 <html>
 <head>
   <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+  <link rel="stylesheet" href="/jumbotron-narrow.css" />
+
   <link rel="stylesheet" href="/style.css" />
   <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
   <!--[if lte IE 8]>
@@ -12,16 +14,21 @@
 </head>
 
 <body onload="init()">
-<!--   <div id='type-selector'>
-    I'm looking for a:
-    <button type="button" class="btn btn-default">
-      <span class="school-level school-level-primary">Primary School</span>
-    </button>
-    <button type="button" class="btn btn-default">
-      <span class="school-level school-level-secondary">Secondary School</span>
-    </button>
-  </div> -->
+  <div class="container">
+
+    <div id='type-selector'>
+      <div class="jumbotron">
+        <h2>I'm looking for a:</h2>
+        <button type="button" class="btn btn-default">
+          <span class="school-level school-level-primary">Primary School</span>
+        </button>
+        <button type="button" class="btn btn-default">
+          <span class="school-level school-level-secondary">Secondary School</span>
+        </button>
+      </div>
+    </div>
   <div id='cartodb-map'></div>
+  </div>
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

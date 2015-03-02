@@ -4,5 +4,10 @@ html, body {width:100%; height:100%; padding: 0; margin: 0;}
 #type-selector {
 	height: 100%;
 	width: 100%;
-	margin: 0 auto;
+	margin: 5em auto;
+	/* background: rgb(214, 214, 231); */
+	text-align: center;
+}
+#type-selector h2 {
+	margin-bottom: 1em;
 }
