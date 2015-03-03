@@ -42,16 +42,8 @@ function init() {
 
   // from 'schools' visualization
   // var layerUrl = 'http://cesensw.cartodb.com/api/v2/viz/fa94b88c-c070-11e4-969d-0e853d047bba/viz.json';
-
-  // change the query for the first layer
-  // level_of_schooling IN ('Primary School','Other School') AND
-  // var subLayerOptions = {
-  //   sql: "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('Other School') AND level_of_schooling IS NOT NULL",
-  //   cartocss: "#dec_open_schools_latlong{marker-fill: #109DCD; marker-width: 5; marker-line-color: white; marker-line-width: 0;}"
-  // };
-
-  // var layerUrl = 'http://cesensw.cartodb.com/api/v2/viz/fa94b88c-c070-11e4-969d-0e853d047bba/viz.json';
   // cartodb.createLayer(map, layerUrl)
+
   cartodb.createLayer(map, {
     user_name: 'cesensw',
     type: 'cartodb',
@@ -80,8 +72,6 @@ function init() {
       //   sql: "SELECT * FROM dec_open_schools_latlong",
       //   cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}'
       // });
-
-      // layer.getSubLayer(1).setSQL("SELECT * FROM dec_open_schools_latlong LIMIT 50");
 
       // Let a user click the map to find school districts.
       map.on('click', function (e) {
