@@ -7,7 +7,7 @@ $(document).ready(function () {
     e.preventDefault();
     // need to make sure app.layer exists. TODO
     var sql = "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + e.data.level + "','Other School')";
-    app.layers.schools.setSQL(sql); //app.layer.getSubLayer(1).setSQL()
+    app.layers.schools.setSQL(sql);
     console.log(sql);
     $('html, body').animate({
       scrollTop: $(".block-address").offset().top
@@ -105,13 +105,6 @@ function init() {
           schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
         });
       });
-
-      // var subLayer = layer.getSubLayer(0);
-      // subLayer.set(subLayerOptions);
-      // subLayer.setInteraction(true);
-
-      // // Define which data columns are returned during interactivity
-      // sublayer.setInteractivity('cartodb_id, school_full_name, level_of_schooling');
     })
     .error(function (err) {
       //log the error
