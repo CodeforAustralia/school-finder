@@ -79,6 +79,14 @@ function init() {
         var catchment = app.layers.catchment; //layer.getSubLayer(1);
         catchment.setSQL("SELECT * FROM boys WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + e.latlng.lng + "," + e.latlng.lat + "),4326))");
         catchment.setCartoCSS("#boys{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
+
+        var sql = new cartodb.SQL({ user: 'cesensw' });
+
+        sql.execute("SELECT school_code FROM boys WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + e.latlng.lng + "," + e.latlng.lat + "),4326))").done(function (data) {
+          var code = data.rows[0].school_code;
+          var schools = app.layers.schools;
+          schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
+        });
       });
 
       // var subLayer = layer.getSubLayer(0);
