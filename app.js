@@ -59,7 +59,8 @@ function init() {
         },
         {
           sql: "SELECT * FROM dec_open_schools_latlong",
-          cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}'
+          cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}',
+          interactivity: 'cartodb_id, level_of_schooling, school_full_name, phone, street'
         }
       ]
   }).addTo(map)
@@ -72,6 +73,16 @@ function init() {
       //   sql: "SELECT * FROM dec_open_schools_latlong",
       //   cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}'
       // });
+
+      app.layers.schools.setInteraction(true);
+      app.layers.schools
+        .on('featureClick', function (e, latlng, pos, data) {
+          console.log(e, latlng, pos, data);
+        })
+        .on('error', function (err) {
+          console.log('error: ' + err);
+        });
+
 
       // Let a user click the map to find school districts.
       map.on('click', function (e) {
