@@ -3,12 +3,20 @@ var L, cartodb;
 
 $(document).ready(function () {
 
-  $(".btn.primary").click(function (e) {
+  var clickSchoolType = function (e) {
     e.preventDefault();
+    // need to make sure app.layer exists. TODO
+    app.layers.schools.setSQL( //app.layer.getSubLayer(1).setSQL()
+      "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + e.data.level + "','Other School')"
+    );
     $('html, body').animate({
       scrollTop: $(".block-address").offset().top
     }, 500);
-  });
+  };
+
+  $(".btn.primary").click({level: 'Primary School'}, clickSchoolType);
+  $(".btn.secondary").click({level: 'Secondary School'}, clickSchoolType);
+
   $(".btn.search").click(function (e) {
     e.preventDefault();
     $('html, body').animate({
@@ -27,7 +35,7 @@ function init() {
 
   app.map = map;
 
-  // L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png',
+  // L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', { //Dark
   L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
   }).addTo(map);
@@ -50,7 +58,11 @@ function init() {
     sublayers:
       [
         {
-          sql: "SELECT * FROM boys", // 1 = 0: select none, b/c I want this layer but I don't want to show anything yet.
+          sql: "SELECT * FROM boys", // keep this layer, for a little background
+          cartocss: '#boys{polygon-fill: #FFCC00; polygon-opacity: 0.1; line-color: #FFF; line-width: 1; line-opacity: 1;}'
+        },
+        {
+          sql: "SELECT * FROM boys WHERE 1 = 0", // 1 = 0: select none, b/c I want this layer but I don't want to show anything yet.
           cartocss: '#boys{polygon-fill: #FFCC00; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}'
         },
         {
@@ -61,20 +73,22 @@ function init() {
   }).addTo(map)
     .done(function (layer) {
       app.layer = layer;
+      app.layers = {};
+      app.layers.catchment = layer.getSubLayer(1);
+      app.layers.schools = layer.getSubLayer(2);
       // layer.createSubLayer({
       //   sql: "SELECT * FROM dec_open_schools_latlong",
       //   cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}'
       // });
 
-      layer.getSubLayer(1).setSQL("SELECT * FROM dec_open_schools_latlong LIMIT 50");
+      // layer.getSubLayer(1).setSQL("SELECT * FROM dec_open_schools_latlong LIMIT 50");
 
       // Let a user click the map to find school districts.
       map.on('click', function (e) {
         console.log(e.latlng); //.lng .lat
-        // layer.getSubLayer(0).setSQL("SELECT * FROM boys WHERE school_code = '8107'");
-        var catchment = layer.getSubLayer(0);
+        var catchment = app.layers.catchment; //layer.getSubLayer(1);
         catchment.setSQL("SELECT * FROM boys WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + e.latlng.lng + "," + e.latlng.lat + "),4326))");
-        catchment.setCartoCSS("cartocss: '#boys{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
+        catchment.setCartoCSS("#boys{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
       });
 
       // var subLayer = layer.getSubLayer(0);
