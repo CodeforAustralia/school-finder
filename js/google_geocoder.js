@@ -5,8 +5,10 @@ var codeAddress = function () {
   geocoder.geocode({ 'address': address}, function (results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
 
-      var latlng = [results[0].geometry.location.lat(), results[0].geometry.location.lng()];
-      app.map.setView(latlng, 14, {animate: true});
+      var lat = results[0].geometry.location.lat();
+      var lng = results[0].geometry.location.lng();
+      app.map.setView([lat, lng], 12, {animate: true});
+      app.lookupLatLng(lat, lng);
 
     } else {
       $('#result').html('Geocode was not successful for the following reason: ' + status);

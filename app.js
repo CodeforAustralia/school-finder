@@ -31,17 +31,22 @@ $(document).ready(function () {
   });
 });
 
-app.selectLatLng = function (lat, lng) {
+app.lookupLatLng = function (lat, lng) {
   var catchment = app.layers.catchment;
   catchment.setSQL("SELECT * FROM boys WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))");
   catchment.setCartoCSS("#boys{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
 
   var sql = new cartodb.SQL({ user: 'cesensw' });
 
-  sql.execute("SELECT school_code FROM boys WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
-    var code = data.rows[0].school_code;
-    var schools = app.layers.schools;
-    schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
+  sql.execute("SELECT b.school_code, s.school_full_name FROM boys AS b JOIN dec_open_schools_latlong AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
+    if (data.rows.length < 1) {
+      alert("Sorry, I don't know about any schools there.");
+    } else {
+      alert("Hey great, you just landed on " + data.rows[0].school_full_name);
+      var code = data.rows[0].school_code;
+      var schools = app.layers.schools;
+      schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
+    }
   });
 };
 
@@ -50,7 +55,7 @@ function init() {
   // initiate leaflet map
   var map = new L.Map('cartodb-map', {
     center: [-33.95699447355438, 151.14483833312988],
-    zoom: 11
+    zoom: 8
   });
 
   app.map = map;
@@ -107,7 +112,7 @@ function init() {
       // Let a user click the map to find school districts.
       map.on('click', function (e) {
         console.log(e.latlng); //.lng .lat
-        app.selectLatLng(e.latlng.lat, e.latlng.lng);
+        app.lookupLatLng(e.latlng.lat, e.latlng.lng);
       });
     })
     .error(function (err) {
