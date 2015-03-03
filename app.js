@@ -1,5 +1,5 @@
 var app = {};
-var L, cartodb;
+var L, cartodb, google, codeAddress;
 
 $(document).ready(function () {
 
@@ -19,6 +19,12 @@ $(document).ready(function () {
 
   $(".btn.search").click(function (e) {
     e.preventDefault();
+
+    // Geocode address
+    codeAddress();
+
+    // select content at Lat/Lng
+
     $('html, body').animate({
       scrollTop: $("#cartodb-map").offset().top
     }, 500);
