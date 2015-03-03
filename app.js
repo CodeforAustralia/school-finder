@@ -6,9 +6,9 @@ $(document).ready(function () {
   var clickSchoolType = function (e) {
     e.preventDefault();
     // need to make sure app.layer exists. TODO
-    app.layers.schools.setSQL( //app.layer.getSubLayer(1).setSQL()
-      "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + e.data.level + "','Other School')"
-    );
+    var sql = "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + e.data.level + "','Other School')";
+    app.layers.schools.setSQL(sql); //app.layer.getSubLayer(1).setSQL()
+    console.log(sql);
     $('html, body').animate({
       scrollTop: $(".block-address").offset().top
     }, 500);
