@@ -61,7 +61,8 @@ function init() {
   app.map = map;
 
   // L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', { //Dark
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  var httpsTiles = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+  L.tileLayer(httpsTiles, {
     attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
   }).addTo(map);
 
@@ -71,6 +72,11 @@ function init() {
 
   cartodb.createLayer(map, {
     user_name: 'cesensw',
+    https: true,
+    tiler_protocol: 'https',
+    tiler_port: '443',
+    sql_port: "443",
+    sql_protocol: "https",
     type: 'cartodb',
     sublayers:
       [
