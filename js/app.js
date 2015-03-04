@@ -26,8 +26,8 @@ $(document).ready(function () {
 
     // select content at Lat/Lng
 
-    $('html, body').animate({
-      scrollTop: $("#cartodb-map").offset().top
+    $('html, body').delay(500).animate({
+      scrollTop: $(document).height()
     }, 500);
   });
 });
