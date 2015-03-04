@@ -1,5 +1,45 @@
 html, body {width:100%; height:100%; padding: 0; margin: 0;}
-#cartodb-map { width: 100%; height:100%; height: 500px; margin-top: 25em; background: black; }
+#cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
+
+/* Results */
+#result {
+	margin-top: 25em;
+}
+
+#result .school-info {
+	background: black;
+	padding: 0.25em;
+	color: white;
+/* 	font-weight: bold; */
+	padding-left: 0.75em;
+}
+#result .school-info-intro {
+	color: rgb(132, 132, 132);
+	margin-top: 0.25em;
+	display: none; /* hide at first */
+}
+.school-info .contact-label {
+	font-weight: bold;
+}
+
+.school-info ul.contact {
+	list-style: none;
+	display: none; /* hide at first */
+}
+
+.school-name {
+	font-size: 30px;
+/* 	background: black; */
+/* 	color: white; */
+	font-weight: bold;
+/* 	padding: 0.25em; */
+}
+
+.school-name a {
+	color: white;
+}
+
+/* End results */
 
 #type-selector {
 	height: 100%;

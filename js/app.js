@@ -5,8 +5,9 @@ $(document).ready(function () {
 
   var clickSchoolType = function (e) {
     e.preventDefault();
+    app.level = e.data.level;
     // need to make sure app.layer exists. TODO
-    var sql = "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + e.data.level + "','Other School')";
+    var sql = "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + app.level + "','Other School')";
     app.layers.schools.setSQL(sql);
     console.log(sql);
     $('html, body').animate({
@@ -38,15 +39,28 @@ app.lookupLatLng = function (lat, lng) {
 
   var sql = new cartodb.SQL({ user: 'cesensw' });
 
-  sql.execute("SELECT b.school_code, s.school_full_name FROM boys AS b JOIN dec_open_schools_latlong AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
+  sql.execute("SELECT b.school_code, s.school_full_name, s.street, s.phone, s.school_information FROM boys AS b JOIN dec_open_schools_latlong AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
     if (data.rows.length < 1) {
       app.layers.schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE 1 = 0"); //select none
-      alert("Sorry, I don't know about any schools there.");
+      $('.school-name').text("Sorry, I don't know about any schools there.");
+      $('ul.contact').hide();
+      $('.school-info-intro').hide();
     } else {
       var code = data.rows[0].school_code;
       var schools = app.layers.schools;
       schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
-      alert("Hey great, you just landed on " + data.rows[0].school_full_name);
+      var name = data.rows[0].school_full_name,
+        address = data.rows[0].street,
+        phone = data.rows[0].phone,
+        url = data.rows[0].school_information;
+      $('.school-name').html('<a href="' + url + '">' + name + '</a>');
+      $('.school-address').text(address);
+      $('.school-phone').text(phone);
+      $('ul.contact').show();
+      $('.school-info-intro .level').text(app.level || 'school');
+      $('.school-info-intro .address').text(app.address);
+      $('.school-info-intro').show();
+
     }
   });
 

@@ -1,8 +1,8 @@
 var app, geocoder, google;
 
 var codeAddress = function () {
-  var address = document.getElementById('address').value;
-  geocoder.geocode({ 'address': address}, function (results, status) {
+  app.address = document.getElementById('address').value;
+  geocoder.geocode({ 'address': app.address}, function (results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
 
       var lat = results[0].geometry.location.lat();
