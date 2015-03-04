@@ -40,6 +40,7 @@ app.lookupLatLng = function (lat, lng) {
 
   sql.execute("SELECT b.school_code, s.school_full_name FROM boys AS b JOIN dec_open_schools_latlong AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
     if (data.rows.length < 1) {
+      app.layers.schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE 1 = 0"); //select none
       alert("Sorry, I don't know about any schools there.");
     } else {
       alert("Hey great, you just landed on " + data.rows[0].school_full_name);
