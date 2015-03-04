@@ -49,6 +49,12 @@ app.lookupLatLng = function (lat, lng) {
       schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
     }
   });
+
+  if (!app.marker) {
+    app.marker = L.marker([lat, lng]).addTo(app.map);
+  } else {
+    app.marker.setLatLng([lat, lng]);
+  }
 };
 
 function init() {
