@@ -13,7 +13,7 @@ $(document).ready(function () {
     e.preventDefault();
     app.level = e.data.level;
     // need to make sure app.layer exists. TODO
-    var sql = "SELECT * FROM " + app.db.points + " WHERE level_of_schooling IN ('" + app.level + "','Other School')";
+    var sql = "SELECT * FROM " + app.db.points + " WHERE level_of_schooling ~* '" + app.level + "' OR level_of_schooling = 'Other School'";
     app.layers.schools.setSQL(sql);
     console.log(sql);
     $('html, body').animate({
@@ -21,8 +21,8 @@ $(document).ready(function () {
     }, 500);
   };
 
-  $(".btn.primary").click({level: 'Primary School'}, clickSchoolType);
-  $(".btn.secondary").click({level: 'Secondary School'}, clickSchoolType);
+  $(".btn.primary").click({level: 'primary'}, clickSchoolType);
+  $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
   $(".btn.search").click(function (e) {
     e.preventDefault();
@@ -38,14 +38,17 @@ $(document).ready(function () {
   });
 });
 
+// update results for a specific lat/lng
 app.lookupLatLng = function (lat, lng) {
   var catchment = app.layers.catchment;
-  catchment.setSQL("SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))");
+  var query = "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND school_type ~* '" + app.level + "'";
+  console.log('loading just the matching catchment(s) via query: ' + query);
+  catchment.setSQL(query);
   catchment.setCartoCSS("#" + app.db.polygons + "{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
 
   var sql = new cartodb.SQL({ user: app.db.user });
 
-  sql.execute("SELECT b.school_code, s.school_name, s.street, s.phone FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
+  sql.execute("SELECT b.school_code, s.school_name, s.street, s.phone FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'").done(function (data) {
     if (data.rows.length < 1) {
       app.layers.schools.setSQL("SELECT * FROM " + app.db.points + " WHERE 1 = 0"); //select none
       $('.school-name').text("Sorry, I don't know about any schools there.");
