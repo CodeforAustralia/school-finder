@@ -45,7 +45,7 @@ app.lookupLatLng = function (lat, lng) {
 
   var sql = new cartodb.SQL({ user: app.db.user });
 
-  sql.execute("SELECT b.school_code, s.school_full_name, s.street, s.phone, s.school_information FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
+  sql.execute("SELECT b.school_code, s.school_name, s.street, s.phone, s.school_information FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
     if (data.rows.length < 1) {
       app.layers.schools.setSQL("SELECT * FROM " + app.db.points + " WHERE 1 = 0"); //select none
       $('.school-name').text("Sorry, I don't know about any schools there.");
@@ -55,7 +55,7 @@ app.lookupLatLng = function (lat, lng) {
       var code = data.rows[0].school_code;
       var schools = app.layers.schools;
       schools.setSQL("SELECT * FROM " + app.db.points + " WHERE school_code = '" + code + "'");
-      var name = data.rows[0].school_full_name,
+      var name = data.rows[0].school_name,
         address = data.rows[0].street,
         phone = data.rows[0].phone,
         url = data.rows[0].school_information;
@@ -114,7 +114,7 @@ function init() {
         {
           sql: "SELECT * FROM " + app.db.points,
           cartocss: "#" + app.db.points + " {marker-fill: #0000FF;}",
-          interactivity: 'cartodb_id, level_of_schooling, school_full_name, phone, street'
+          interactivity: 'cartodb_id, level_of_schooling, school_name, phone, street'
         }
       ]
   }).addTo(map)
