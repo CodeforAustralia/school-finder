@@ -2,8 +2,8 @@ var app = {};
 var L, cartodb, google, codeAddress;
 
 app.db = {
-  points: 'dec_open_schools_latlong', //table
-  polygons: 'boys', //table
+  points: 'dec_schools', //table
+  polygons: 'catchments', //table
   user: 'cesensw'
 };
 
