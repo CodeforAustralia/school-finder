@@ -1,13 +1,19 @@
 var app = {};
 var L, cartodb, google, codeAddress;
 
+app.db = {
+  points: 'dec_open_schools_latlong', //table
+  polygons: 'boys', //table
+  user: 'cesensw'
+};
+
 $(document).ready(function () {
 
   var clickSchoolType = function (e) {
     e.preventDefault();
     app.level = e.data.level;
     // need to make sure app.layer exists. TODO
-    var sql = "SELECT * FROM dec_open_schools_latlong WHERE level_of_schooling IN ('" + app.level + "','Other School')";
+    var sql = "SELECT * FROM " + app.db.points + " WHERE level_of_schooling IN ('" + app.level + "','Other School')";
     app.layers.schools.setSQL(sql);
     console.log(sql);
     $('html, body').animate({
@@ -34,21 +40,21 @@ $(document).ready(function () {
 
 app.lookupLatLng = function (lat, lng) {
   var catchment = app.layers.catchment;
-  catchment.setSQL("SELECT * FROM boys WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))");
-  catchment.setCartoCSS("#boys{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
+  catchment.setSQL("SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))");
+  catchment.setCartoCSS("#" + app.db.polygons + "{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
 
-  var sql = new cartodb.SQL({ user: 'cesensw' });
+  var sql = new cartodb.SQL({ user: app.db.user });
 
-  sql.execute("SELECT b.school_code, s.school_full_name, s.street, s.phone, s.school_information FROM boys AS b JOIN dec_open_schools_latlong AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
+  sql.execute("SELECT b.school_code, s.school_full_name, s.street, s.phone, s.school_information FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326))").done(function (data) {
     if (data.rows.length < 1) {
-      app.layers.schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE 1 = 0"); //select none
+      app.layers.schools.setSQL("SELECT * FROM " + app.db.points + " WHERE 1 = 0"); //select none
       $('.school-name').text("Sorry, I don't know about any schools there.");
       $('ul.contact').hide();
       $('.school-info-intro').hide();
     } else {
       var code = data.rows[0].school_code;
       var schools = app.layers.schools;
-      schools.setSQL("SELECT * FROM dec_open_schools_latlong WHERE school_code = '" + code + "'");
+      schools.setSQL("SELECT * FROM " + app.db.points + " WHERE school_code = '" + code + "'");
       var name = data.rows[0].school_full_name,
         address = data.rows[0].street,
         phone = data.rows[0].phone,
@@ -92,7 +98,7 @@ function init() {
   // cartodb.createLayer(map, layerUrl)
 
   cartodb.createLayer(map, {
-    user_name: 'cesensw',
+    user_name: app.db.user,
     https: true,
     tiler_protocol: 'https',
     tiler_port: '443',
@@ -102,16 +108,16 @@ function init() {
     sublayers:
       [
         {
-          sql: "SELECT * FROM boys", // keep this layer, for a little background
-          cartocss: '#boys{polygon-fill: #FFCC00; polygon-opacity: 0.1; line-color: #FFF; line-width: 1; line-opacity: 1;}'
+          sql: "SELECT * FROM " + app.db.polygons, // keep this layer, for a little background
+          cartocss: "#" + app.db.polygons + "{polygon-fill: #FFCC00; polygon-opacity: 0.1; line-color: #FFF; line-width: 1; line-opacity: 1;}"
         },
         {
-          sql: "SELECT * FROM boys WHERE 1 = 0", // 1 = 0: select none, b/c I want this layer but I don't want to show anything yet.
-          cartocss: '#boys{polygon-fill: #FFCC00; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}'
+          sql: "SELECT * FROM " + app.db.polygons + " WHERE 1 = 0", // 1 = 0: select none, b/c I want this layer but I don't want to show anything yet.
+          cartocss: "#" + app.db.polygons + "{polygon-fill: #FFCC00; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}"
         },
         {
-          sql: "SELECT * FROM dec_open_schools_latlong",
-          cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}',
+          sql: "SELECT * FROM " + app.db.points,
+          cartocss: "#" + app.db.points + " {marker-fill: #0000FF;}",
           interactivity: 'cartodb_id, level_of_schooling, school_full_name, phone, street'
         }
       ]
@@ -121,10 +127,7 @@ function init() {
       app.layers = {};
       app.layers.catchment = layer.getSubLayer(1);
       app.layers.schools = layer.getSubLayer(2);
-      // layer.createSubLayer({
-      //   sql: "SELECT * FROM dec_open_schools_latlong",
-      //   cartocss: '#dec_open_schools_latlong {marker-fill: #0000FF;}'
-      // });
+
 
       app.layers.schools.setInteraction(true);
       app.layers.schools
