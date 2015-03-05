@@ -93,10 +93,6 @@ function init() {
     attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
   }).addTo(map);
 
-  // from 'schools' visualization
-  // var layerUrl = 'http://cesensw.cartodb.com/api/v2/viz/fa94b88c-c070-11e4-969d-0e853d047bba/viz.json';
-  // cartodb.createLayer(map, layerUrl)
-
   cartodb.createLayer(map, {
     user_name: app.db.user,
     https: true,
