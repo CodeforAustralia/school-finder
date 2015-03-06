@@ -30,7 +30,7 @@
     <![endif]-->
   </head>
 
-  <body onload="init()">
+  <body>
 
     <div class="container">
       <div class="header">
@@ -62,16 +62,8 @@
         <a class="btn btn-lg btn-success search" href="#" role="button">Search</a>
       </div>
 
-      <div id="result">
-        <div id="cartodb-map"></div>
-        <div class="school-info">
-          <div class="school-name"></div>
-          <ul class="contact">
-            <li><span class="contact-label">Address: </span><span class="school-address"></span>
-            <li><span class="contact-label">Phone: </span><span class="school-phone"></span></li>
-          </ul>
-        </div>
-        <p class='school-info-intro'>The <span class="level"></span> serving <span class="address"></span>.</p>
+      <!-- RESULT -->
+      <div id="results-container">
       </div>
 
       <footer class="footer">
@@ -91,11 +83,38 @@
 
     <!-- script src="js/vendor/cartodb.js"></script-->
     <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.12/cartodb.js"></script>
+    <script src="js/vendor/handlebars-v3.0.0.js"></script>
+
+
 
     <script src="js/google_geocoder.js"></script>
+    <script src="js/map.js"></script>
     <script src="js/app.js"></script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+    <script id="result-template" type="text/x-handlebars-template">
+      <div class="cartodb-map" id="cartodb-map-{{resultNumber}}">
+      </div>
+
+      <div class="school-info">
+        <div class="school-name">{{name}}
+        </div>
+
+        <ul class="contact">
+          <li><span class="contact-label">Address: </span><span class="school-address">{{schoolAddress}}</span>
+          <li><span class="contact-label">Phone: </span><span class="school-phone">{{phone}}</span></li>
+        </ul>
+      </div>
+
+      <p class='school-info-intro'>The <span class="level">{{level}}</span> serving <span class="address">{{homeAddress}}</span>.</p>
+    </script>
+
+    <script id="no-result-template" type="text/x-handlebars-template">
+      <div class="cartodb-map" id="cartodb-map-blank">
+      </div>
+      <p>Sorry, I don't know about any schools there.</p>
+    </script>
+
   </body>
 </html>

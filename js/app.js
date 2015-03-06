@@ -1,5 +1,5 @@
-var app = {};
-var L, cartodb, google, codeAddress;
+var app, Map, L, cartodb, google, Handlebars;
+app = app || {};
 
 app.db = {
   points: 'dec_schools', //table
@@ -7,17 +7,23 @@ app.db = {
   user: 'cesensw'
 };
 
+app.geo = {
+  tiles: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+  //dark: https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png'
+  attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+};
+
+app.maps = [];
+
+
 $(document).ready(function () {
 
   var clickSchoolType = function (e) {
     e.preventDefault();
     app.level = e.data.level;
-    // need to make sure app.layer exists. TODO
-    var sql = "SELECT * FROM " + app.db.points + " WHERE level_of_schooling ~* '" + app.level + "' OR level_of_schooling = 'Other School'";
-    app.layers.schools.setSQL(sql);
-    console.log(sql);
+    // jump to the address search
     $('html, body').animate({
-      scrollTop: $(".block-address").offset().top
+      scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
     }, 500);
   };
 
@@ -27,124 +33,81 @@ $(document).ready(function () {
   $(".btn.search").click(function (e) {
     e.preventDefault();
 
-    // Geocode address
-    codeAddress();
+    // clean up any previous result
+    $('#results-container .result').remove();
+    $('#results-container').empty();
+    app.maps = [];
 
-    // select content at Lat/Lng
+    // Geocode address then show results
+    app.geocodeAddress(app.getResults);
 
+    // scroll to bottom
     $('html, body').delay(500).animate({
-      scrollTop: $(document).height()
+      scrollTop: $("#results-container").offset().top //$(document).height()
     }, 500);
   });
-});
 
-// update results for a specific lat/lng
-app.lookupLatLng = function (lat, lng) {
-  var catchment = app.layers.catchment;
-  var query = "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND school_type ~* '" + app.level + "'";
-  console.log('loading just the matching catchment(s) via query: ' + query);
-  catchment.setSQL(query);
-  catchment.setCartoCSS("#" + app.db.polygons + "{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}");
-
-  var sql = new cartodb.SQL({ user: app.db.user });
-
-  sql.execute("SELECT b.school_code, s.school_name, s.street, s.phone FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'").done(function (data) {
-    if (data.rows.length < 1) {
-      app.layers.schools.setSQL("SELECT * FROM " + app.db.points + " WHERE 1 = 0"); //select none
-      $('.school-name').text("Sorry, I don't know about any schools there.");
-      $('ul.contact').hide();
-      $('.school-info-intro').hide();
-    } else {
-      var code = data.rows[0].school_code;
-      var schools = app.layers.schools;
-      schools.setSQL("SELECT * FROM " + app.db.points + " WHERE school_code = '" + code + "'");
-      var name = data.rows[0].school_name,
-        address = data.rows[0].street,
-        phone = data.rows[0].phone;
-      $('.school-name').html(name);
-      $('.school-address').text(address);
-      $('.school-phone').text(phone);
-      $('ul.contact').show();
-      $('.school-info-intro .level').text(app.level || 'school');
-      $('.school-info-intro .address').text(app.address);
-      $('.school-info-intro').show();
-
+  $("#address").keyup(function (event) {
+    if (event.keyCode === 13) {
+      $(".btn.search").click();
     }
   });
 
-  if (!app.marker) {
-    app.marker = L.marker([lat, lng]).addTo(app.map);
-  } else {
-    app.marker.setLatLng([lat, lng]);
-  }
+  app.sql = new cartodb.SQL({ user: app.db.user });
+
+});
+
+
+// update results for a specific lat/lng
+app.getResults = function () {
+  var lat = app.lat;
+  var lng = app.lng;
+
+  app.sql.execute("SELECT b.school_code, s.school_name, s.street, s.phone FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
+    .done(function (data) {
+      var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
+      if (data.rows.length < 1) {
+        source = $("#no-result-template").html();
+        template = Handlebars.compile(source);
+        html = template();
+        $('#results-container').html(html);
+
+        mapID = 'cartodb-map-blank';
+        schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE 1 = 0";
+        app.addMap(mapID, schoolsSQL);
+      } else {
+        data.rows.forEach(function (row, i) {
+          var resultID = "result-" + i;
+          mapID = "cartodb-map-" + i;
+          $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
+
+          context = {
+            resultNumber: i,
+            name: row.school_name,
+            schoolAddress: row.street,
+            phone: row.phone,
+            level: app.level || 'school',
+            homeAddress: app.address
+          };
+
+          source = $("#result-template").html();
+          template = Handlebars.compile(source);
+          html = template(context);
+          $('#' + resultID).html(html);
+
+          schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
+          catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
+          app.addMap(mapID, schoolsSQL, catchmentsSQL);
+        });
+      }
+    });
 };
 
-function init() {
 
-  // initiate leaflet map
-  var map = new L.Map('cartodb-map', {
-    center: [-33.95699447355438, 151.14483833312988],
-    zoom: 8
-  });
+app.addMap = function (id, schoolsSQL, catchmentsSQL) {
 
-  app.map = map;
+  catchmentsSQL = catchmentsSQL || "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + app.lng + "," + app.lat + "),4326)) AND school_type ~* '" + app.level + "'";
 
-  // L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', { //Dark
-  var httpsTiles = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
-  L.tileLayer(httpsTiles, {
-    attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
-  }).addTo(map);
-
-  cartodb.createLayer(map, {
-    user_name: app.db.user,
-    https: true,
-    tiler_protocol: 'https',
-    tiler_port: '443',
-    sql_port: "443",
-    sql_protocol: "https",
-    type: 'cartodb',
-    sublayers:
-      [
-        {
-          sql: "SELECT * FROM " + app.db.polygons, // keep this layer, for a little background
-          cartocss: "#" + app.db.polygons + "{polygon-fill: #FFCC00; polygon-opacity: 0.1; line-color: #FFF; line-width: 1; line-opacity: 1;}"
-        },
-        {
-          sql: "SELECT * FROM " + app.db.polygons + " WHERE 1 = 0", // 1 = 0: select none, b/c I want this layer but I don't want to show anything yet.
-          cartocss: "#" + app.db.polygons + "{polygon-fill: #FFCC00; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}"
-        },
-        {
-          sql: "SELECT * FROM " + app.db.points,
-          cartocss: "#" + app.db.points + " {marker-fill: #0000FF;}",
-          interactivity: 'cartodb_id, level_of_schooling, school_name, phone, street'
-        }
-      ]
-  }).addTo(map)
-    .done(function (layer) {
-      app.layer = layer;
-      app.layers = {};
-      app.layers.catchment = layer.getSubLayer(1);
-      app.layers.schools = layer.getSubLayer(2);
-
-
-      app.layers.schools.setInteraction(true);
-      app.layers.schools
-        .on('featureClick', function (e, latlng, pos, data) {
-          console.log(e, latlng, pos, data);
-        })
-        .on('error', function (err) {
-          console.log('error: ' + err);
-        });
-
-
-      // Let a user click the map to find school districts.
-      map.on('click', function (e) {
-        console.log(e.latlng); //.lng .lat
-        app.lookupLatLng(e.latlng.lat, e.latlng.lng);
-      });
-    })
-    .error(function (err) {
-      //log the error
-      console.error(err); // TODO: console.XYZ needs definition on some older browsers
-    });
-}
+  var m = new Map(id, schoolsSQL, catchmentsSQL);
+  app.maps.push(m);
+};
