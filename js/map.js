@@ -44,15 +44,15 @@ Map.prototype.init = function () {
       [
         { // background layer; all polygons, for context
           sql: "SELECT * FROM " + app.db.polygons,
-          cartocss: "#" + app.db.polygons + "{polygon-fill: #FFCC00; polygon-opacity: 0.1; line-color: #FFF; line-width: 1; line-opacity: 1;}"
+          cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
         },
         { // selected boundary
           sql: this.catchmentsSQL,
-          cartocss: "#" + app.db.polygons + "{polygon-fill: #FF0000; polygon-opacity: 0.5; line-color: #FFF; line-width: 1; line-opacity: 1;}"
+          cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
         },
         { // selected school(s)
           sql: this.schoolsSQL,
-          cartocss: "#" + app.db.points + " {marker-fill: #0000FF;}",
+          cartocss: "#" + app.db.points + app.geo.schoolCSS,
           interactivity: 'cartodb_id, level_of_schooling, school_name, phone, street'
         }
       ]
