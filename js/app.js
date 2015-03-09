@@ -1,12 +1,14 @@
 var app, Map, L, cartodb, google, Handlebars;
 app = app || {};
 
+// CartoDB configuration
 app.db = {
   points: 'dec_schools', //table
   polygons: 'catchments', //table
   user: 'cesensw'
 };
 
+// Map configuration variables
 app.geo = {
   tiles: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
   //dark: https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png'
