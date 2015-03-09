@@ -28,6 +28,7 @@ Map.prototype.init = function () {
     zoom: 12
   });
   this.map = map;
+  var that = this;
 
   L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
 
@@ -57,14 +58,14 @@ Map.prototype.init = function () {
       ]
   }).addTo(map)
     .done(function (layer) {
-      app.layer = layer;
-      app.layers = {};
-      app.layers.catchment = layer.getSubLayer(1);
-      app.layers.schools = layer.getSubLayer(2);
+      that.layer = layer;
+      that.layers = {};
+      that.layers.catchment = layer.getSubLayer(1);
+      that.layers.schools = layer.getSubLayer(2);
 
 
-      app.layers.schools.setInteraction(true);
-      app.layers.schools
+      that.layers.schools.setInteraction(true);
+      that.layers.schools
         .on('featureClick', function (e, latlng, pos, data) {
           console.log(e, latlng, pos, data);
         })
@@ -82,6 +83,11 @@ Map.prototype.init = function () {
       });
 
       L.marker([app.lat, app.lng]).addTo(map);
+
+      // zoom in to show the full catchment area
+      app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
+        that.map.fitBounds(bounds);
+      });
 
       // if (!app.marker) {
       // } else {
