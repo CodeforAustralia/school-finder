@@ -79,7 +79,10 @@ Map.prototype.init = function () {
         console.log(e.latlng);
         app.lat = e.latlng.lat;
         app.lng = e.latlng.lng;
-        app.getResults();
+
+        // reverse geocode to grab the selected address, then get results.
+        app.reverseGeocode(app.getResults);
+
       });
 
       L.marker([app.lat, app.lng]).addTo(map);

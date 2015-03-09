@@ -19,6 +19,30 @@ app.geocodeAddress = function (callback) {
   });
 };
 
+// Reverse geocode to get address from lat/lng
+// Given: lat and lng as floats.
+app.reverseGeocode = function (callback) {
+  var lat = app.lat;
+  var lng = app.lng;
+  var latlng = new google.maps.LatLng(lat, lng);
+  geocoder.geocode({'latLng': latlng}, function (results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        app.address = results[0].formatted_address;
+        document.getElementById('address').value = app.address;
+        console.log("Found address: " + app.address);
+      } else {
+        console.error('No results found');
+      }
+    } else {
+      console.error('Geocoder failed due to: ' + status);
+    }
+
+    callback();
+  });
+};
+
+
 var googlePlacesInitialize = function () {
   var inputs;
   inputs = $('input[data-google-places]');

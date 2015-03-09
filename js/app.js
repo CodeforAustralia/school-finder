@@ -39,11 +39,6 @@ $(document).ready(function () {
   $(".btn.search").click(function (e) {
     e.preventDefault();
 
-    // clean up any previous result
-    $('#results-container .result').remove();
-    $('#results-container').empty();
-    app.maps = [];
-
     // Geocode address then show results
     app.geocodeAddress(app.getResults);
 
@@ -62,6 +57,12 @@ $(document).ready(function () {
 
 // update results for a specific lat/lng
 app.getResults = function () {
+
+  // clean up any previous result
+  $('#results-container .result').remove();
+  $('#results-container').empty();
+  app.maps = [];
+
   var lat = app.lat;
   var lng = app.lng;
 
