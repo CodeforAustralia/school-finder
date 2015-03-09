@@ -59,7 +59,7 @@ app.getResults = function () {
   var lat = app.lat;
   var lng = app.lng;
 
-  app.sql.execute("SELECT b.school_code, s.school_name, s.street, s.phone FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
+  app.sql.execute("SELECT b.school_code, s.* FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
     .done(function (data) {
       var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
       if (data.rows.length < 1) {
@@ -80,9 +80,20 @@ app.getResults = function () {
           context = {
             resultNumber: i,
             name: row.school_name,
-            schoolAddress: row.street,
+            address: row.street,
+            suburb: row.town_suburb,
+            postcode: row.postcode,
+            code: row.school_code,
             phone: row.phone,
             level: app.level || 'school',
+            grades: row.subtype,
+            selective: row.selective_school,
+            specialty: row.school_specialty_type,
+            preschool: row.preschool_indicator,
+            distanceEd: row.distance_education,
+            intensiveEnglish: row.intensive_english_centre,
+            established: row.date_1st_teacher,
+            email: row.school_email,
             homeAddress: app.address
           };
 
