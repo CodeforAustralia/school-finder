@@ -41,10 +41,6 @@ $(document).ready(function () {
     // Geocode address then show results
     app.geocodeAddress(app.getResults);
 
-    // scroll to bottom
-    $('html, body').delay(500).animate({
-      scrollTop: $("#results-container").offset().top //$(document).height()
-    }, 500);
   });
 
   $("#address").keyup(function (event) {
@@ -93,11 +89,19 @@ app.getResults = function () {
           source = $("#result-template").html();
           template = Handlebars.compile(source);
           html = template(context);
-          $('#' + resultID).html(html);
+          var $result = $('#' + resultID);
+          $result.html(html);
 
           schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
           catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
           app.addMap(mapID, schoolsSQL, catchmentsSQL);
+
+          // scroll to first result
+          if (i === 0) {
+            $('html, body').animate({
+              scrollTop: $result.offset().top
+            }, 500);
+          }
         });
       }
     });
