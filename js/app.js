@@ -135,7 +135,14 @@ app.getResults = function () {
 
           schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
           catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
-          app.addMap(mapID, schoolsSQL, catchmentsSQL);
+          var map = app.addMap(mapID, schoolsSQL, catchmentsSQL);
+
+          // Specify a Maki icon name, hex color, and size (s, m, or l).
+          // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
+          // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
+          // Color may also be set to null, which will result in a gray marker.
+          var icon = L.MakiMarkers.icon({icon: "school", color: "#b0b", size: "m"});
+          L.marker([row.latitude, row.longitude], {icon: icon}).addTo(map.map);
 
           // scroll to first result
           if (i === 0) {
@@ -155,4 +162,5 @@ app.addMap = function (id, schoolsSQL, catchmentsSQL) {
 
   var m = new Map(id, schoolsSQL, catchmentsSQL);
   app.maps.push(m);
+  return m;
 };
