@@ -95,6 +95,13 @@ app.getResults = function () {
             level = 'School';
           }
 
+          var yesNo = function (field) {
+            if (field && field === 'Y') {
+              return 'Yes';
+            }
+            return 'No';
+          };
+
           context = {
             resultNumber: i,
             name: row.school_name,
@@ -107,9 +114,9 @@ app.getResults = function () {
             grades: row.subtype,
             selective: row.selective_school,
             specialty: row.school_specialty_type,
-            preschool: row.preschool_indicator,
+            preschool: yesNo(row.preschool_indicator),
             distanceEd: row.distance_education,
-            intensiveEnglish: row.intensive_english_centre,
+            intensiveEnglish: yesNo(row.intensive_english_centre),
             established: function () {
               // try to return something human friendly if we can parse date.
               var d = new Date(row.date_1st_teacher);
