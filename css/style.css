@@ -22,8 +22,14 @@ ul.school-details {
 }
 
 .school-name {
-	font-size: 30px;
+	/*font-size: 30px;*/
 	font-weight: bold;
+	/* border-bottom: 5px solid black; */
+	text-decoration: underline;
+	font-size: 63px;
+	line-height: 70px;
+	margin-top: 0.125em;
+	margin-bottom: .5em;
 }
 
 .school-name a {
