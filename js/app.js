@@ -110,7 +110,12 @@ app.getResults = function () {
             preschool: row.preschool_indicator,
             distanceEd: row.distance_education,
             intensiveEnglish: row.intensive_english_centre,
-            established: row.date_1st_teacher,
+            established: function () {
+              // try to return something human friendly if we can parse date.
+              var d = new Date(row.date_1st_teacher);
+              if (d) { return d.getFullYear(); }
+              return row.date_1st_teacher;
+            },
             email: row.school_email,
             homeAddress: app.address
           };
