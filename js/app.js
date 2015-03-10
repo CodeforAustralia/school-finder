@@ -21,6 +21,10 @@ app.geo = {
 
 app.maps = [];
 
+String.prototype.capitalize = String.prototype.capitalize || function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 
 $(document).ready(function () {
 
@@ -84,6 +88,13 @@ app.getResults = function () {
           mapID = "cartodb-map-" + i;
           $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
 
+          var level;
+          if (app.level) {
+            level = app.level.capitalize();
+          } else {
+            level = 'School';
+          }
+
           context = {
             resultNumber: i,
             name: row.school_name,
@@ -92,7 +103,7 @@ app.getResults = function () {
             postcode: row.postcode,
             code: row.school_code,
             phone: row.phone,
-            level: app.level || 'school',
+            level: level,
             grades: row.subtype,
             selective: row.selective_school,
             specialty: row.school_specialty_type,
