@@ -27,6 +27,10 @@ ul.school-details {
 	list-style: none;
 }
 
+.school-details .school-email {
+	margin-bottom: 1em;
+}
+
 .school-name {
 	/*font-size: 30px;*/
 	font-weight: bold;
