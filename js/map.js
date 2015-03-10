@@ -86,7 +86,9 @@ Map.prototype.init = function () {
 
       });
 
-      L.marker([app.lat, app.lng]).addTo(map);
+      // add a 'home' looking icon to represent the user's location
+      var icon = L.MakiMarkers.icon({icon: "building", color: "#b0b", size: "m"});
+      L.marker([app.lat, app.lng], {icon: icon}).addTo(map);
 
       // zoom in to show the full catchment area
       app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
