@@ -46,3 +46,23 @@ ul.school-details {
 .block-address {
 	margin-top: 25em;
 }
+
+
+
+/* Provide for narrow nav + content sections  */
+@media (min-width: 768px) {
+	.container {
+		width: 100%;
+	}
+	.header, .jumbotron, .footer, .school-info {
+		max-width: 730px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+}
+.container {
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
