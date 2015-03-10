@@ -25,7 +25,8 @@ Map.prototype.init = function () {
   // initiate leaflet map
   var map = new L.Map(this.mapID, {
     center: [app.lat, app.lng],
-    zoom: 12
+    zoom: 12,
+    scrollWheelZoom: false,
   });
   this.map = map;
   var that = this;
