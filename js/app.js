@@ -70,105 +70,134 @@ app.getResults = function () {
 
   var lat = app.lat;
   var lng = app.lng;
+  var alreadyScrolled = false;
+  var scrollToMap = function ($el) {
+    // scroll to first result
+    if (!alreadyScrolled) {
+      $('html, body').animate({
+        scrollTop: $el.offset().top
+      }, 500);
+    }
+  };
+
+
+  var yesNo = function (field) {
+    if (field && field === 'Y') {
+      return 'Yes';
+    }
+    return 'No';
+  };
+
+  var rowToContext = function (row, i) {
+    return {
+      resultNumber: i,
+      name: row.school_name,
+      address: row.street,
+      suburb: row.town_suburb,
+      postcode: row.postcode,
+      code: row.school_code,
+      phone: row.phone,
+      level: function () {
+        var level;
+        if (app.level) {
+          level = app.level.capitalize();
+        } else {
+          level = 'School';
+        }
+        return level;
+      },
+      grades: row.subtype,
+      selective: row.selective_school,
+      specialty: row.school_specialty_type,
+      preschool: yesNo(row.preschool_indicator),
+      distanceEd: row.distance_education,
+      intensiveEnglish: yesNo(row.intensive_english_centre),
+      established: function () {
+        // try to return something human friendly if we can parse date.
+        var d = new Date(row.date_1st_teacher);
+        if (d) { return d.getFullYear(); }
+        return row.date_1st_teacher;
+      },
+      email: row.school_email,
+      homeAddress: app.address
+    };
+  };
+
+  var mapRow = function (row, i) {
+    var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
+    var resultID = "result-" + i;
+    mapID = "cartodb-map-" + i;
+    $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
+
+    context = rowToContext(row, i);
+
+    source = $("#result-template").html();
+    template = Handlebars.compile(source);
+    html = template(context);
+    var $result = $('#' + resultID);
+    $result.html(html);
+
+    schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
+    catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
+    var map = app.addMap(mapID, schoolsSQL, catchmentsSQL);
+
+    var onMouseOverOut = function (e) {
+      var marker = e.target;
+      if (e.type === 'mouseover') {
+        marker.openPopup();
+      } else if (e.type === 'mouseout') {
+        marker.closePopup();
+      }
+    };
+
+    // Specify a Maki icon name, hex color, and size (s, m, or l).
+    // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
+    // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
+    // Color may also be set to null, which will result in a gray marker.
+    var icon = L.MakiMarkers.icon({icon: "school", color: "#b0b", size: "m"});
+    L.marker([row.latitude, row.longitude], {icon: icon})
+      .addTo(map.map)
+      // note we're using a bigger offset on the popup to reduce flickering;
+      // since we hide the popup on mouseout, if the popup is too close to the marker,
+      // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+      // moves near the edge between the marker and popup, making the popup flicker on and off.
+      .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
+      .on('mouseover', onMouseOverOut)
+      .on('mouseout', onMouseOverOut);
+
+    if (i === 0) { scrollToMap($result); }
+  };
+
 
   app.sql.execute("SELECT b.school_code, s.* FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
     .done(function (data) {
-      var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
       if (data.rows.length < 1) {
-        source = $("#no-result-template").html();
-        template = Handlebars.compile(source);
-        html = template();
-        $('#results-container').html(html);
-
-        mapID = 'cartodb-map-blank';
-        schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE 1 = 0";
-        app.addMap(mapID, schoolsSQL);
-      } else {
-        data.rows.forEach(function (row, i) {
-          var resultID = "result-" + i;
-          mapID = "cartodb-map-" + i;
-          $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
-
-          var level;
-          if (app.level) {
-            level = app.level.capitalize();
-          } else {
-            level = 'School';
-          }
-
-          var yesNo = function (field) {
-            if (field && field === 'Y') {
-              return 'Yes';
-            }
-            return 'No';
-          };
-
-          context = {
-            resultNumber: i,
-            name: row.school_name,
-            address: row.street,
-            suburb: row.town_suburb,
-            postcode: row.postcode,
-            code: row.school_code,
-            phone: row.phone,
-            level: level,
-            grades: row.subtype,
-            selective: row.selective_school,
-            specialty: row.school_specialty_type,
-            preschool: yesNo(row.preschool_indicator),
-            distanceEd: row.distance_education,
-            intensiveEnglish: yesNo(row.intensive_english_centre),
-            established: function () {
-              // try to return something human friendly if we can parse date.
-              var d = new Date(row.date_1st_teacher);
-              if (d) { return d.getFullYear(); }
-              return row.date_1st_teacher;
-            },
-            email: row.school_email,
-            homeAddress: app.address
-          };
-
-          source = $("#result-template").html();
-          template = Handlebars.compile(source);
-          html = template(context);
-          var $result = $('#' + resultID);
-          $result.html(html);
-
-          schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
-          catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
-          var map = app.addMap(mapID, schoolsSQL, catchmentsSQL);
-
-          var onMouseOverOut = function (e) {
-            var marker = e.target;
-            if (e.type === 'mouseover') {
-              marker.openPopup();
-            } else if (e.type === 'mouseout') {
-              marker.closePopup();
-            }
-          };
-
-          // Specify a Maki icon name, hex color, and size (s, m, or l).
-          // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
-          // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
-          // Color may also be set to null, which will result in a gray marker.
-          var icon = L.MakiMarkers.icon({icon: "school", color: "#b0b", size: "m"});
-          L.marker([row.latitude, row.longitude], {icon: icon})
-            .addTo(map.map)
-            // note we're using a bigger offset on the popup to reduce flickering;
-            // since we hide the popup on mouseout, if the popup is too close to the marker,
-            // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-            // moves near the edge between the marker and popup, making the popup flicker on and off.
-            .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-            .on('mouseover', onMouseOverOut)
-            .on('mouseout', onMouseOverOut);
-
-          // scroll to first result
-          if (i === 0) {
-            $('html, body').animate({
-              scrollTop: $result.offset().top
-            }, 500);
-          }
+        // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
+        // currently, X nearest.
+        app.sql.execute(
+          "SELECT s.*, " +
+            "ST_DISTANCE(s.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AS dist " +
+            "FROM " + app.db.points + " AS s " +
+            "WHERE s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central' " +
+            "ORDER BY dist ASC LIMIT 5"
+        ).done(function (data) {
+          console.log(data);
+          data.rows.forEach(mapRow);
         });
+
+        // source = $("#no-result-template").html();
+        // template = Handlebars.compile(source);
+        // html = template();
+        // $('#results-container').html(html);
+
+        // mapID = 'cartodb-map-blank';
+        // schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE 1 = 0";
+        // app.addMap(mapID, schoolsSQL);
+
+        // scrollToMap($('#' + mapID));
+
+      } else {
+        data.rows.forEach(mapRow);
       }
     });
 };
