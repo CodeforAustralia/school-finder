@@ -119,7 +119,22 @@ app.getResults = function () {
         return row.date_1st_teacher;
       },
       email: row.school_email,
-      homeAddress: app.address
+      homeAddress: app.address,
+      distance: function () {
+
+        // function roundToTwo(num) {
+        //   return +(Math.round(num + "e+2")  + "e-2");
+        // }
+
+        function roundToOne(num) {
+          return +(Math.round(num + "e+1")  + "e-1");
+        }
+
+        var centerLatLng = new L.latLng(app.lat, app.lng);
+        var otherLatLng = new L.latLng(row.latitude, row.longitude);
+        var dist = centerLatLng.distanceTo(otherLatLng);
+        return "About " + roundToOne(dist / 1000) + "km";
+      }
     };
   };
 
