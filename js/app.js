@@ -136,6 +136,10 @@ app.getResults = function () {
         var centerLatLng = new L.latLng(app.lat, app.lng);
         var otherLatLng = new L.latLng(row.latitude, row.longitude);
         var dist = centerLatLng.distanceTo(otherLatLng);
+
+        // lookup distance along road network and insert it into page when the results come back.
+        app.calculateRouteDistance(row.latitude, row.longitude, '#result-' + i + ' .route-distance');
+
         return "About " + roundToOne(dist / 1000) + "km";
       }
     };
