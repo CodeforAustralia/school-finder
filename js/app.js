@@ -20,6 +20,9 @@ app.geo = {
 };
 
 app.maps = [];
+app.config = {
+  maxRuralTravel: "105000" // maximum meters someone would travel to a rural school; used to find schools w/o catchments
+};
 app.showHomeHelpPopup = true;
 
 String.prototype.capitalize = String.prototype.capitalize || function () {
@@ -191,10 +194,11 @@ app.getResults = function () {
         // currently, X nearest.
         app.sql.execute(
           "SELECT s.*, " +
-            "ST_DISTANCE(s.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AS dist " +
+            "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) AS dist " +
             "FROM " + app.db.points + " AS s " +
-            "WHERE s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central' " +
-            "ORDER BY dist ASC LIMIT 5"
+            "WHERE (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
+            "AND ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) < " + app.config.maxRuralTravel +
+            "ORDER BY dist ASC LIMIT 5 "
         ).done(function (data) {
           console.log(data);
           data.rows.forEach(mapRow);
