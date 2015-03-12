@@ -139,7 +139,7 @@ app.getResults = function () {
 
     schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
     catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
-    var map = app.addMap(mapID, schoolsSQL, catchmentsSQL);
+    var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
 
     var onMouseOverOut = function (e) {
       var marker = e.target;
@@ -203,11 +203,11 @@ app.getResults = function () {
 };
 
 
-app.addMap = function (id, schoolsSQL, catchmentsSQL) {
+app.addMap = function (id, schoolsSQL, catchmentsSQL, row) {
 
   catchmentsSQL = catchmentsSQL || "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + app.lng + "," + app.lat + "),4326)) AND school_type ~* '" + app.level + "'";
 
-  var m = new Map(id, schoolsSQL, catchmentsSQL);
+  var m = new Map(id, schoolsSQL, catchmentsSQL, row);
   app.maps.push(m);
   return m;
 };

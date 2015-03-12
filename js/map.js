@@ -1,10 +1,11 @@
 var app, L, cartodb;
 app = app || {};
 
-var Map = function (mapID, schoolsSQL, catchmentsSQL) {
+var Map = function (mapID, schoolsSQL, catchmentsSQL, row) {
   this.mapID = mapID;
   this.schoolsSQL = schoolsSQL;
   this.catchmentsSQL = catchmentsSQL;
+  this.row = row;
   this.init();
 };
 
