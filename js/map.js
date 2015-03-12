@@ -113,11 +113,19 @@ Map.prototype.init = function () {
       }
       // that.marker = marker;
 
+      var hasCatchment = that.row.shape_area ? true : false;
+      if (hasCatchment) {
+        // zoom in to show the full catchment area
+        app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
+          that.map.fitBounds(bounds);
+        });
+      } else {
+        // zoom to fit selected school + user location
+        var southWest = L.latLng(that.row.latitude, that.row.longitude);
+        var northEast = L.latLng(app.lat, app.lng);
+        map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
+      }
 
-      // zoom in to show the full catchment area
-      app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
-        that.map.fitBounds(bounds);
-      });
 
       // if (!app.marker) {
       // } else {
