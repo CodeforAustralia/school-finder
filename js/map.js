@@ -110,7 +110,7 @@ Map.prototype.init = function () {
         marker.bindPopup("<b>Your location (draggable)</b>")
               .openPopup();
       }
-      that.marker = marker;
+      // that.marker = marker;
 
 
       // zoom in to show the full catchment area
