@@ -20,6 +20,7 @@ var Map = function (mapID, schoolsSQL, catchmentsSQL) {
 // };
 
 
+
 Map.prototype.init = function () {
 
   // initiate leaflet map
@@ -75,20 +76,42 @@ Map.prototype.init = function () {
         });
 
 
-      // Let a user click the map to find school districts.
+      // Let a user shift-click the map to find school districts.
       map.on('click', function (e) {
         console.log(e.latlng);
-        app.lat = e.latlng.lat;
-        app.lng = e.latlng.lng;
+        if (e.originalEvent.shiftKey) {
+          app.lat = e.latlng.lat;
+          app.lng = e.latlng.lng;
 
+          // reverse geocode to grab the selected address, then get results.
+          app.reverseGeocode(app.getResults);
+        }
+      });
+
+      // Let a user move the home marker to re-search at that location
+      var onMarkerDragEnd = function (event) {
+        var marker = event.target;
+        marker.closePopup();
+        app.showHomeHelpPopup = false; // keep hidden from now on.
+        var ll = marker.getLatLng();
+        console.log(ll);
+        app.lat = ll.lat;
+        app.lng = ll.lng;
         // reverse geocode to grab the selected address, then get results.
         app.reverseGeocode(app.getResults);
-
-      });
+      };
 
       // add a 'home' looking icon to represent the user's location
       var icon = L.MakiMarkers.icon({icon: "building", color: "#b0b", size: "m"});
-      L.marker([app.lat, app.lng], {icon: icon}).addTo(map);
+      var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
+                    .addTo(map)
+                    .on('dragend', onMarkerDragEnd);
+      if (app.showHomeHelpPopup) {
+        marker.bindPopup("<b>Your location (draggable)</b>")
+              .openPopup();
+      }
+      that.marker = marker;
+
 
       // zoom in to show the full catchment area
       app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
