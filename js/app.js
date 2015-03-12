@@ -169,7 +169,7 @@ app.getResults = function () {
   };
 
 
-  app.sql.execute("SELECT b.school_code, s.* FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
+  app.sql.execute("SELECT b.school_code, b.shape_area, s.* FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
     .done(function (data) {
       if (data.rows.length < 1) {
         // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
