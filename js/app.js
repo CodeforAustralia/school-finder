@@ -47,6 +47,16 @@ $(document).ready(function () {
   $(".btn.search").click(function (e) {
     e.preventDefault();
 
+    var $btn = $(this);
+    // $(e.target).html('Working&hellip;');
+    $btn.data('default-text', $btn.html());
+    $btn.data('default-bgcolor', $btn.css('background-color'));
+
+    // Use Search button as status
+    $btn.html('Working&hellip;');
+    $btn.css('background-color', 'gray');
+
+
     // Geocode address then show results
     app.geocodeAddress(app.getResults);
 
@@ -78,8 +88,12 @@ app.getResults = function () {
     // scroll to first result
     if (!alreadyScrolled) {
       $('html, body').animate({
-        scrollTop: $el.offset().top
-      }, 500);
+        scrollTop: $el.offset().top,
+      }, 500, function () {
+        // Reset Search button
+        var $btn = $('.btn.search');
+        $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
+      });
     }
   };
 
