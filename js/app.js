@@ -127,6 +127,12 @@ app.getResults = function () {
       selective: row.selective_school,
       specialty: row.school_specialty_type,
       preschool: yesNo(row.preschool_indicator),
+      childcare: function () {
+        if (Math.random() > 0.5) {
+          return "Not available here."; //row.childcare,
+        }
+        return "Moore's Childcare" + "; contact the school to register.";
+      },
       distanceEd: row.distance_education,
       intensiveEnglish: yesNo(row.intensive_english_centre),
       established: function () {
