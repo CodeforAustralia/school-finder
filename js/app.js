@@ -180,7 +180,7 @@ app.getResults = function () {
     $result.html(html);
 
     schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
-    catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_code = '" + row.school_code + "'";
+    catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code = '" + row.school_code + "'";
     var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
 
     var onMouseOverOut = function (e) {
