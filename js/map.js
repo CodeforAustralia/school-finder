@@ -45,8 +45,8 @@ Map.prototype.init = function () {
     type: 'cartodb',
     sublayers:
       [
-        { // background layer; all polygons, for context
-          sql: "SELECT * FROM " + app.db.polygons,
+        { // background layer; all but selected polygon, for context
+          sql: "SELECT * FROM " + app.db.polygons + " WHERE school_code != '" + this.row.school_code + "'",
           cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
         },
         { // selected boundary
