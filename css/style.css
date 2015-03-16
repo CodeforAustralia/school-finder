@@ -82,3 +82,8 @@ ul.school-details {
 	margin-left: 0px;
 	margin-right: 0px;
 }
+
+.leaflet-popup-content-wrapper {
+	/* give a little transparency so we don't totally hide other markers. */
+	background-color: rgba(255, 255, 255, 0.9);
+}
