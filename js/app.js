@@ -131,7 +131,7 @@ app.getResults = function () {
         if (Math.random() > 0.5) {
           return "Not available here."; //row.childcare,
         }
-        return "Moore's Childcare" + "; contact the school to register.";
+        return "Moore's Childcare";
       },
       distanceEd: row.distance_education,
       intensiveEnglish: yesNo(row.intensive_english_centre),
