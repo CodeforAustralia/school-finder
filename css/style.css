@@ -87,3 +87,7 @@ ul.school-details {
 	/* give a little transparency so we don't totally hide other markers. */
 	background-color: rgba(255, 255, 255, 0.9);
 }
+
+.block-intro .btn {
+	margin-top: 0.5em; /* vertically separate buttons on narrow screens */
+}
