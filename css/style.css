@@ -27,7 +27,8 @@ ul.school-details {
 	list-style: none;
 }
 
-.school-details .school-email {
+.school-details .school-website {
+	/* keeps contact info grouped together */
 	margin-bottom: 1em;
 }
 

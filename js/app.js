@@ -120,6 +120,7 @@ app.getResults = function () {
       postcode: row.postcode,
       code: row.school_code,
       phone: row.phone,
+      website: row.website,
       level: function () {
         var level;
         if (app.level) {
@@ -133,12 +134,7 @@ app.getResults = function () {
       selective: row.selective_school,
       specialty: row.school_specialty_type,
       preschool: yesNo(row.preschool_indicator),
-      childcare: function () {
-        if (Math.random() > 0.5) {
-          return "Not available here."; //row.childcare,
-        }
-        return "Moore's Childcare";
-      },
+      oshc: row.oshc, /* outside school hours care */
       distanceEd: row.distance_education,
       intensiveEnglish: yesNo(row.intensive_english_centre),
       established: function () {
