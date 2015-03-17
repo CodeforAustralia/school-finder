@@ -235,6 +235,7 @@ app.getResults = function () {
           console.log(data);
           if (data.rows.length < 1) {
             resetSearchBtn();
+            $('#noResultsModal').modal();
           }
           data.rows.forEach(mapRow);
         });
