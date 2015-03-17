@@ -1,4 +1,11 @@
 html, body {width:100%; height:100%; padding: 0; margin: 0;}
+body { background-color: #39acc9; color: #3e3e3e; }
+.header h3 {color: #f7f6f6;}
+
+.container .jumbotron { background-color: #f7f6f6; border-radius: 0px;}
+.btn-success { background-color: #d72d6c; border: none; border-radius: 0px;}
+.footer p {color: #f7f6f6; }
+
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
 /* Results */
@@ -12,7 +19,9 @@ html, body {width:100%; height:100%; padding: 0; margin: 0;}
 
 .school-info {
 	padding-bottom: 20px;
-	border-bottom: 6px solid rgba(238, 238, 238, 1);
+	border-bottom: 6px solid rgb(62, 62, 62);
+	padding: 1em;
+	background: rgb(247, 246, 246);
 }
 
 .school-info-intro {

@@ -15,7 +15,7 @@ app.geo = {
   attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>',
   // CartoCSS for various map layers
   backgroundCSS: '{polygon-fill: #F0F0F0; polygon-opacity: 0; line-color: #7E599D; line-width: 0.3; line-opacity: 1; line-dasharray: 10,4;}',
-  catchmentCSS: '{polygon-fill: #D0DAFF; polygon-opacity: 0.15; line-color: #426; line-width: 1; line-opacity: 1;}',
+  catchmentCSS: '{polygon-fill: #d72d6c; polygon-opacity: 0.15; line-color: #3e3e3e; line-width: 1; line-opacity: 1;}',
   schoolCSS: '{marker-fill: #D0DAFF;}',
 };
 
@@ -204,7 +204,7 @@ app.getResults = function () {
     // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
     // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
     // Color may also be set to null, which will result in a gray marker.
-    var icon = L.MakiMarkers.icon({icon: "school", color: "#b0b", size: "m"});
+    var icon = L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"});
     L.marker([row.latitude, row.longitude], {icon: icon})
       .addTo(map.map)
       // note we're using a bigger offset on the popup to reduce flickering;

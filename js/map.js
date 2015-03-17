@@ -103,7 +103,7 @@ Map.prototype.init = function () {
       };
 
       // add a 'home' looking icon to represent the user's location
-      var icon = L.MakiMarkers.icon({icon: "building", color: "#5cb85c", size: "m"});
+      var icon = L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"});
       var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
                     .addTo(map)
                     .on('dragend', onMarkerDragEnd);
