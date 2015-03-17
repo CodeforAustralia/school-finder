@@ -42,29 +42,12 @@ Map.prototype.init = function () {
           sql: this.catchmentsSQL,
           cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
         },
-        { // selected school(s)
-          sql: this.schoolsSQL,
-          cartocss: "#" + app.db.points + app.geo.schoolCSS,
-          interactivity: 'cartodb_id, level_of_schooling, school_name, phone, street'
-        }
       ]
   }).addTo(map)
     .done(function (layer) {
       that.layer = layer;
       that.layers = {};
       that.layers.catchment = layer.getSubLayer(1);
-      that.layers.schools = layer.getSubLayer(2);
-
-
-      that.layers.schools.setInteraction(true);
-      that.layers.schools
-        .on('featureClick', function (e, latlng, pos, data) {
-          console.log(e, latlng, pos, data);
-        })
-        .on('error', function (err) {
-          console.log('error: ' + err);
-        });
-
 
       // Let a user shift-click the map to find school districts.
       map.on('click', function (e) {
