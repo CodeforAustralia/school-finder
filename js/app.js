@@ -229,18 +229,6 @@ app.getResults = function () {
           console.log(data);
           data.rows.forEach(mapRow);
         });
-
-        // source = $("#no-result-template").html();
-        // template = Handlebars.compile(source);
-        // html = template();
-        // $('#results-container').html(html);
-
-        // mapID = 'cartodb-map-blank';
-        // schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE 1 = 0";
-        // app.addMap(mapID, schoolsSQL);
-
-        // scrollToMap($('#' + mapID));
-
       } else {
         data.rows.forEach(mapRow);
       }
