@@ -10,17 +10,6 @@ var Map = function (mapID, schoolsSQL, catchmentsSQL, row) {
 };
 
 
-// Map.prototype.render = function () {
-
-//   // show the points corresponding to the level selected
-//   var sql = "SELECT * FROM " + app.db.points + " WHERE level_of_schooling ~* '" + app.level + "' OR level_of_schooling = 'Other School'";
-//   this.layers.points.setSQL(sql);
-//   console.log(sql);
-
-//   app.lookupLatLng();
-// };
-
-
 
 Map.prototype.init = function () {
 
@@ -125,13 +114,6 @@ Map.prototype.init = function () {
         var northEast = L.latLng(app.lat, app.lng);
         map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
       }
-
-
-      // if (!app.marker) {
-      // } else {
-      //   app.marker.setLatLng([lat, lng]);
-      // }
-
     })
     .error(function (err) {
       //log the error
