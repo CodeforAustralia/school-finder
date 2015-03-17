@@ -90,15 +90,21 @@ app.getResults = function () {
   var lat = app.lat;
   var lng = app.lng;
   var alreadyScrolled = false;
+
+
+  var resetSearchBtn = function () {
+    // Reset Search button
+    var $btn = $('.btn.search');
+    $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
+  };
+
   var scrollToMap = function ($el) {
     // scroll to first result
     if (!alreadyScrolled) {
       $('html, body').animate({
         scrollTop: $el.offset().top,
       }, 500, function () {
-        // Reset Search button
-        var $btn = $('.btn.search');
-        $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
+        resetSearchBtn();
       });
     }
   };
@@ -227,6 +233,9 @@ app.getResults = function () {
             "ORDER BY dist ASC LIMIT 5 "
         ).done(function (data) {
           console.log(data);
+          if (data.rows.length < 1) {
+            resetSearchBtn();
+          }
           data.rows.forEach(mapRow);
         });
       } else {
