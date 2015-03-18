@@ -109,76 +109,13 @@ app.getResults = function () {
   };
 
 
-  var yesNo = function (field) {
-    if (field && field === 'Y') {
-      return 'Yes';
-    }
-    return 'No';
-  };
-
-  var rowToContext = function (row, i) {
-    return {
-      resultNumber: i,
-      name: row.school_name,
-      address: row.street,
-      suburb: row.town_suburb,
-      postcode: row.postcode,
-      code: row.school_code,
-      phone: row.phone,
-      website: row.website,
-      level: function () {
-        var level;
-        if (app.level) {
-          level = app.level.capitalize();
-        } else {
-          level = 'School';
-        }
-        return level;
-      },
-      grades: row.subtype,
-      selective: row.selective_school,
-      specialty: row.school_specialty_type,
-      preschool: yesNo(row.preschool_indicator),
-      oshc: row.oshc, /* outside school hours care */
-      distanceEd: row.distance_education,
-      intensiveEnglish: yesNo(row.intensive_english_centre),
-      established: function () {
-        // try to return something human friendly if we can parse date.
-        var d = new Date(row.date_1st_teacher);
-        if (d) { return d.getFullYear(); }
-        return row.date_1st_teacher;
-      },
-      email: row.school_email,
-      homeAddress: app.address,
-      distance: function () {
-
-        // function roundToTwo(num) {
-        //   return +(Math.round(num + "e+2")  + "e-2");
-        // }
-
-        function roundToOne(num) {
-          return +(Math.round(num + "e+1")  + "e-1");
-        }
-
-        var centerLatLng = new L.latLng(app.lat, app.lng);
-        var otherLatLng = new L.latLng(row.latitude, row.longitude);
-        var dist = centerLatLng.distanceTo(otherLatLng);
-
-        // lookup distance along road network and insert it into page when the results come back.
-        app.calculateRouteDistance(row.latitude, row.longitude, '#result-' + i + ' .route-distance');
-
-        return "About " + roundToOne(dist / 1000) + " km";
-      }
-    };
-  };
-
   var mapRow = function (row, i) {
     var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
     var resultID = "result-" + i;
     mapID = "cartodb-map-" + i;
     $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
 
-    context = rowToContext(row, i);
+    context = app.School.toTemplateContext(row, i);
 
     source = $("#result-template").html();
     template = Handlebars.compile(source);
