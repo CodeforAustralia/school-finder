@@ -2,6 +2,7 @@ var app, Map, L, cartodb, google, Handlebars;
 app = app || {};
 
 app.maps = [];
+app.sql = new cartodb.SQL({ user: app.db.user });
 
 $(document).ready(function () {
 
@@ -41,7 +42,6 @@ $(document).ready(function () {
     }
   });
 
-  app.sql = new cartodb.SQL({ user: app.db.user });
 
   // Make school level buttons equal width
   var maxWidth = Math.max.apply(null, $('.block-intro .btn').map(function () {
