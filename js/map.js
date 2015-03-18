@@ -10,6 +10,14 @@ var Map = function (mapID, schoolsSQL, catchmentsSQL, row) {
 };
 
 
+Map.onMouseOverOut = function (e) {
+  var marker = e.target;
+  if (e.type === 'mouseover') {
+    marker.openPopup();
+  } else if (e.type === 'mouseout') {
+    marker.closePopup();
+  }
+};
 
 Map.prototype.init = function () {
 

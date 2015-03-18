@@ -99,15 +99,6 @@ app.getResults = function () {
     catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code = '" + row.school_code + "'";
     var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
 
-    var onMouseOverOut = function (e) {
-      var marker = e.target;
-      if (e.type === 'mouseover') {
-        marker.openPopup();
-      } else if (e.type === 'mouseout') {
-        marker.closePopup();
-      }
-    };
-
     // Specify a Maki icon name, hex color, and size (s, m, or l).
     // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
     // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
@@ -120,8 +111,8 @@ app.getResults = function () {
       // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
       // moves near the edge between the marker and popup, making the popup flicker on and off.
       .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-      .on('mouseover', onMouseOverOut)
-      .on('mouseout', onMouseOverOut);
+      .on('mouseover', Map.onMouseOverOut)
+      .on('mouseout', Map.onMouseOverOut);
 
     if (i === 0) { scrollToMap($result); }
   };
