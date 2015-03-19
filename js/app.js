@@ -7,10 +7,10 @@ app.sql = new cartodb.SQL({ user: app.db.user });
 $(document).ready(function () {
 
   // Make school level buttons equal width
-  var maxWidth = Math.max.apply(null, $('.block-intro .btn').map(function () {
+  var maxWidth = Math.max.apply(null, $('.block-intro .btn.school-level').map(function () {
     return $(this).outerWidth(true);
   }).get());
-  $('.block-intro .btn').width(maxWidth);
+  $('.block-intro .btn.school-level').width(maxWidth);
 
   var clickSchoolType = function (e) {
     e.preventDefault();

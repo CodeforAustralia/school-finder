@@ -98,6 +98,26 @@ ul.school-details {
 	background-color: rgba(255, 255, 255, 0.9);
 }
 
-.block-intro .btn {
-	margin-top: 0.5em; /* vertically separate buttons on narrow screens */
+.block-intro .btn.school-level {
+	margin-bottom: 0.5em; /* vertically separate buttons on narrow screens */
+}
+
+.jumbotron #or {
+	text-transform: uppercase;
+	font-weight: 800;
+	margin-top: 0;
+	font-size: 21px;
+}
+.jumbotron p {
+	font-size: 18px;
+	margin-bottom: 1em;
+}
+.jumbotron p.lead {
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+.jumbotron .disclaimer {
+	margin-top: 1em;
+	margin-bottom: 0em;
+	color: rgb(153, 153, 153);
 }

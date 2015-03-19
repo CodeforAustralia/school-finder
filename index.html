@@ -47,11 +47,27 @@
 
       <div class="jumbotron block-intro">
         <h1>I'm looking for:</h1>
-        <p class="lead">Select your school type below. Information subject to change; by using this, you agree to not sue us.</p>
+        <p class="lead">Select your school type below.</p>
         <p>
-          <a class="btn btn-lg btn-success primary" href="#" role="button">Primary school</a>
-          <a class="btn btn-lg btn-success secondary" href="#" role="button">Secondary school</a>
+          <a class="btn btn-lg btn-success primary school-level" href="#" role="button">Primary school</a>
+          <a class="btn btn-lg btn-success secondary school-level" href="#" role="button">Secondary school</a>
         </p>
+        <p id="or">or</p>
+        <p>Lookup a school by name:</p>
+        <form>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="input-group input-group-lg school-name-search">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button id="button-search-names" class="btn btn-default" type="button">Search</button>
+                </span>
+              </div><!-- /input-group -->
+            </div>
+          </div><!-- /.row -->
+        </form>
+
+        <p class="disclaimer">Information subject to change; by using this, you agree to not sue us.</p>
       </div>
 
       <div class="jumbotron block-address">
