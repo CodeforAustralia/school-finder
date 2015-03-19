@@ -24,6 +24,13 @@ $(document).ready(function () {
   $(".btn.primary").click({level: 'primary'}, clickSchoolType);
   $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
+  $("#button-search-names").click(function () {
+    var name = $('.school-name-search input').val();
+    console.log("looking for...");
+    console.log(name);
+    app.findByName(name);
+  });
+
   $(".btn.search").click(function (e) {
     e.preventDefault();
 
@@ -49,6 +56,27 @@ $(document).ready(function () {
   });
 });
 
+app.findByName = function (name) {
+
+  // Find schools by name
+  var query = "SELECT b.the_geom AS catchment_geom, s.* " +
+              "FROM " + app.db.points + " AS s " +
+              "LEFT OUTER JOIN " + app.db.polygons + " AS b " +
+              "ON s.school_code = b.school_code " +
+              "WHERE s.school_name ILIKE '%" + name + "%'";
+  app.sql.execute(query)
+    .done(function (data) {
+      if (data.rows.length < 1) {
+        console.log("No luck; go fish!");
+      } else {
+        // data.rows.forEach(mapRow);
+        data.rows.forEach(function (data) {
+          console.log("found school");
+          console.log(data);
+        });
+      }
+    });
+};
 
 // update results for a specific lat/lng
 app.getResults = function () {
