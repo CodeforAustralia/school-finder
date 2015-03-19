@@ -99,15 +99,12 @@ app.getResults = function () {
 
   var scrollToMap = function ($el) {
     // scroll to first result
-    if (!alreadyScrolled) {
-      $('html, body').animate({
-        scrollTop: $el.offset().top,
-      }, 500, function () {
-        resetSearchBtn();
-      });
-    }
+    $('html, body').animate({
+      scrollTop: $el.offset().top,
+    }, 500, function () {
+      resetSearchBtn();
+    });
   };
-
 
   var mapRow = function (row, i) {
     var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
