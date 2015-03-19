@@ -34,7 +34,7 @@ Map.prototype.loadNearby = function () {
   var top = bounds.getNorth();
   app.sql.execute("SELECT s.* FROM " + app.db.points + " AS s " +
       "WHERE s.the_geom && ST_MakeEnvelope(" + left + "," + bottom + ", " + right + "," + top + ") " +
-      "AND s.level_of_schooling ~* '" + app.level + "' " +
+      "AND (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
       "AND s.school_code != " + this.row.school_code)
     .done(function (data) {
       // add schools (except this one, already added) to map
