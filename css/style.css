@@ -121,3 +121,7 @@ ul.school-details {
 	margin-bottom: 0em;
 	color: rgb(153, 153, 153);
 }
+.school-name-search {
+	margin-right: 2em;
+	margin-left: 2em;
+}
