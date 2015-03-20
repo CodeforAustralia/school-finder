@@ -63,7 +63,8 @@ app = app || {};
         app.calculateRouteDistance(fields.latitude, fields.longitude, '#result-' + i + ' .route-distance');
 
         return "About " + roundToOne(dist / 1000) + " km";
-      }
+      },
+      opportunityClass: fields.opportunity_class
     };
   };
 
