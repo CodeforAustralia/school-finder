@@ -92,6 +92,14 @@ app = app || {};
 
   app.findByName = function (name) {
 
+    // Prevent people from searching for things which will result in too many responses
+    if ($.inArray(name, ['public', 'school', 'high', 'central', 'infant', ' ']) !== -1) {
+      $('#tooManyResultsModal .results-count').text('way too many');
+      $('#tooManyResultsModal').modal();
+      resetSearchBtn();
+      return;
+    }
+
     // Find schools by name
     var query = "SELECT b.the_geom AS catchment_geom, b.shape_area, s.* " +
                 "FROM " + app.db.points + " AS s " +
@@ -104,6 +112,9 @@ app = app || {};
         if (data.rows.length < 1) {
           console.log("No luck; go fish!");
           $('#noResultsForNameModal').modal();
+        } else if (data.rows.length > 10) {
+          $('#tooManyResultsModal .results-count').text(data.rows.length);
+          $('#tooManyResultsModal').modal();
         } else {
           data.rows.forEach(mapRow);
         }
