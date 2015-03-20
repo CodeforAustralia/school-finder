@@ -55,10 +55,17 @@ app = app || {};
     var $result = $('#' + resultID);
     $result.html(html);
 
+    // school level may be unspecified (if just searching by school name)
+    // allow for that
+    var levelFilter = '';
+    if (app.level) {
+      levelFilter = "school_type ~* '" + app.level + "' AND ";
+    }
+
     schoolsSQL = "SELECT * FROM " + app.db.points + " " +
                  "WHERE school_code = '" + row.school_code + "'";
     catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE school_type ~* '" + app.level + "' AND school_code = '" + row.school_code + "'";
+                 "WHERE " + levelFilter + "school_code = '" + row.school_code + "'";
     var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
 
     // Specify a Maki icon name, hex color, and size (s, m, or l).
