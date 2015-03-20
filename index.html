@@ -173,7 +173,9 @@
           <!-- <li><span class="field-label">Distance: </span><span class="school-code">{{distanceEd}}</span></li> -->
 
         </ul>
-        <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
+        {{#if homeAddress}}
+          <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
+        {{/if}}
       </div>
 
     </script>
