@@ -80,6 +80,7 @@ app = app || {};
         resetSearchBtn();
         if (data.rows.length < 1) {
           console.log("No luck; go fish!");
+          $('#noResultsForNameModal').modal();
         } else {
           // data.rows.forEach(mapRow);
           // data.rows.forEach(function (data) {
@@ -192,7 +193,7 @@ app = app || {};
             console.log(data);
             if (data.rows.length < 1) {
               resetSearchBtn();
-              $('#noResultsModal').modal();
+              $('#noResultsForAddressModal').modal();
             }
             data.rows.forEach(mapRow);
           });
