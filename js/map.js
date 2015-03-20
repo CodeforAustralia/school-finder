@@ -108,7 +108,7 @@ Map.prototype.init = function () {
           app.lng = e.latlng.lng;
 
           // reverse geocode to grab the selected address, then get results.
-          app.reverseGeocode(app.getResults);
+          app.reverseGeocode(app.findByLocation);
         }
       });
 
@@ -122,7 +122,7 @@ Map.prototype.init = function () {
         app.lat = ll.lat;
         app.lng = ll.lng;
         // reverse geocode to grab the selected address, then get results.
-        app.reverseGeocode(app.getResults);
+        app.reverseGeocode(app.findByLocation);
       };
 
       // add a 'home' looking icon to represent the user's location

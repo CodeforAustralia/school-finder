@@ -56,7 +56,7 @@ app = app || {};
       setSearchBtnToWorking();
 
       // Geocode address then show results
-      app.geocodeAddress(app.getResults);
+      app.geocodeAddress(app.findByLocation);
 
     });
 
@@ -164,7 +164,7 @@ app = app || {};
   };
 
   // update results for a specific lat/lng
-  app.getResults = function () {
+  app.findByLocation = function () {
 
     // clean up any previous result
     $('#results-container .result').remove();
