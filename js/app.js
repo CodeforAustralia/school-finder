@@ -37,7 +37,6 @@ app = app || {};
       e.preventDefault();
 
       var $btn = $(this);
-      // $(e.target).html('Working&hellip;');
       $btn.data('default-text', $btn.html());
       $btn.data('default-bgcolor', $btn.css('background-color'));
 
