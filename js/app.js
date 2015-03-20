@@ -80,6 +80,56 @@ app = app || {};
       });
   };
 
+  var resetSearchBtn = function () {
+    // Reset Search button
+    var $btn = $('.btn.search');
+    $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
+  };
+
+  var scrollToMap = function ($el) {
+    // scroll to first result
+    $('html, body').animate({
+      scrollTop: $el.offset().top,
+    }, 500, function () {
+      resetSearchBtn();
+    });
+  };
+
+  var mapRow = function (row, i) {
+    var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
+    var resultID = "result-" + i;
+    mapID = "cartodb-map-" + i;
+    $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
+
+    context = app.School.toTemplateContext(row, i);
+    source = $("#result-template").html();
+    template = Handlebars.compile(source);
+    html = template(context);
+    var $result = $('#' + resultID);
+    $result.html(html);
+
+    schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
+    catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code = '" + row.school_code + "'";
+    var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
+
+    // Specify a Maki icon name, hex color, and size (s, m, or l).
+    // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
+    // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
+    // Color may also be set to null, which will result in a gray marker.
+    var icon = L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"});
+    L.marker([row.latitude, row.longitude], {icon: icon})
+      .addTo(map.map)
+      // note we're using a bigger offset on the popup to reduce flickering;
+      // since we hide the popup on mouseout, if the popup is too close to the marker,
+      // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+      // moves near the edge between the marker and popup, making the popup flicker on and off.
+      .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
+      .on('mouseover', Map.onMouseOverOut)
+      .on('mouseout', Map.onMouseOverOut);
+
+    if (i === 0) { scrollToMap($result); }
+  };
+
   // update results for a specific lat/lng
   app.getResults = function () {
 
@@ -90,56 +140,6 @@ app = app || {};
 
     var lat = app.lat;
     var lng = app.lng;
-
-    var resetSearchBtn = function () {
-      // Reset Search button
-      var $btn = $('.btn.search');
-      $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
-    };
-
-    var scrollToMap = function ($el) {
-      // scroll to first result
-      $('html, body').animate({
-        scrollTop: $el.offset().top,
-      }, 500, function () {
-        resetSearchBtn();
-      });
-    };
-
-    var mapRow = function (row, i) {
-      var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
-      var resultID = "result-" + i;
-      mapID = "cartodb-map-" + i;
-      $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
-
-      context = app.School.toTemplateContext(row, i);
-      source = $("#result-template").html();
-      template = Handlebars.compile(source);
-      html = template(context);
-      var $result = $('#' + resultID);
-      $result.html(html);
-
-      schoolsSQL = "SELECT * FROM " + app.db.points + " WHERE school_code = '" + row.school_code + "'";
-      catchmentsSQL = "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code = '" + row.school_code + "'";
-      var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
-
-      // Specify a Maki icon name, hex color, and size (s, m, or l).
-      // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
-      // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
-      // Color may also be set to null, which will result in a gray marker.
-      var icon = L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"});
-      L.marker([row.latitude, row.longitude], {icon: icon})
-        .addTo(map.map)
-        // note we're using a bigger offset on the popup to reduce flickering;
-        // since we hide the popup on mouseout, if the popup is too close to the marker,
-        // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-        // moves near the edge between the marker and popup, making the popup flicker on and off.
-        .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-        .on('mouseover', Map.onMouseOverOut)
-        .on('mouseout', Map.onMouseOverOut);
-
-      if (i === 0) { scrollToMap($result); }
-    };
 
 
     // Find schools whose catchment area serves a specific point
