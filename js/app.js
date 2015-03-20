@@ -101,7 +101,7 @@ app = app || {};
           console.log("No luck; go fish!");
           $('#noResultsForNameModal').modal();
         } else {
-          // data.rows.forEach(mapRow);
+          data.rows.forEach(mapRow);
           // data.rows.forEach(function (data) {
           //   console.log("found school");
           //   console.log(data);
