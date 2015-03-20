@@ -46,6 +46,10 @@ app = app || {};
       email: fields.school_email,
       homeAddress: app.address,
       distance: function () {
+        // We don't always have a user location
+        // (e.g. if searching for a specific school)
+        // That's OK, return nothing in that case.
+        if (!app.lat || !app.lng) { return; }
 
         // function roundToTwo(num) {
         //   return +(Math.round(num + "e+2")  + "e-2");
