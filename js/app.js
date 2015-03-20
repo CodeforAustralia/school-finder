@@ -6,6 +6,8 @@ app = app || {};
   app.maps = [];
   app.sql = new cartodb.SQL({ user: app.db.user });
 
+  var searchMethod; // 'address' or 'name';
+
   $(document).ready(function () {
 
     // Make school level buttons equal width
@@ -27,6 +29,12 @@ app = app || {};
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
     $("#button-search-name").click(function () {
+
+      searchMethod = 'name';
+
+      // Use Search button as status
+      setSearchBtnToWorking();
+
       var name = $('.school-name-search input').val();
       console.log("looking for...");
       console.log(name);
@@ -36,14 +44,10 @@ app = app || {};
     $("#button-search-address").click(function (e) {
       e.preventDefault();
 
-      var $btn = $(this);
-      $btn.data('default-text', $btn.html());
-      $btn.data('default-bgcolor', $btn.css('background-color'));
+      searchMethod = 'address';
 
       // Use Search button as status
-      $btn.html('Working&hellip;');
-      $btn.css('background-color', 'gray');
-
+      setSearchBtnToWorking();
 
       // Geocode address then show results
       app.geocodeAddress(app.getResults);
@@ -70,6 +74,7 @@ app = app || {};
         if (data.rows.length < 1) {
           console.log("No luck; go fish!");
         } else {
+          resetSearchBtn();
           // data.rows.forEach(mapRow);
           // data.rows.forEach(function (data) {
           //   console.log("found school");
@@ -79,10 +84,29 @@ app = app || {};
       });
   };
 
+  var getSearchBtn = function () {
+    var $btn;
+    if (searchMethod === 'name') {
+      $btn = $('#button-search-name');
+    } else if (searchMethod === 'address') {
+      $btn = $('#button-search-address');
+    }
+    return $btn;
+  };
+
+  // Reset Search button to it's default state
   var resetSearchBtn = function () {
-    // Reset Search button
-    var $btn = $('.btn.search');
+    var $btn = getSearchBtn();
     $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
+  };
+
+  // Put Search button in 'Working' (show status) state
+  var setSearchBtnToWorking = function () {
+    var $btn = getSearchBtn();
+    $btn.data('default-text', $btn.html());
+    $btn.data('default-bgcolor', $btn.css('background-color'));
+    $btn.html('Working&hellip;');
+    $btn.css('background-color', 'gray');
   };
 
   var scrollToMap = function ($result) {
