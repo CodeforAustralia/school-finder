@@ -60,9 +60,17 @@ Map.prototype.loadNearby = function () {
 
 Map.prototype.init = function () {
 
+  // center on either user's location or selected school
+  var center = null;
+  if (app.lat && app.lng) {
+    center = [app.lat, app.lng];
+  } else if (this.row.latitude && this.row.longitude) {
+    center = [this.row.latitude, this.row.longitude];
+  }
+
   // initiate leaflet map
   var map = new L.Map(this.mapID, {
-    center: [app.lat, app.lng],
+    center: center,
     zoom: 12,
     scrollWheelZoom: false,
   });
