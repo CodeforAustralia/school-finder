@@ -47,18 +47,32 @@
 
       <div class="jumbotron block-intro">
         <h1>I'm looking for:</h1>
-        <p class="lead">Select your school type below. Information subject to change; by using this, you agree to not sue us.</p>
+        <p class="lead">Select your school type below.</p>
         <p>
-          <a class="btn btn-lg btn-success primary" href="#" role="button">Primary school</a>
-          <a class="btn btn-lg btn-success secondary" href="#" role="button">Secondary school</a>
+          <a class="btn btn-lg btn-success primary school-level" href="#" role="button">Primary school</a>
+          <a class="btn btn-lg btn-success secondary school-level" href="#" role="button">Secondary school</a>
         </p>
+        <p id="or">or</p>
+        <p>Lookup a school by name:</p>
+        <div class="row school-name-search">
+          <div class="col-lg-12">
+            <div class="input-group input-group-lg">
+              <input type="text" class="form-control" placeholder="A school named...">
+              <span class="input-group-btn">
+                <button id="button-search-name" class="btn btn-default" type="button">Search</button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+        </div><!-- /.row -->
+
+        <p class="disclaimer">Information subject to change; by using this, you agree to not sue us.</p>
       </div>
 
       <div class="jumbotron block-address">
         <h1>I live at:</h1>
         <p class="lead">Provide an address so we can look up nearby schools:</p>
         <p><input id="address" type="text" class="form-control" placeholder="Home address" data-google-places=true/></p>
-        <a class="btn btn-lg btn-success search" href="#" role="button">Search</a>
+        <a id="button-search-address" class="btn btn-lg btn-success search" href="#" role="button">Search</a>
       </div>
 
       <!-- RESULT -->
@@ -72,16 +86,51 @@
     </div> <!-- /container -->
 
     <!-- Modal -->
-    <div class="modal fade" id="noResultsModal" tabindex="-1" role="dialog" aria-labelledby="noResultsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="noResultsForAddressModal" tabindex="-1" role="dialog" aria-labelledby="noResultsForAddressModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="noResultsModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
+            <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
           </div>
           <div class="modal-body">
             <p>Sorry, I don't know of any schools there. Feel free to try another search though!</p>
             <p class="more-info">You might be interested in <a href="http://www.schools.nsw.edu.au/rde/ruraledu/index.php" target="_blank">rural and distance education</a> options.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="noResultsForNameModal" tabindex="-1" role="dialog" aria-labelledby="noResultsForNameModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="noResultsForNameModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
+          </div>
+          <div class="modal-body">
+            <p>Sorry, I don't know of any schools like that. Feel free to try another search though!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="tooManyResultsModal" tabindex="-1" role="dialog" aria-labelledby="tooManyResultsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="tooManyResultsModalLabel">Yikes! There are too many results. &nbsp; ¯(°_o)/¯</h4> <!-- other emoji: ⊙﹏⊙ or ⊙▂⊙ -->
+          </div>
+          <div class="modal-body">
+            <p>I found <span class="results-count">way too many</span> results and can't display them all. Feel free to try another search though!</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
@@ -123,7 +172,9 @@
 
         <ul class="school-details">
 
-          <li class="school-distance"><span class="field-label">Distance: </span><span class="field-data">{{distance}} as the crow flies</span><span class="route-distance"></span></li>
+          {{#if distance}}
+            <li class="school-distance"><span class="field-label">Distance: </span><span class="field-data">{{distance}} as the crow flies</span><span class="route-distance"></span></li>
+          {{/if}}
           <li class="school-address"><span class="field-label">Address: </span><span class="field-data">{{address}}, {{suburb}} NSW {{postcode}}</span>
           <li class="school-phone"><span class="field-label">Phone: </span><span class="field-data">{{phone}}</span></li>
           <li class="school-email"><span class="field-label">Email: </span><span class="field-data"><a href="mailto:{{email}}">{{email}}</a></span></li>
@@ -142,7 +193,9 @@
           <!-- <li><span class="field-label">Distance: </span><span class="school-code">{{distanceEd}}</span></li> -->
 
         </ul>
-        <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
+        {{#if homeAddress}}
+          <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
+        {{/if}}
       </div>
 
     </script>

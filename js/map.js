@@ -60,9 +60,17 @@ Map.prototype.loadNearby = function () {
 
 Map.prototype.init = function () {
 
+  // center on either user's location or selected school
+  var center = null;
+  if (app.lat && app.lng) {
+    center = [app.lat, app.lng];
+  } else if (this.row.latitude && this.row.longitude) {
+    center = [this.row.latitude, this.row.longitude];
+  }
+
   // initiate leaflet map
   var map = new L.Map(this.mapID, {
-    center: [app.lat, app.lng],
+    center: center,
     zoom: 12,
     scrollWheelZoom: false,
   });
@@ -108,7 +116,7 @@ Map.prototype.init = function () {
           app.lng = e.latlng.lng;
 
           // reverse geocode to grab the selected address, then get results.
-          app.reverseGeocode(app.getResults);
+          app.reverseGeocode(app.findByLocation);
         }
       });
 
@@ -122,17 +130,19 @@ Map.prototype.init = function () {
         app.lat = ll.lat;
         app.lng = ll.lng;
         // reverse geocode to grab the selected address, then get results.
-        app.reverseGeocode(app.getResults);
+        app.reverseGeocode(app.findByLocation);
       };
 
       // add a 'home' looking icon to represent the user's location
-      var icon = L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"});
-      var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
-                    .addTo(map)
-                    .on('dragend', onMarkerDragEnd);
-      if (app.showHomeHelpPopup) {
-        marker.bindPopup("<b>Your location (draggable)</b>")
-              .openPopup();
+      if (app.lat && app.lng) {
+        var icon = L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"});
+        var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
+                      .addTo(map)
+                      .on('dragend', onMarkerDragEnd);
+        if (app.showHomeHelpPopup) {
+          marker.bindPopup("<b>Your location (draggable)</b>")
+                .openPopup();
+        }
       }
       // that.marker = marker;
 
@@ -142,7 +152,7 @@ Map.prototype.init = function () {
         app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
           that.map.fitBounds(bounds);
         });
-      } else {
+      } else if (app.lat && app.lng) {
         // zoom to fit selected school + user location
         var southWest = L.latLng(that.row.latitude, that.row.longitude);
         var northEast = L.latLng(app.lat, app.lng);
