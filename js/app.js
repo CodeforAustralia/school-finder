@@ -98,7 +98,7 @@ app = app || {};
           //   console.log(data);
           // });
         }
-      }).error(function(errors) {
+      }).error(function (errors) {
         resetSearchBtn();
         // errors contains a list of errors
         console.log("errors:" + errors);
@@ -187,7 +187,7 @@ app = app || {};
 
       if (!name) {
         console.log('nothing entered to search for, not trying!');
-        setTimeout(function () {resetSearchBtn();}, 200);
+        setTimeout(function () {resetSearchBtn(); }, 200);
       } else {
         app.findByName(name);
       }
