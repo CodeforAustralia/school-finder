@@ -89,7 +89,7 @@ app = app || {};
   app.findByName = function (name) {
 
     // Find schools by name
-    var query = "SELECT b.the_geom AS catchment_geom, s.* " +
+    var query = "SELECT b.the_geom AS catchment_geom, b.shape_area, s.* " +
                 "FROM " + app.db.points + " AS s " +
                 "LEFT OUTER JOIN " + app.db.polygons + " AS b " +
                 "ON s.school_code = b.school_code " +
