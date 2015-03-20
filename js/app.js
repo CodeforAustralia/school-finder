@@ -26,14 +26,14 @@ app = app || {};
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
-    $("#button-search-names").click(function () {
+    $("#button-search-name").click(function () {
       var name = $('.school-name-search input').val();
       console.log("looking for...");
       console.log(name);
       app.findByName(name);
     });
 
-    $(".btn.search").click(function (e) {
+    $("#button-search-address").click(function (e) {
       e.preventDefault();
 
       var $btn = $(this);
