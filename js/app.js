@@ -85,10 +85,10 @@ app = app || {};
     $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
   };
 
-  var scrollToMap = function ($el) {
+  var scrollToMap = function ($result) {
     // scroll to first result
     $('html, body').animate({
-      scrollTop: $el.offset().top,
+      scrollTop: $result.offset().top,
     }, 500, function () {
       resetSearchBtn();
     });
