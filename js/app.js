@@ -8,93 +8,6 @@ app = app || {};
 
   var searchMethod; // 'address' or 'name';
 
-  $(document).ready(function () {
-
-    // Make school level buttons equal width
-    var maxWidth = Math.max.apply(null, $('.block-intro .btn.school-level').map(function () {
-      return $(this).outerWidth(true);
-    }).get());
-    $('.block-intro .btn.school-level').width(maxWidth);
-
-    var clickSchoolType = function (e) {
-      e.preventDefault();
-      app.level = e.data.level;
-      // jump to the address search
-      $('html, body').animate({
-        scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
-      }, 500);
-    };
-
-    $(".btn.primary").click({level: 'primary'}, clickSchoolType);
-    $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
-
-    $("#button-search-name").click(function () {
-
-      searchMethod = 'name';
-
-      // Use Search button as status
-      setSearchBtnToWorking();
-
-      var name = $('.school-name-search input').val();
-      console.log("looking for...");
-      console.log(name);
-
-      if (!name) {
-        console.log('nothing entered to search for, not trying!');
-        setTimeout(function () {resetSearchBtn();}, 200);
-      } else {
-        app.findByName(name);
-      }
-    });
-
-    $("#button-search-address").click(function (e) {
-      e.preventDefault();
-
-      searchMethod = 'address';
-
-      // Use Search button as status
-      setSearchBtnToWorking();
-
-      // Geocode address then show results
-      app.geocodeAddress(app.findByLocation);
-
-    });
-
-    $("#address").keyup(function (event) {
-      if (event.keyCode === 13) {
-        $(".btn.search").click();
-      }
-    });
-  });
-
-  app.findByName = function (name) {
-
-    // Find schools by name
-    var query = "SELECT b.the_geom AS catchment_geom, s.* " +
-                "FROM " + app.db.points + " AS s " +
-                "LEFT OUTER JOIN " + app.db.polygons + " AS b " +
-                "ON s.school_code = b.school_code " +
-                "WHERE s.school_name ILIKE '%" + name + "%'";
-    app.sql.execute(query)
-      .done(function (data) {
-        resetSearchBtn();
-        if (data.rows.length < 1) {
-          console.log("No luck; go fish!");
-          $('#noResultsForNameModal').modal();
-        } else {
-          // data.rows.forEach(mapRow);
-          // data.rows.forEach(function (data) {
-          //   console.log("found school");
-          //   console.log(data);
-          // });
-        }
-      }).error(function(errors) {
-        resetSearchBtn();
-        // errors contains a list of errors
-        console.log("errors:" + errors);
-      });
-  };
-
   var getSearchBtn = function () {
     var $btn;
     if (searchMethod === 'name') {
@@ -164,6 +77,34 @@ app = app || {};
     if (i === 0) { scrollToMap($result); }
   };
 
+  app.findByName = function (name) {
+
+    // Find schools by name
+    var query = "SELECT b.the_geom AS catchment_geom, s.* " +
+                "FROM " + app.db.points + " AS s " +
+                "LEFT OUTER JOIN " + app.db.polygons + " AS b " +
+                "ON s.school_code = b.school_code " +
+                "WHERE s.school_name ILIKE '%" + name + "%'";
+    app.sql.execute(query)
+      .done(function (data) {
+        resetSearchBtn();
+        if (data.rows.length < 1) {
+          console.log("No luck; go fish!");
+          $('#noResultsForNameModal').modal();
+        } else {
+          // data.rows.forEach(mapRow);
+          // data.rows.forEach(function (data) {
+          //   console.log("found school");
+          //   console.log(data);
+          // });
+        }
+      }).error(function(errors) {
+        resetSearchBtn();
+        // errors contains a list of errors
+        console.log("errors:" + errors);
+      });
+  };
+
   // update results for a specific lat/lng
   app.findByLocation = function () {
 
@@ -212,5 +153,64 @@ app = app || {};
     app.maps.push(m);
     return m;
   };
+
+  $(document).ready(function () {
+
+    // Make school level buttons equal width
+    var maxWidth = Math.max.apply(null, $('.block-intro .btn.school-level').map(function () {
+      return $(this).outerWidth(true);
+    }).get());
+    $('.block-intro .btn.school-level').width(maxWidth);
+
+    var clickSchoolType = function (e) {
+      e.preventDefault();
+      app.level = e.data.level;
+      // jump to the address search
+      $('html, body').animate({
+        scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
+      }, 500);
+    };
+
+    $(".btn.primary").click({level: 'primary'}, clickSchoolType);
+    $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
+
+    $("#button-search-name").click(function () {
+
+      searchMethod = 'name';
+
+      // Use Search button as status
+      setSearchBtnToWorking();
+
+      var name = $('.school-name-search input').val();
+      console.log("looking for...");
+      console.log(name);
+
+      if (!name) {
+        console.log('nothing entered to search for, not trying!');
+        setTimeout(function () {resetSearchBtn();}, 200);
+      } else {
+        app.findByName(name);
+      }
+    });
+
+    $("#button-search-address").click(function (e) {
+      e.preventDefault();
+
+      searchMethod = 'address';
+
+      // Use Search button as status
+      setSearchBtnToWorking();
+
+      // Geocode address then show results
+      app.geocodeAddress(app.findByLocation);
+
+    });
+
+    $("#address").keyup(function (event) {
+      if (event.keyCode === 13) {
+        $(".btn.search").click();
+      }
+    });
+  });
 
 }());
