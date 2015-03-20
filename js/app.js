@@ -102,10 +102,6 @@ app = app || {};
           $('#noResultsForNameModal').modal();
         } else {
           data.rows.forEach(mapRow);
-          // data.rows.forEach(function (data) {
-          //   console.log("found school");
-          //   console.log(data);
-          // });
         }
       }).error(function (errors) {
         resetSearchBtn();
