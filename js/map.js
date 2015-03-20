@@ -134,13 +134,15 @@ Map.prototype.init = function () {
       };
 
       // add a 'home' looking icon to represent the user's location
-      var icon = L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"});
-      var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
-                    .addTo(map)
-                    .on('dragend', onMarkerDragEnd);
-      if (app.showHomeHelpPopup) {
-        marker.bindPopup("<b>Your location (draggable)</b>")
-              .openPopup();
+      if (app.lat && app.lng) {
+        var icon = L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"});
+        var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
+                      .addTo(map)
+                      .on('dragend', onMarkerDragEnd);
+        if (app.showHomeHelpPopup) {
+          marker.bindPopup("<b>Your location (draggable)</b>")
+                .openPopup();
+        }
       }
       // that.marker = marker;
 
@@ -150,7 +152,7 @@ Map.prototype.init = function () {
         app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
           that.map.fitBounds(bounds);
         });
-      } else {
+      } else if (app.lat && app.lng) {
         // zoom to fit selected school + user location
         var southWest = L.latLng(that.row.latitude, that.row.longitude);
         var northEast = L.latLng(app.lat, app.lng);
