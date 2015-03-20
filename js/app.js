@@ -27,6 +27,10 @@ app = app || {};
   // Put Search button in 'Working' (show status) state
   var setSearchBtnToWorking = function () {
     var $btn = getSearchBtn();
+
+    // if we're already working, our work here is done.
+    if ($btn.html().indexOf('Working') !== -1) { return; }
+
     $btn.data('default-text', $btn.html());
     $btn.data('default-bgcolor', $btn.css('background-color'));
     $btn.html('Working&hellip;');
