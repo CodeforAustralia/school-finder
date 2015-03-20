@@ -38,7 +38,13 @@ app = app || {};
       var name = $('.school-name-search input').val();
       console.log("looking for...");
       console.log(name);
-      app.findByName(name);
+
+      if (!name) {
+        console.log('nothing entered to search for, not trying!');
+        setTimeout(function () {resetSearchBtn();}, 200);
+      } else {
+        app.findByName(name);
+      }
     });
 
     $("#button-search-address").click(function (e) {
@@ -71,16 +77,20 @@ app = app || {};
                 "WHERE s.school_name ILIKE '%" + name + "%'";
     app.sql.execute(query)
       .done(function (data) {
+        resetSearchBtn();
         if (data.rows.length < 1) {
           console.log("No luck; go fish!");
         } else {
-          resetSearchBtn();
           // data.rows.forEach(mapRow);
           // data.rows.forEach(function (data) {
           //   console.log("found school");
           //   console.log(data);
           // });
         }
+      }).error(function(errors) {
+        resetSearchBtn();
+        // errors contains a list of errors
+        console.log("errors:" + errors);
       });
   };
 
