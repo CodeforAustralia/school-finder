@@ -37,6 +37,8 @@ app = app || {};
       oshc: fields.oshc, /* outside school hours care */
       distanceEd: fields.distance_education,
       intensiveEnglish: yesNo(fields.intensive_english_centre),
+      latitude: fields.latitude,
+      longitude: fields.longitude,
       established: function () {
         // try to return something human friendly if we can parse date.
         var d = new Date(fields.date_1st_teacher);
@@ -45,6 +47,8 @@ app = app || {};
       },
       email: fields.school_email,
       homeAddress: app.address,
+      homeLat: app.lat,
+      homeLng: app.lng,
       distance: function () {
         // We don't always have a user location
         // (e.g. if searching for a specific school)
