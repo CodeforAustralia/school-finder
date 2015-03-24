@@ -175,7 +175,7 @@
           {{#if distance}}
             <li class="school-distance"><span class="field-label">Distance: </span><span class="field-data">{{distance}} as the crow flies</span><span class="route-distance"></span></li>
           {{/if}}
-          <li class="school-address"><span class="field-label">Address: </span><span class="field-data">{{address}}, {{suburb}} NSW {{postcode}}</span>
+          <li class="school-address"><span class="field-label">Address: </span><span class="field-data">{{address}}, {{suburb}} NSW {{postcode}} <a href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{name}},+{{address}},+{{suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get directions</a></span>
           <li class="school-phone"><span class="field-label">Phone: </span><span class="field-data">{{phone}}</span></li>
           <li class="school-email"><span class="field-label">Email: </span><span class="field-data"><a href="mailto:{{email}}">{{email}}</a></span></li>
           <li class="school-website"><span class="field-label">Website: </span><span class="field-data"><a href="{{website}}" target="_blank">{{website}}</a></span></li>
