@@ -20,6 +20,7 @@ app = app || {};
   app.School.toTemplateContext = function (fields, i) {
     return {
       resultNumber: i,
+      description: fields.description,
       name: fields.school_name,
       address: fields.street,
       suburb: fields.town_suburb,
