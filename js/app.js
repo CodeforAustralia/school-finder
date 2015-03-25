@@ -1,4 +1,4 @@
-var app, Map, L, cartodb, google, Handlebars;
+var app, L, cartodb, google, Handlebars;
 app = app || {};
 
 (function () {
@@ -84,8 +84,8 @@ app = app || {};
       // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
       // moves near the edge between the marker and popup, making the popup flicker on and off.
       .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-      .on('mouseover', Map.onMouseOverOut)
-      .on('mouseout', Map.onMouseOverOut);
+      .on('mouseover', app.Map.onMouseOverOut)
+      .on('mouseout', app.Map.onMouseOverOut);
 
     if (i === 0) { scrollToMap($result); }
   };
@@ -169,7 +169,7 @@ app = app || {};
 
     catchmentsSQL = catchmentsSQL || "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + app.lng + "," + app.lat + "),4326)) AND school_type ~* '" + app.level + "'";
 
-    var m = new Map(id, schoolsSQL, catchmentsSQL, row);
+    var m = new app.Map(id, schoolsSQL, catchmentsSQL, row);
     app.maps.push(m);
     return m;
   };
