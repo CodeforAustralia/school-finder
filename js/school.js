@@ -2,9 +2,6 @@ var app, L;
 app = app || {};
 
 (function () {
-  String.prototype.capitalize = String.prototype.capitalize || function () {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-  };
 
   var yesNo = function (field) {
     if (field && field === 'Y') {
@@ -56,14 +53,6 @@ app = app || {};
         // That's OK, return nothing in that case.
         if (!app.lat || !app.lng) { return; }
 
-        // function roundToTwo(num) {
-        //   return +(Math.round(num + "e+2")  + "e-2");
-        // }
-
-        function roundToOne(num) {
-          return +(Math.round(num + "e+1")  + "e-1");
-        }
-
         var userLatLng = new L.latLng(app.lat, app.lng);
         var schoolLatLng = new L.latLng(fields.latitude, fields.longitude);
         var dist = userLatLng.distanceTo(schoolLatLng);
@@ -71,7 +60,7 @@ app = app || {};
         // lookup distance along road network and insert it into page when the results come back.
         app.calculateRouteDistance(fields.latitude, fields.longitude, '#result-' + i + ' .route-distance');
 
-        return "About " + roundToOne(dist / 1000) + " km";
+        return "About " + app.util.roundToOne(dist / 1000) + " km";
       },
       opportunityClass: fields.opportunity_class
     };
