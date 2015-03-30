@@ -3,11 +3,11 @@ app = app || {};
 
 (function () {
 
-  var Map = function (mapID, schoolsSQL, catchmentsSQL, row) {
+  var Map = function (mapID, schoolsSQL, catchmentsSQL, school) {
     this.mapID = mapID;
     this.schoolsSQL = schoolsSQL;
     this.catchmentsSQL = catchmentsSQL;
-    this.row = row;
+    this.school = school;
     this.init();
   };
   app.Map = Map;
@@ -38,7 +38,7 @@ app = app || {};
     app.sql.execute("SELECT s.* FROM " + app.db.points + " AS s " +
         "WHERE s.the_geom && ST_MakeEnvelope(" + left + "," + bottom + ", " + right + "," + top + ") " +
         "AND (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
-        "AND s.school_code != " + this.row.school_code)
+        "AND s.school_code != " + this.school.school_code)
       .done(function (data) {
         // add schools (except this one, already added) to map
         console.log(data);
@@ -67,8 +67,8 @@ app = app || {};
     var center = null;
     if (app.lat && app.lng) {
       center = [app.lat, app.lng];
-    } else if (this.row.latitude && this.row.longitude) {
-      center = [this.row.latitude, this.row.longitude];
+    } else if (this.school.latitude && this.school.longitude) {
+      center = [this.school.latitude, this.school.longitude];
     }
 
     // initiate leaflet map
@@ -97,7 +97,7 @@ app = app || {};
       sublayers:
         [
           { // background layer; all but selected polygon, for context
-            sql: "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code != '" + this.row.school_code + "'",
+            sql: "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code != '" + this.school.school_code + "'",
             cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
           },
           { // selected boundary
@@ -149,7 +149,7 @@ app = app || {};
         }
         // that.marker = marker;
 
-        var hasCatchment = that.row.shape_area ? true : false;
+        var hasCatchment = that.school.shape_area ? true : false;
         if (hasCatchment) {
           // zoom in to show the full catchment area
           app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
@@ -157,7 +157,7 @@ app = app || {};
           });
         } else if (app.lat && app.lng) {
           // zoom to fit selected school + user location
-          var southWest = L.latLng(that.row.latitude, that.row.longitude);
+          var southWest = L.latLng(that.school.latitude, that.school.longitude);
           var northEast = L.latLng(app.lat, app.lng);
           map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
         }
