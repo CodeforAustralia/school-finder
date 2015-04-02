@@ -139,14 +139,10 @@ app = app || {};
       if (data.rows.length < 1) {
         // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
         // currently, X nearest.
-        app.sql.execute(
-          "SELECT s.*, " +
-            "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) AS dist " +
-            "FROM " + app.db.points + " AS s " +
-            "WHERE (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
-            "AND ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) < " + app.config.maxRuralTravel +
-            "ORDER BY dist ASC LIMIT 5 "
-        ).done(function (data) {
+        var q2 = new app.Query();
+        q2.byDistance(lat, lng, 100 * 1000); /* 100 * 1000 m = 100 km */
+        q2.where("(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central')");
+        q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
             resetSearchBtn();
