@@ -137,8 +137,8 @@ app = app || {};
     q.byCatchment(lat, lng).where("b.school_type ~* '" + app.level + "'");
     q.run(function (data) {
       if (data.rows.length < 1) {
-        // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
-        // currently, X nearest.
+        // this location isn't within any catchment area.
+        // Try searching for schools within 100 KM, X nearest (where X is default from app.Query).
         var q2 = new app.Query();
         q2.byDistance(lat, lng, 100 * 1000); /* 100 * 1000 m = 100 km */
         q2.where("(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central')");
