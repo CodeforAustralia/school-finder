@@ -101,28 +101,23 @@ app = app || {};
     }
 
     // Find schools by name
-    var query = "SELECT b.the_geom AS catchment_geom, b.shape_area, s.* " +
-                "FROM " + app.db.points + " AS s " +
-                "LEFT OUTER JOIN " + app.db.polygons + " AS b " +
-                "ON s.school_code = b.school_code " +
-                "WHERE s.school_name ILIKE '%" + name + "%'";
-    app.sql.execute(query)
-      .done(function (data) {
-        resetSearchBtn();
-        if (data.rows.length < 1) {
-          console.log("No luck; go fish!");
-          $('#noResultsForNameModal').modal();
-        } else if (data.rows.length > 10) {
-          $('#tooManyResultsModal .results-count').text(data.rows.length);
-          $('#tooManyResultsModal').modal();
-        } else {
-          data.rows.forEach(mapRow);
-        }
-      }).error(function (errors) {
-        resetSearchBtn();
-        // errors contains a list of errors
-        console.log("errors:" + errors);
-      });
+    var q = new app.Query();
+    q.byName(name).run(function (data) {
+      resetSearchBtn();
+      if (data.rows.length < 1) {
+        console.log("No luck; go fish!");
+        $('#noResultsForNameModal').modal();
+      } else if (data.rows.length > 10) {
+        $('#tooManyResultsModal .results-count').text(data.rows.length);
+        $('#tooManyResultsModal').modal();
+      } else {
+        data.rows.forEach(mapRow);
+      }
+    }).error(function (errors) {
+      resetSearchBtn();
+      // errors contains a list of errors
+      console.log("errors:" + errors);
+    });
   };
 
   // update results for a specific lat/lng
