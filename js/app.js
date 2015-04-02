@@ -133,30 +133,31 @@ app = app || {};
 
 
     // Find schools whose catchment area serves a specific point
-    app.sql.execute("SELECT b.school_code, b.shape_area, s.* FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
-      .done(function (data) {
-        if (data.rows.length < 1) {
-          // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
-          // currently, X nearest.
-          app.sql.execute(
-            "SELECT s.*, " +
-              "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) AS dist " +
-              "FROM " + app.db.points + " AS s " +
-              "WHERE (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
-              "AND ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) < " + app.config.maxRuralTravel +
-              "ORDER BY dist ASC LIMIT 5 "
-          ).done(function (data) {
-            console.log(data);
-            if (data.rows.length < 1) {
-              resetSearchBtn();
-              $('#noResultsForAddressModal').modal();
-            }
-            data.rows.forEach(mapRow);
-          });
-        } else {
+    var q = new app.Query();
+    q.byCatchment(lat, lng).where("b.school_type ~* '" + app.level + "'");
+    q.run(function (data) {
+      if (data.rows.length < 1) {
+        // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
+        // currently, X nearest.
+        app.sql.execute(
+          "SELECT s.*, " +
+            "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) AS dist " +
+            "FROM " + app.db.points + " AS s " +
+            "WHERE (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
+            "AND ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) < " + app.config.maxRuralTravel +
+            "ORDER BY dist ASC LIMIT 5 "
+        ).done(function (data) {
+          console.log(data);
+          if (data.rows.length < 1) {
+            resetSearchBtn();
+            $('#noResultsForAddressModal').modal();
+          }
           data.rows.forEach(mapRow);
-        }
-      });
+        });
+      } else {
+        data.rows.forEach(mapRow);
+      }
+    });
   };
 
 
