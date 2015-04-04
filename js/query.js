@@ -168,14 +168,12 @@ app = app || {};
       // Find schools whose catchment area serves the chosen location
 
       whereCondition = "ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)) ";
-        // "AND b.school_type ~* '" + app.level + "'");
 
     } else if (this.queryBy === 'distance') {
 
       joinSubtype = "LEFT OUTER";
       otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
       whereCondition = "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) < " + this.radius;
-      //"(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
       orderBy = "ORDER BY dist ASC LIMIT 5";
 
     } else if (this.queryBy === 'bounds') {
@@ -185,8 +183,6 @@ app = app || {};
                           this.bounds.bottom + ", " +
                           this.bounds.right + "," +
                           this.bounds.top + ") ";
-                          // "AND s.school_code != " + this.row.school_code; // TODO we should just filter that out client side.
-                        // "AND (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
 
     } else { console.error("No query type specified."); return; }
 
