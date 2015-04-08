@@ -28,8 +28,9 @@ app = app || {};
       grades: fields.subtype,
       selective: fields.selective_school,
       specialty: fields.school_specialty_type,
-      preschool: yesNo(fields.preschool_ind),
-      oshc: fields.oshc, /* outside school hours care */
+      preschool: yesNo(fields.preschool),
+      oshc: yesNo(fields.oshc), /* outside school hours care */
+      oshc_provider: fields.oshc_provider,
       distanceEd: fields.distance_education,
       intensiveEnglish: yesNo(fields.intensive_english_centre),
       latitude: fields.latitude,
