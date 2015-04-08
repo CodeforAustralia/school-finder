@@ -30,6 +30,7 @@ app = app || {};
       specialty: fields.school_specialty_type,
       preschool: yesNo(fields.preschool),
       oshc: yesNo(fields.oshc), /* outside school hours care */
+      oshc_provider: fields.oshc_provider,
       distanceEd: fields.distance_education,
       intensiveEnglish: yesNo(fields.intensive_english_centre),
       latitude: fields.latitude,
