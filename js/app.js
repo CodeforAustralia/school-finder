@@ -1,4 +1,4 @@
-var app, Map, L, cartodb, google, Handlebars;
+var app, L, cartodb, google, Handlebars;
 app = app || {};
 
 (function () {
@@ -84,8 +84,8 @@ app = app || {};
       // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
       // moves near the edge between the marker and popup, making the popup flicker on and off.
       .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-      .on('mouseover', Map.onMouseOverOut)
-      .on('mouseout', Map.onMouseOverOut);
+      .on('mouseover', app.Map.onMouseOverOut)
+      .on('mouseout', app.Map.onMouseOverOut);
 
     if (i === 0) { scrollToMap($result); }
   };
@@ -101,28 +101,23 @@ app = app || {};
     }
 
     // Find schools by name
-    var query = "SELECT b.the_geom AS catchment_geom, b.shape_area, s.* " +
-                "FROM " + app.db.points + " AS s " +
-                "LEFT OUTER JOIN " + app.db.polygons + " AS b " +
-                "ON s.school_code = b.school_code " +
-                "WHERE s.school_name ILIKE '%" + name + "%'";
-    app.sql.execute(query)
-      .done(function (data) {
-        resetSearchBtn();
-        if (data.rows.length < 1) {
-          console.log("No luck; go fish!");
-          $('#noResultsForNameModal').modal();
-        } else if (data.rows.length > 10) {
-          $('#tooManyResultsModal .results-count').text(data.rows.length);
-          $('#tooManyResultsModal').modal();
-        } else {
-          data.rows.forEach(mapRow);
-        }
-      }).error(function (errors) {
-        resetSearchBtn();
-        // errors contains a list of errors
-        console.log("errors:" + errors);
-      });
+    var q = new app.Query();
+    q.byName(name).run(function (data) {
+      resetSearchBtn();
+      if (data.rows.length < 1) {
+        console.log("No luck; go fish!");
+        $('#noResultsForNameModal').modal();
+      } else if (data.rows.length > 10) {
+        $('#tooManyResultsModal .results-count').text(data.rows.length);
+        $('#tooManyResultsModal').modal();
+      } else {
+        data.rows.forEach(mapRow);
+      }
+    }).error(function (errors) {
+      resetSearchBtn();
+      // errors contains a list of errors
+      console.log("errors:" + errors);
+    });
   };
 
   // update results for a specific lat/lng
@@ -138,30 +133,27 @@ app = app || {};
 
 
     // Find schools whose catchment area serves a specific point
-    app.sql.execute("SELECT b.school_code, b.shape_area, s.* FROM " + app.db.polygons + " AS b JOIN " + app.db.points + " AS s ON b.school_code = s.school_code WHERE ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)) AND b.school_type ~* '" + app.level + "'")
-      .done(function (data) {
-        if (data.rows.length < 1) {
-          // this location isn't within any catchment area. Try searching for schools within 100 KM (TODO)
-          // currently, X nearest.
-          app.sql.execute(
-            "SELECT s.*, " +
-              "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) AS dist " +
-              "FROM " + app.db.points + " AS s " +
-              "WHERE (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
-              "AND ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + lng + "," + lat + "),4326)::geography) < " + app.config.maxRuralTravel +
-              "ORDER BY dist ASC LIMIT 5 "
-          ).done(function (data) {
-            console.log(data);
-            if (data.rows.length < 1) {
-              resetSearchBtn();
-              $('#noResultsForAddressModal').modal();
-            }
-            data.rows.forEach(mapRow);
-          });
-        } else {
+    var q = new app.Query();
+    q.byCatchment(lat, lng).where("b.school_type ~* '" + app.level + "'");
+    q.run(function (data) {
+      if (data.rows.length < 1) {
+        // this location isn't within any catchment area.
+        // Try searching for schools within 100 KM, X nearest (where X is default from app.Query).
+        var q2 = new app.Query();
+        q2.byDistance(lat, lng, 100 * 1000); /* 100 * 1000 m = 100 km */
+        q2.where("(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central')");
+        q2.run(function (data) {
+          console.log(data);
+          if (data.rows.length < 1) {
+            resetSearchBtn();
+            $('#noResultsForAddressModal').modal();
+          }
           data.rows.forEach(mapRow);
-        }
-      });
+        });
+      } else {
+        data.rows.forEach(mapRow);
+      }
+    });
   };
 
 
@@ -169,7 +161,7 @@ app = app || {};
 
     catchmentsSQL = catchmentsSQL || "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + app.lng + "," + app.lat + "),4326)) AND school_type ~* '" + app.level + "'";
 
-    var m = new Map(id, schoolsSQL, catchmentsSQL, row);
+    var m = new app.Map(id, schoolsSQL, catchmentsSQL, row);
     app.maps.push(m);
     return m;
   };
