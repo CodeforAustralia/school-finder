@@ -45,9 +45,9 @@ app = app || {};
     q.run(function (data) {
       // add schools (except this one, already added) to map
       console.log(data);
+      var markers = [];
       data.rows.forEach(function (row) {
-        L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
-          .addTo(that.map)
+        var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
           // note we're using a bigger offset on the popup to reduce flickering;
           // since we hide the popup on mouseout, if the popup is too close to the marker,
           // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
@@ -55,7 +55,14 @@ app = app || {};
           .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
           .on('mouseover', Map.onMouseOverOut)
           .on('mouseout', Map.onMouseOverOut);
+        markers.push(marker);
       });
+      if (that.nearbyMarkersGroup) {
+        that.map.removeLayer(that.nearbyMarkersGroup);
+      }
+      that.nearbyMarkersGroup = new L.featureGroup(markers);
+      that.map.addLayer(that.nearbyMarkersGroup);
+
     });
   };
 
