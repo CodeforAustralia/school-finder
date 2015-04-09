@@ -109,7 +109,7 @@ app = app || {};
       var values;
       if (typeof value === 'string') {
         values = "'" + value + "'";
-      } else {
+      } else { // it's an array
         values = _.map(value, function (item) { return "'" + item + "'"; }).join(',');
       }
 
