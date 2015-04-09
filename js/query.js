@@ -33,9 +33,9 @@
  * Then set some filters for the different use cases. Note you can either
  * call addFilter() multiple times or just set multiple filters at once with addFilters().
  *
- * 1) TODO - first need to fix oshc double negative filter (#46)
+ * 1)
  *    q.addFilter('level_of_schooling', 'Primary School')
-       .byDistance(-33.882253, 151.21522, 9500).addFilter('oshc')...
+       .byDistance(-33.882253, 151.21522, 9500).addFilter('oshc', 'true')...
  *
  * 2)
  *    var bounds = { left: 151.14192008972165,
@@ -43,7 +43,7 @@
  *                   right: 151.24826431274414,
  *                   top: -33.87312358690302 };
  *    q.addFilter('level_of_schooling', 'Primary School')
- *     .byBounds(bounds).addFilter('opportunity_class', 'Yes')
+ *     .byBounds(bounds).addFilter('opportunity_class', 'true')
  *
  * 3)
  *    q.addFilter('level_of_schooling', 'Secondary School')
