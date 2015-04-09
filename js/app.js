@@ -129,6 +129,10 @@ app = app || {};
 
     // Find schools whose catchment area serves a specific point
     var q = new app.Query();
+    // Sometimes a single school will have multiple catchment areas,
+    // one for primary level, one for secondary level.
+    // See: SELECT * FROM dec_schools as s WHERE (SELECT count(*) from catchments WHERE school_code = s.school_code) > 1
+    // So we have to check school_type on the *catchment*, not level_of_schooling on the *school*.
     q.byCatchment(lat, lng).where("b.school_type ~* '" + app.level + "'");
     q.run(function (data) {
       if (data.rows.length < 1) {
