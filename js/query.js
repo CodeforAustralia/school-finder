@@ -151,6 +151,7 @@ app = app || {};
   // bounds should be an object with left, right, top, bottom properties as
   // required by http://postgis.net/docs/ST_MakeEnvelope.html
   Query.prototype.byBounds = function (bounds) {
+    this.queryBy = 'bounds';
     this.bounds = bounds;
   };
 
