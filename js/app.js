@@ -72,12 +72,7 @@ app = app || {};
                  "WHERE " + levelFilter + "school_code = '" + row.school_code + "'";
     var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
 
-    // Specify a Maki icon name, hex color, and size (s, m, or l).
-    // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
-    // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
-    // Color may also be set to null, which will result in a gray marker.
-    var icon = L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"});
-    L.marker([row.latitude, row.longitude], {icon: icon})
+    L.marker([row.latitude, row.longitude], {icon: app.geo.resultIcon})
       .addTo(map.map)
       // note we're using a bigger offset on the popup to reduce flickering;
       // since we hide the popup on mouseout, if the popup is too close to the marker,

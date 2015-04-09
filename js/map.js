@@ -43,12 +43,7 @@ app = app || {};
         // add schools (except this one, already added) to map
         console.log(data);
         data.rows.forEach(function (row) {
-          // Specify a Maki icon name, hex color, and size (s, m, or l).
-          // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
-          // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
-          // Color may also be set to null, which will result in a gray marker.
-          var icon = L.MakiMarkers.icon({icon: "school", opacity: 0.5, color: "#F5B4CC", size: "m"});
-          L.marker([row.latitude, row.longitude], {icon: icon})
+          L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
             .addTo(that.map)
             // note we're using a bigger offset on the popup to reduce flickering;
             // since we hide the popup on mouseout, if the popup is too close to the marker,
@@ -138,8 +133,7 @@ app = app || {};
 
         // add a 'home' looking icon to represent the user's location
         if (app.lat && app.lng) {
-          var icon = L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"});
-          var marker = L.marker([app.lat, app.lng], {icon: icon, draggable: true})
+          var marker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon, draggable: true})
                         .addTo(map)
                         .on('dragend', onMarkerDragEnd);
           if (app.showHomeHelpPopup) {
