@@ -27,33 +27,36 @@ app = app || {};
     var that = this;
 
     // get current view's bounding box
-    var bounds = this.map.getBounds();
+    var mapBounds = this.map.getBounds();
 
     // query for nearby schools
     // http://postgis.refractions.net/docs/ST_MakeEnvelope.html ST_MakeEnvelope(left, bottom, right, top, [srid]) SRID defaults to 4326
-    var left = bounds.getWest();
-    var bottom = bounds.getSouth();
-    var right = bounds.getEast();
-    var top = bounds.getNorth();
-    app.sql.execute("SELECT s.* FROM " + app.db.points + " AS s " +
-        "WHERE s.the_geom && ST_MakeEnvelope(" + left + "," + bottom + ", " + right + "," + top + ") " +
-        "AND (s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central') " +
-        "AND s.school_code != " + this.school.school_code)
-      .done(function (data) {
-        // add schools (except this one, already added) to map
-        console.log(data);
-        data.rows.forEach(function (row) {
-          L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
-            .addTo(that.map)
-            // note we're using a bigger offset on the popup to reduce flickering;
-            // since we hide the popup on mouseout, if the popup is too close to the marker,
-            // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-            // moves near the edge between the marker and popup, making the popup flicker on and off.
-            .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-            .on('mouseover', Map.onMouseOverOut)
-            .on('mouseout', Map.onMouseOverOut);
-        });
+    var bounds = {
+      left: mapBounds.getWest(),
+      bottom: mapBounds.getSouth(),
+      right: mapBounds.getEast(),
+      top: mapBounds.getNorth()
+    };
+
+    var q = new app.Query();
+    q.where("(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central')")
+      .where("s.school_code != " + this.school.school_code)
+      .byBounds(bounds);
+    q.run(function (data) {
+      // add schools (except this one, already added) to map
+      console.log(data);
+      data.rows.forEach(function (row) {
+        L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
+          .addTo(that.map)
+          // note we're using a bigger offset on the popup to reduce flickering;
+          // since we hide the popup on mouseout, if the popup is too close to the marker,
+          // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+          // moves near the edge between the marker and popup, making the popup flicker on and off.
+          .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
+          .on('mouseover', Map.onMouseOverOut)
+          .on('mouseout', Map.onMouseOverOut);
       });
+    });
   };
 
   Map.prototype.init = function () {
