@@ -127,6 +127,19 @@ app = app || {};
     return this;
   };
 
+  // set type to something like 'primary, secondary, central, infants'
+  // if you are looking for a primary school, secondary, or infants school,
+  // then a central school will provide the same thing so this adds that in.
+  // if you don't want that functionality, then just use q.where('type = whatever')
+  Query.prototype.setSchoolType = function (type) {
+    if (type === 'infants' || type === 'primary' || type === 'secondary') {
+      this.where("(s.type = '" + app.level + "' OR s.type = 'central')");
+    } else {
+      this.where("(s.type = '" + app.level + "')");
+    }
+    return this;
+  };
+
   Query.prototype.byCatchment = function (lat, lng) {
     this.queryBy = 'catchment';
     this.lat = lat;

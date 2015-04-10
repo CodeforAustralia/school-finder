@@ -140,7 +140,7 @@ app = app || {};
         // Try searching for schools within 100 KM, X nearest (where X is default from app.Query).
         var q2 = new app.Query();
         q2.byDistance(lat, lng, 100 * 1000); /* 100 * 1000 m = 100 km */
-        q2.where("(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central')");
+        q2.setSchoolType(app.level);
         q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
