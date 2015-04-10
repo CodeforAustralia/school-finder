@@ -39,7 +39,10 @@ app = app || {};
     };
 
     var q = new app.Query();
-    q.where("(s.level_of_schooling ~* '" + app.level + "' OR s.level_of_schooling ~* 'central')")
+    // If app.level is unspecified (when someone just first searched for a school by name),
+    // then for now just show schools of that type (instead of all schools).
+    // Later we may want to let users control which markers are visible (TODO)
+    q.setSchoolType(app.level || this.school.type)
       .where("s.school_code != " + this.school.school_code)
       .byBounds(bounds);
     q.run(function (data) {
