@@ -153,6 +153,7 @@ app = app || {};
   Query.prototype.byBounds = function (bounds) {
     this.queryBy = 'bounds';
     this.bounds = bounds;
+    return this;
   };
 
   Query.prototype.run = function (callback) {
