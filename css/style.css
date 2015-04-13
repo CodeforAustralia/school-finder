@@ -113,6 +113,12 @@ ul.school-details {
 	padding-left: 15px;
 }
 
+.school-name .icon {
+	height: 65px;
+	top: 12px;
+	position: relative;
+	margin-right: 5px;}
+
 .school-name a {
 	color: white;
 }
