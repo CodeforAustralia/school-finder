@@ -70,9 +70,9 @@ function callBacker(selector) {
       // outputDiv.innerHTML = '';
        // origins[i] + ' to ' + destinations[j]
       var results = response.rows[0].elements;
-      outputDiv.text(', or via roads: '
-        + results[0].distance.text + ' in '
-        + results[0].duration.text + ' cycling');
+      outputDiv.html(', or via roads: '
+        + results[0].distance.text.split(' ').join('&nbsp;') + ' in '
+        + results[0].duration.text.split(' ').join('&nbsp;') + ' cycling');
     }
   };
 
