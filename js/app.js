@@ -21,7 +21,8 @@ app = app || {};
   // Reset Search button to it's default state
   var resetSearchBtn = function () {
     var $btn = getSearchBtn();
-    $btn.text($btn.data('default-text')).css('background-color', $btn.data('default-bgcolor'));
+    $btn.text($btn.data('default-text'));
+    $btn.removeClass("working");
   };
 
   // Put Search button in 'Working' (show status) state
@@ -32,9 +33,8 @@ app = app || {};
     if ($btn.html().indexOf('Working') !== -1) { return; }
 
     $btn.data('default-text', $btn.html());
-    $btn.data('default-bgcolor', $btn.css('background-color'));
     $btn.html('Working&hellip;');
-    $btn.css('background-color', 'gray');
+    $btn.addClass("working");
   };
 
   var scrollToMap = function ($result) {
