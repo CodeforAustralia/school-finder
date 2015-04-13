@@ -221,7 +221,7 @@ app = app || {};
 
     $("#address").keyup(function (event) {
       if (event.keyCode === 13) {
-        $(".btn.search").click();
+        $("#button-search-address").click();
       }
     });
 
