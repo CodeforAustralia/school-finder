@@ -3,10 +3,18 @@ body { background-color: #39acc9; color: #3e3e3e; }
 .header h3 {color: #f7f6f6;}
 
 .container .jumbotron { background-color: #f7f6f6; border-radius: 0px;}
-.btn-success { background-color: #d72d6c; border: none; border-radius: 0px;}
-#button-search-name, #button-search-address {
+.btn {
+	border: none;
+	border-radius: 0px;
 	background-color: #d72d6c;
 	color: white;
+}
+.btn:active, .btn:focus, .btn:hover {
+	background-color: #39acc9;
+	color: white;
+}
+.btn.working {
+	background-color: grey;
 }
 .footer p {color: #f7f6f6;}
 
@@ -21,10 +29,21 @@ body { background-color: #39acc9; color: #3e3e3e; }
 	margin-bottom: 100px;
 }
 
+@media (min-width: 980px) { /* desktop and up */
+	.school-details-container {
+		margin-right: 0px;
+		margin-left: 0px;
+	}
+	.school-email a, .school-website a {
+		font-size: small; /* so it fits in one line */
+	}
+}
+
 .school-info {
 	padding-bottom: 20px;
 	border-bottom: 6px solid rgb(62, 62, 62);
-	padding: 1em;
+	padding-right: 1.5em;
+	padding-left: 1.5em;
 	background: rgb(247, 246, 246);
 }
 
@@ -36,29 +55,68 @@ body { background-color: #39acc9; color: #3e3e3e; }
 	font-weight: bold;
 }
 
+.school-description .field-label {
+	font-size: 25px;
+	color: #d72d6c;
+}
+
 ul.school-details {
 	list-style: none;
+	background: #7e7d7d;
+	color: white;
+	margin-top: 35px;
+	padding: 1em;
+	border-radius: 15px;
+	height: 100%;
+}
+
+.school-details  a {
+	color: white;
+	/* text-decoration: underline; */
+	border-bottom: 1px dotted rgb(225, 225, 225);
+}
+.school-details  a:hover {
+	/*color: #deeef2;*/
+	border-bottom: 1px solid white;
+	text-decoration: none;
 }
 
 .school-details .school-website {
 	/* keeps contact info grouped together */
-	margin-bottom: 1em;
+	margin-bottom: 1.5em;
+}
+
+.school-details .school-address a {
+	margin-left: 0.5em;
+}
+
+.school-details li {
+	line-height: 1.75em;
+}
+
+.school-details .fa {
+	margin-right: 0.5em;
+	color: #7e7d7d;
+}
+.school-details .fa-inverse {
+	color: white;
 }
 
 .school-name {
-	/*font-size: 30px;*/
+	font-size: 40px;
 	font-weight: bold;
-	/* border-bottom: 5px solid black; */
-	text-decoration: underline;
-	font-size: 63px;
-	line-height: 70px;
-	margin-top: 0.125em;
-	margin-bottom: .5em;
+	color: #d72d6c;
+	text-decoration: none;
+	padding-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding-left: 15px;
 }
 
-.school-name a {
-	color: white;
-}
+.school-name .icon {
+	height: 65px;
+	top: 12px;
+	position: relative;
+	margin-right: 5px;}
 
 /* End results */
 
@@ -105,7 +163,16 @@ ul.school-details {
 
 .block-intro .btn.school-level {
 	margin-bottom: 0.5em; /* vertically separate buttons on narrow screens */
+	width: 100%;
 }
+@media (min-width: 570px) { /* breaks at < 570px */
+	.block-intro .btn.school-level {
+		width: 42%; /* Make school level buttons equal width */
+	}
+}
+
+
+
 
 .jumbotron #or {
 	text-transform: uppercase;

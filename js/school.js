@@ -60,7 +60,7 @@ app = app || {};
 
         return "About " + app.util.roundToOne(dist / 1000) + " km";
       },
-      opportunityClass: fields.opportunity_class
+      opportunityClass: yesNo(fields.opportunity_class)
     };
   };
 

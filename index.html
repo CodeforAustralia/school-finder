@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="css/jumbotron-narrow.css" />
 
     <link rel="stylesheet" href="css/style.css" />
+	<!--font-awesome icons  -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!--[if lte IE 8]>
       <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
     <![endif]-->
@@ -50,8 +52,8 @@
         <h1>I'm looking for:</h1>
         <p class="lead">Select your school type below.</p>
         <p>
-          <a class="btn btn-lg btn-success primary school-level" href="#" role="button">Primary school</a>
-          <a class="btn btn-lg btn-success secondary school-level" href="#" role="button">Secondary school</a>
+          <a class="btn primary school-level" href="#" role="button">Primary school</a>
+          <a class="btn secondary school-level" href="#" role="button">Secondary school</a>
         </p>
         <p id="or">or</p>
         <p>Lookup a school by name:</p>
@@ -60,7 +62,7 @@
             <div class="input-group input-group-lg">
               <input id="schoolnameInput" type="text" class="form-control" placeholder="A school named...">
               <span class="input-group-btn">
-                <button id="button-search-name" class="btn btn-default" type="button">Search</button>
+                <button id="button-search-name" class="btn search" type="button">Search</button>
               </span>
             </div><!-- /input-group -->
           </div>
@@ -73,7 +75,7 @@
         <h1>I live at:</h1>
         <p class="lead">Provide your location so we can look up nearby schools:</p>
         <p><input id="address" type="text" class="form-control" placeholder="Home address, suburb or postcode" data-google-places=true/></p>
-        <a id="button-search-address" class="btn btn-lg btn-success search" href="#" role="button">Search</a>
+        <a id="button-search-address" class="btn search" href="#" role="button">Search</a>
       </div>
 
       <!-- RESULT -->
@@ -99,7 +101,7 @@
             <p class="more-info">You might be interested in <a href="http://www.schools.nsw.edu.au/rde/ruraledu/index.php" target="_blank">rural and distance education</a> options.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn" data-dismiss="modal">OK</button>
           </div>
         </div>
       </div>
@@ -116,7 +118,7 @@
             <p>Sorry, I don't know of any schools like that. Feel free to try another search though!</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn" data-dismiss="modal">OK</button>
           </div>
         </div>
       </div>
@@ -134,7 +136,7 @@
             <p>I found <span class="results-count">way too many</span> results and can't display them all. Feel free to try another search though!</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            <button type="button" class="btn" data-dismiss="modal">OK</button>
           </div>
         </div>
       </div>
@@ -172,34 +174,64 @@
       </div>
 
       <div class="school-info">
-        <div class="school-name">{{name}}
+
+        <div class="school-name">
+          <img class="icon" src="https://api.tiles.mapbox.com/v3/marker/pin-m-school+d72d6c@2x.png">
+          {{name}}
         </div>
 
-        <ul class="school-details">
+        <div class="school-details-container row">
 
-          <li class="school-description"><span class="field-label">About: </span><span class="field-data">{{description}}</span></li>
-          {{#if distance}}
-            <li class="school-distance"><span class="field-label">Distance: </span><span class="field-data">{{distance}} as the crow flies</span><span class="route-distance"></span></li>
-          {{/if}}
-          <li class="school-address"><span class="field-label">Address: </span><span class="field-data">{{address}}, {{suburb}} NSW {{postcode}} <a href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{name}},+{{address}},+{{suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get directions</a></span>
-          <li class="school-phone"><span class="field-label">Phone: </span><span class="field-data">{{phone}}</span></li>
-          <li class="school-email"><span class="field-label">Email: </span><span class="field-data"><a href="mailto:{{email}}">{{email}}</a></span></li>
-          <li class="school-website"><span class="field-label">Website: </span><span class="field-data"><a href="{{website}}" target="_blank">{{website}}</a></span></li>
+          <div class="school-description col-md-6">
+            <p class="field-label">About: </p><p class="field-data">{{description}}</p></li>
+          </div>
 
-          <li class="school-level"><span class="field-label">Level: </span><span class="field-data">{{level}}, {{grades}}</span>
-          <li class="school-specialty"><span class="field-label">Specialty: </span><span class="field-data">{{specialty}}</span></li>
-          <li class="school-established"><span class="field-label">Established: </span><span class="field-data">{{established}}</span></li>
-          <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{preschool}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
-          <li class="school-oshc"><span class="field-label">Outside school hours care (OSHC): </span><span class="field-data">{{oshc}}{{#if oshc}}: {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) --> </li>
-          <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{intensiveEnglish}}</span></li>
-          <li class="school-more-info"><span class="field-label">Need more info?</span> <span class="field-data"><a href="https://www.google.com.au/search?q={{name}}+nsw" target="_blank">Try Google</a></li>
-          <li class="school-enrollment"><span class="field-label">Enrolment trends: </span><span class="field-data"><a href="http://172.31.64.43:8000/views/NSW_NSSC_Dashboard/DashboardNSSCEnrolments?Deewr%20Id=4921" target="_blank">See CESE Data</a></span></li>
-          <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{opportunityClass}}</span></li>
-          <li class="school-selective"><span class="field-label">Selective: </span><span class="field-data">{{selective}}</span></li>
-          <!-- <li><span class="field-label">School Code: </span><span class="school-code">{{code}}</span></li> -->
-          <!-- <li><span class="field-label">Distance: </span><span class="school-code">{{distanceEd}}</span></li> -->
+          <ul class="school-details col-md-6">
 
-        </ul>
+              {{#if distance}}
+                <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data">{{distance}} as the crow flies</span><span class="route-distance"></span></p></li>
+              {{/if}}
+
+              <li class="school-address"><span class="field-label">Contact: </span><br><span class="field-data"><abbr title="{{address}}, {{suburb}} NSW {{postcode}}">{{address}}, {{suburb}}</abbr> <a href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{name}},+{{address}},+{{suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
+              <li class="school-phone">
+                <span class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                  <i class="fa fa-phone fa-stack-1x"></i>
+                </span>
+                <span class="sr-only">Phone: </span><span class="field-data">{{phone}}</span>
+              </li>
+              <li class="school-email">
+                <span class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                  <i class="fa fa-envelope fa-stack-1x"></i>
+                </span>
+                <span class="sr-only">Email: </span><span class="field-data"><a href="mailto:{{email}}">{{email}}</a></span>
+              </li>
+              <li class="school-website">
+                <span class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                  <i class="fa fa-globe fa-stack-1x"></i>
+                </span>
+                <span class="sr-only">Website: </span><span class="field-data"><a href="{{website}}" target="_blank">{{website}}</a></span>
+              </li>
+              <li class="school-level"><span class="field-label">Level: </span><span class="field-data">{{level}}, {{grades}}</span>
+              <li class="school-specialty"><span class="field-label">Specialty: </span><span class="field-data">{{specialty}}</span></li>
+              <li class="school-established"><span class="field-label">Established: </span><span class="field-data">{{established}}</span></li>
+
+              <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{preschool}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
+
+              <li class="school-oshc"><span class="field-label">Outside school hours care (OSHC): </span><br><span class="field-data">{{oshc}}{{#if oshc}}: {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) --> </li>
+
+
+              <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{intensiveEnglish}}</span></li>
+              <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{opportunityClass}}</span></li>
+              <li class="school-selective"><span class="field-label">Selective: </span><span class="field-data">{{selective}}</span></li>
+              <!-- <li><span class="field-label">School Code: </span><span class="school-code">{{code}}</span></li> -->
+              <!-- <li><span class="field-label">Distance: </span><span class="school-code">{{distanceEd}}</span></li> -->
+              <li class="school-enrollment"><span class="field-label">Enrolment trends: </span><span class="field-data"><a href="http://172.31.64.43:8000/views/NSW_NSSC_Dashboard/DashboardNSSCEnrolments?Deewr%20Id=4921" target="_blank">See CESE Data</a></span></li>
+              <li class="school-more-info"><span class="field-label">Need more info?</span> <span class="field-data"><a href="https://www.google.com.au/search?q={{name}}+nsw" target="_blank">Try Google</a></li>
+          </ul>
+        </div>
         {{#if homeAddress}}
           <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
         {{/if}}
