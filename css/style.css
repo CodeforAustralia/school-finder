@@ -3,9 +3,14 @@ body { background-color: #39acc9; color: #3e3e3e; }
 .header h3 {color: #f7f6f6;}
 
 .container .jumbotron { background-color: #f7f6f6; border-radius: 0px;}
-.btn-success { background-color: #d72d6c; border: none; border-radius: 0px;}
-#button-search-name, #button-search-address {
+.btn {
+	border: none;
+	border-radius: 0px;
 	background-color: #d72d6c;
+	color: white;
+}
+.btn:active, .btn:focus, .btn:hover {
+	background-color: #39acc9;
 	color: white;
 }
 .footer p {color: #f7f6f6;}
