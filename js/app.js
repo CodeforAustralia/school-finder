@@ -177,6 +177,7 @@ app = app || {};
       e.preventDefault();
       app.level = e.data.level;
       // jump to the address search
+      $(".block-address").show();
       $('html, body').animate({
         scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
       }, 500);
@@ -200,6 +201,7 @@ app = app || {};
         console.log('nothing entered to search for, not trying!');
         setTimeout(function () {resetSearchBtn(); }, 200);
       } else {
+        $('.block-address').hide();
         app.findByName(name);
       }
     });
