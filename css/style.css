@@ -39,7 +39,6 @@ body { background-color: #39acc9; color: #3e3e3e; }
 	}
 }
 
-
 .school-info {
 	padding-bottom: 20px;
 	border-bottom: 6px solid rgb(62, 62, 62);
@@ -164,7 +163,16 @@ ul.school-details {
 
 .block-intro .btn.school-level {
 	margin-bottom: 0.5em; /* vertically separate buttons on narrow screens */
+	width: 100%;
 }
+@media (min-width: 570px) { /* breaks at < 570px */
+	.block-intro .btn.school-level {
+		width: 42%; /* Make school level buttons equal width */
+	}
+}
+
+
+
 
 .jumbotron #or {
 	text-transform: uppercase;

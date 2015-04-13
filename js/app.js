@@ -167,12 +167,6 @@ app = app || {};
 
   $(document).ready(function () {
 
-    // Make school level buttons equal width
-    var maxWidth = Math.max.apply(null, $('.block-intro .btn.school-level').map(function () {
-      return $(this).outerWidth(true);
-    }).get());
-    $('.block-intro .btn.school-level').width(maxWidth);
-
     var clickSchoolType = function (e) {
       e.preventDefault();
       app.level = e.data.level;
