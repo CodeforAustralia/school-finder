@@ -208,6 +208,12 @@ app = app || {};
       // Use Search button as status
       setSearchBtnToWorking();
 
+      if (!$('#address').val()) {
+        console.log('nothing entered to search for, not trying!');
+        setTimeout(function () {resetSearchBtn(); }, 200);
+        return;
+      }
+
       // Geocode address then show results
       app.geocodeAddress(app.findByLocation);
 
