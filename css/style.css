@@ -16,7 +16,39 @@ body { background-color: #39acc9; color: #3e3e3e; }
 .btn.working {
 	background-color: grey;
 }
+.footer { margin-bottom: 1.5em; }
 .footer p {color: #f7f6f6;}
+.footer a {color: #f7f6f6; font-weight: bold;}
+.footer a:hover {  text-decoration: none; border-bottom: 1px solid; }
+.footer .fa-inverse {color:  #76BFD1;}
+.footer .fa-stack {color: #f7f6f6;}
+.footer .icon {
+	position: relative;
+	float: right;
+	top: -5px;
+	margin-left: .3em;
+}
+.footer a.icon:hover {
+	border-bottom: none;
+}
+
+a .fa {
+	-webkit-transition: all .33s ease;
+	-moz-transition: all .33s ease;
+	-ms-transition: all .33s ease;
+	-o-transition: all .33s ease;
+	transition: all .33s ease;
+}
+
+a:hover .fa-circle {
+	color: #f7f6f6;
+}
+a:hover .fa-stack-1x {
+	color: #39ACC9;
+	font-size: 1.1em; // make the icons pop out a bit
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
 
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
