@@ -25,7 +25,7 @@ app = app || {};
       postcode: fields.postcode,
       code: fields.school_code,
       phone: fields.phone,
-      website: fields.website,
+      website: fields.website.replace("http://",""),
       level: function () {
         return app.level ? app.level.capitalize() : 'School';
       },
