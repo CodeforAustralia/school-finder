@@ -3,10 +3,6 @@ app = app || {};
 
 (function () {
 
-  var yesNo = function (field) {
-    return field ? "Yes" : "No";
-  };
-
   Handlebars.registerHelper('yesNo', function (field) {
     return field ? "Yes" : "No";
   });
@@ -32,11 +28,11 @@ app = app || {};
       grades: fields.subtype,
       selective_school: fields.selective_school,
       school_specialty_type: fields.school_specialty_type,
-      preschool: yesNo(fields.preschool),
+      preschool: fields.preschool,
       oshc: fields.oshc, /* outside school hours care */
       oshc_provider: fields.oshc_provider,
       distance_education: fields.distance_education,
-      intensive_english_centre: yesNo(fields.intensive_english_centre),
+      intensive_english_centre: fields.intensive_english_centre,
       latitude: fields.latitude,
       longitude: fields.longitude,
       established: function () {
@@ -64,7 +60,7 @@ app = app || {};
 
         return "About " + app.util.roundToOne(dist / 1000) + " km";
       },
-      opportunity_class: yesNo(fields.opportunity_class)
+      opportunity_class: fields.opportunity_class
     };
   };
 
