@@ -42,7 +42,8 @@ app = app || {};
     // If app.level is unspecified (when someone just first searched for a school by name),
     // then for now just show schools of that type (instead of all schools).
     // Later we may want to let users control which markers are visible (TODO)
-    q.setSchoolType(app.level || this.school.type)
+    // Include SSP here in case people are looking for that (later we can add a filtering step)
+    q.setSchoolType([app.level || this.school.type, 'ssp'])
       .where("s.school_code != " + this.school.school_code)
       .byBounds(bounds);
     q.run(function (data) {

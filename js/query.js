@@ -131,12 +131,31 @@ app = app || {};
   // if you are looking for a primary school, secondary, or infants school,
   // then a central school will provide the same thing so this adds that in.
   // if you don't want that functionality, then just use q.where('type = whatever')
-  Query.prototype.setSchoolType = function (type) {
-    if (type === 'infants' || type === 'primary' || type === 'secondary') {
-      this.where("(s.type = '" + app.level + "' OR s.type = 'central')");
+
+  // accepts either a single type e.g. "primary" or multiple, e.g. ['primary', 'community']
+  Query.prototype.setSchoolType = function (typeOrTypes) {
+
+    var type, otherTypes, otherTypesExpression = '';
+
+    if (typeOrTypes && typeof typeOrTypes === 'string') {
+      type = typeOrTypes;
+      otherTypes = [];
     } else {
-      this.where("(s.type = '" + app.level + "')");
+      type = _.first(typeOrTypes);
+      otherTypes = _.rest(typeOrTypes);
     }
+
+    if (type === 'infants' || type === 'primary' || type === 'secondary') {
+      otherTypes.push('central');
+    }
+
+    if (otherTypes) {
+      otherTypesExpression = _.map(otherTypes, function (t) {
+        return " OR s.type = '" + t + "'";
+      }).join('');
+    }
+
+    this.where("(s.type = '" + app.level + "' " + otherTypesExpression + ")");
     return this;
   };
 
@@ -193,6 +212,7 @@ app = app || {};
 
     } else if (this.queryBy === 'bounds') {
 
+      joinSubtype = "LEFT OUTER";
       whereCondition = "s.the_geom && ST_MakeEnvelope(" +
                           this.bounds.left + "," +
                           this.bounds.bottom + ", " +
