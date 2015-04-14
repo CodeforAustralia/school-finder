@@ -81,8 +81,8 @@ ul.school-details {
 	text-decoration: none;
 }
 
-.school-details .school-website {
-	/* keeps contact info grouped together */
+.school-details .school-website, .school-details .school-enrollment, .school-details .school-oshc {
+	/* keeps similar info grouped together */
 	margin-bottom: 1.5em;
 }
 
