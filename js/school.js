@@ -1,4 +1,4 @@
-var app, L;
+var app, L, Handlebars;
 app = app || {};
 
 (function () {
@@ -7,9 +7,9 @@ app = app || {};
     return field ? "Yes" : "No";
   };
 
-  Handlebars.registerHelper('yesNo', function(field) {
-  return field ? "Yes" : "No";
-});
+  Handlebars.registerHelper('yesNo', function (field) {
+    return field ? "Yes" : "No";
+  });
 
   /* create a new School. */
   app.School = function () {
@@ -25,7 +25,7 @@ app = app || {};
       postcode: fields.postcode,
       school_code: fields.school_code,
       phone: fields.phone,
-      website: fields.website.replace("http://",""),
+      website: fields.website.replace("http://", ""),
       level: function () {
         return app.level ? app.level.capitalize() : 'School';
       },
