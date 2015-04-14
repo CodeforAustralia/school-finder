@@ -7,6 +7,10 @@ app = app || {};
     return field ? "Yes" : "No";
   };
 
+  Handlebars.registerHelper('yesNo', function(field) {
+  return field ? "Yes" : "No";
+});
+
   /* create a new School. */
   app.School = function () {
   };
@@ -29,7 +33,7 @@ app = app || {};
       selective: fields.selective_school,
       specialty: fields.school_specialty_type,
       preschool: yesNo(fields.preschool),
-      oshc: yesNo(fields.oshc), /* outside school hours care */
+      oshc: fields.oshc, /* outside school hours care */
       oshc_provider: fields.oshc_provider,
       distanceEd: fields.distance_education,
       intensiveEnglish: yesNo(fields.intensive_english_centre),

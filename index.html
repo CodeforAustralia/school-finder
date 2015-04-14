@@ -228,7 +228,9 @@
 
               <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{preschool}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
 
-              <li class="school-oshc"><span class="field-label">Outside school hours care: </span><br><span class="field-data">{{oshc}}{{#if oshc}}: {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) --> </li>
+              <li class="school-oshc"><span class="field-label">Outside school hours care: </span>{{#if oshc}} <br> {{/if}}
+                <span class="field-data">{{yesNo oshc}}{{#if oshc}}- {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) -->
+              </li>
 
               <li class="school-more-info"><span class="field-label">Need more info?</span> <span class="field-data"><a href="https://www.google.com.au/search?q={{name}}+nsw" target="_blank">Try Google</a></li>
           </ul>
