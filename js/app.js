@@ -6,39 +6,6 @@ app = app || {};
   app.maps = [];
   app.sql = new cartodb.SQL({ user: app.db.user });
 
-  var resetSearchBtns = function () {
-    var $btns = $('.btn.search');
-    $btns.each(function () {
-      // set default text
-      var $btn = $(this);
-      var normalText = $btn.data('default-text');
-      if (normalText) {
-        $btn.text(normalText);
-        $btn.removeClass('working');
-      } // if normalText wasn't set, button had never entered 'working' state
-    });
-  };
-
-  // Put Search button in 'Working' (show status) state
-  var setSearchBtnToWorking = function (btnId) {
-    var $btn = $("#" + btnId);
-
-    // if we're already working, our work here is done.
-    if ($btn.html().indexOf('Working') !== -1) { return; }
-
-    $btn.data('default-text', $btn.html());
-    $btn.html('Working&hellip;');
-    $btn.addClass("working");
-  };
-
-  var scrollToId = function (id) {
-    // scroll to first result
-    $('html, body').animate({
-      scrollTop: $('#' + id).offset().top,
-    }, 500, function () {
-      resetSearchBtns();
-    });
-  };
 
 
   var addRow = function (row, i) {
@@ -74,7 +41,7 @@ app = app || {};
       .on('mouseover', app.Map.onMouseOverOut)
       .on('mouseout', app.Map.onMouseOverOut);
 
-    if (i === 0) { scrollToId('results-container'); }
+    if (i === 0) { app.ui.scrollToId('results-container'); }
   };
 
   app.findByName = function (name) {
@@ -83,14 +50,14 @@ app = app || {};
     if ($.inArray(name, ['public', 'school', 'high', 'central', 'infant', ' ']) !== -1) {
       $('#tooManyResultsModal .results-count').text('way too many');
       $('#tooManyResultsModal').modal();
-      resetSearchBtns();
+      app.ui.resetSearchBtns();
       return;
     }
 
     // Find schools by name
     var q = new app.Query();
     q.byName(name).run(function (data) {
-      resetSearchBtns();
+      app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
         console.log("No luck; go fish!");
         $('#noResultsForNameModal').modal();
@@ -101,7 +68,7 @@ app = app || {};
         data.rows.forEach(addRow);
       }
     }).error(function (errors) {
-      resetSearchBtns();
+      app.ui.resetSearchBtns();
       // errors contains a list of errors
       console.log("errors:" + errors);
     });
@@ -136,7 +103,7 @@ app = app || {};
         q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
-            resetSearchBtns();
+            app.ui.resetSearchBtns();
             $('#noResultsForAddressModal').modal();
           }
           data.rows.forEach(addRow);
@@ -157,28 +124,6 @@ app = app || {};
     return m;
   };
 
-  // given a function (processInput), return a callback function
-  // that handles the search button click in a standard way (error checking, etc)
-  // and then runns the processInput function if all looks good.
-  var searchBtnFunction = function (processInput) {
-    return function (e) {
-      e.preventDefault();
-
-      var inputId = $(e.target).data('input');
-
-      // Use Search button as status
-      setSearchBtnToWorking(e.target.id);
-
-      var inputText = $("#" + inputId).val();
-
-      if (!inputText) {
-        console.log('nothing entered to search for, not trying!');
-        setTimeout(function () {resetSearchBtns(); }, 200);
-      } else {
-        processInput(inputText);
-      }
-    };
-  };
 
   $(document).ready(function () {
 
@@ -196,12 +141,12 @@ app = app || {};
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
 
-    $("#button-search-address").click(searchBtnFunction(function () {
+    $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
       app.geocodeAddress(app.findByLocation);
     }));
 
-    $("#button-search-name").click(searchBtnFunction(function (inputText) {
+    $("#button-search-name").click(app.ui.searchBtnFunction(function (inputText) {
       $('.block-address').hide();
       app.findByName(inputText);
     }));
