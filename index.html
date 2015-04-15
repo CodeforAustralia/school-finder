@@ -59,7 +59,7 @@
             <div class="input-group input-group-lg">
               <input id="schoolname" type="text" class="form-control" placeholder="A school named...">
               <span class="input-group-btn">
-                <button id="button-search-name" class="btn search" type="button">Search</button>
+                <button id="button-search-name" data-input="schoolname" class="btn search" type="button">Search</button>
               </span>
             </div><!-- /input-group -->
           </div>
@@ -71,8 +71,9 @@
       <div class="jumbotron block-address">
         <h1>I live at:</h1>
         <p class="lead">Provide your location so we can look up nearby schools:</p>
-        <p><input id="address" type="text" class="form-control" placeholder="Home address, suburb or postcode" data-google-places=true/></p>
-        <a id="button-search-address" class="btn search" href="#" role="button">Search</a>
+        <p>
+          <input id="address" type="text" class="form-control" placeholder="Home address, suburb or postcode" data-google-places=true/></p>
+          <a id="button-search-address" data-input="address" class="btn search" href="#" role="button">Search</a>
       </div>
 
       <!-- RESULT -->
