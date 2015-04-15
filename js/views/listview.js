@@ -18,12 +18,7 @@ app = app || {};
 
   ListView.prototype.render = function () {
 
-    var context = {
-      schools: _.map(this.schools.schools, function (school) {
-        return {school_name: school.school_name, school_code: school.school_code };
-      }),
-    };
-    var html = this.template(context);
+    var html = this.template(this.schools.toTemplateContext());
 
     // clean up any previous result & re-add
     this.$el.empty();

@@ -17,6 +17,22 @@ app = app || {};
     this.select(this.schools[0].school_code);
   };
 
+  Schools.prototype.toTemplateContext = function () {
+    var that = this;
+
+    var context = {
+      schools: _.map(this.schools, function (school) {
+        return {
+          school_name: school.school_name,
+          school_code: school.school_code,
+          selected: school.school_code === that.selected_school
+        };
+      }),
+    };
+
+    return context;
+  };
+
   Schools.prototype.select = function (school_code) {
     this.selected_school = school_code;
   };
