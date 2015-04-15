@@ -12,6 +12,10 @@ app = app || {};
     this.fields = fields;
   };
 
+  app.School.prototype.school_code = function () {
+    return this.fields.school_code;
+  };
+
   app.School.toTemplateContext = function (i) {
 
     var fields = this.fields;
