@@ -254,8 +254,7 @@ app = app || {};
       }
     });
 
-    $("#schoolnameInput").autocomplete({minLength: 3, delay: 700, source: schoolNameCompleter });
-
+    $("#schoolname").autocomplete({minLength: 3, delay: 700, source: schoolNameCompleter });
 
   });
 
