@@ -31,10 +31,10 @@ app = app || {};
     $btn.addClass("working");
   };
 
-  var scrollToMap = function ($result) {
+  var scrollToId = function (id) {
     // scroll to first result
     $('html, body').animate({
-      scrollTop: $result.offset().top,
+      scrollTop: $('#' + id).offset().top,
     }, 500, function () {
       resetSearchBtns();
     });
@@ -50,8 +50,6 @@ app = app || {};
     var school = new app.School(row);
     var schoolView = new app.SchoolView(school, i);
     schoolView.render();
-
-    var $result = $('#' + resultID);
 
     // school level may be unspecified (if just searching by school name)
     // allow for that
@@ -76,7 +74,7 @@ app = app || {};
       .on('mouseover', app.Map.onMouseOverOut)
       .on('mouseout', app.Map.onMouseOverOut);
 
-    if (i === 0) { scrollToMap($result); }
+    if (i === 0) { scrollToId('results-container'); }
   };
 
   app.findByName = function (name) {
