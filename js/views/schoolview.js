@@ -6,7 +6,7 @@ app = app || {};
   var SchoolView = function (school) {
     this.school = school || null;
     this.$el = $('#school-info-container');
-    this.template = Handlebars.compile($("#result-template").html()); //TODO change to school-info-template
+    this.template = Handlebars.compile($("#school-info-template").html());
   };
 
   app.SchoolView = SchoolView;
