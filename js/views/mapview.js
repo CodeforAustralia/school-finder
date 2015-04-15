@@ -198,7 +198,6 @@ app = app || {};
                   .openPopup();
           }
         }
-        // that.marker = marker;
 
         var hasCatchment = that.school.shape_area ? true : false;
         if (hasCatchment) {
