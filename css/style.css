@@ -58,11 +58,10 @@ a:hover .fa-stack-1x {
 	margin-bottom: 100px;
 }
 
-.results-list-container {
+#list-container {
 	text-align: center;
 	background-color: rgb(247, 246, 246);
-	padding-bottom: 1em;
-
+	padding-bottom: 1.5em;
 }
 .results-list {
 	text-align: left;
@@ -79,6 +78,7 @@ a:hover .fa-stack-1x {
 }
 .results-list li.selected {
     font-weight: bold;
+    color: rgb(215, 45, 108);
 }
 .results-list h1 {
 }
