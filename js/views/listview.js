@@ -18,12 +18,10 @@ app = app || {};
 
   ListView.prototype.render = function () {
 
-    // dummy - testing.
     var context = {
-      schools: [
-        {school_name: "Sydney Secondary College Blackwattle Bay Campus", school_code: 8539},
-        {school_name: "Sydney Secondary College Balmain Campus", school_code: 8484},
-      ],
+      schools: _.map(this.schools.schools, function (school) {
+        return {school_name: school.school_name(), school_code: school.school_code() };
+      }),
     };
     var html = this.template(context);
 

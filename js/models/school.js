@@ -16,6 +16,10 @@ app = app || {};
     return this.fields.school_code;
   };
 
+  app.School.prototype.school_name = function () {
+    return this.fields.school_name;
+  };
+
   app.School.toTemplateContext = function (i) {
 
     var fields = this.fields;
