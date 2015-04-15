@@ -55,10 +55,29 @@ a:hover .fa-stack-1x {
 /* Results */
 #results-container {
 	margin-top: 25em;
+	margin-bottom: 100px;
 }
 
-.result {
-	margin-bottom: 100px;
+.results-list-container {
+	text-align: center;
+	background-color: rgb(247, 246, 246);
+	padding-bottom: 1em;
+
+}
+.results-list {
+	text-align: left;
+	display: inline-block;
+	background-color: rgb(247, 246, 246);
+	margin: 0 auto;
+	/* width: 400px; */
+}
+.results-list ul {
+    margin-bottom: 0;
+}
+.results-list li {
+    list-style: none;
+}
+.results-list h1 {
 }
 
 @media (min-width: 980px) { /* desktop and up */
