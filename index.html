@@ -78,6 +78,9 @@
 
       <!-- RESULT -->
       <div id="results-container">
+        <div id="list-container"></div>
+        <div id="map-container"></div>
+        <div id="school-info-container"></div>
       </div>
 
       <footer class="footer">
@@ -173,11 +176,25 @@
     <script src="js/views/schoolview.js"></script>
     <script src="js/app.js"></script>
 
+    <script id="result-list-template" type="text/x-handlebars-template">
+      <div class="results-list">
+        <h1>Results</h1>
+        <ul>
+          {{#each schools}}
+          <li data-school-code="{{school_code}}">{{school_name}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </script>
+
+    <script id="map-template" type="text/x-handlebars-template">
+      <div class="cartodb-map" id="cartodb-map-0">
+      </div>
+    </script>
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
     <script id="result-template" type="text/x-handlebars-template">
-      <div class="cartodb-map" id="cartodb-map-{{resultNumber}}">
-      </div>
 
       <div class="school-info">
 
