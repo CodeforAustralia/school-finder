@@ -127,7 +127,8 @@ app = app || {};
     }
 
     // initiate leaflet map
-    var map = new L.Map(this.mapID, {
+    var mapEl = this.$el.find(":first")[0];
+    var map = new L.Map(mapEl, {
       center: center,
       zoom: 12,
       scrollWheelZoom: false,
