@@ -3,10 +3,22 @@ app = app || {};
 
 (function () {
 
-  app.maps = [];
   app.sql = new cartodb.SQL({ user: app.db.user });
 
 
+  app.schools = new app.Schools(); // schools results collection
+
+  app.listView = new app.ListView(); // summary / selector to choose school if multiple results
+  app.schoolView = new app.SchoolView(); // info area for one school
+  app.mapView = new app.MapView(); // map of results and surrounding schools
+
+
+  var updateUI = function (rows) {
+    app.schools.update(rows);
+    app.listView.update(app.schools);
+    app.mapView.update(app.schools);
+    app.ui.scrollToId('results-container');
+  };
 
   var addRow = function (row, i) {
 
@@ -16,7 +28,6 @@ app = app || {};
 
     var map = new app.Map(row);
 
-    if (i === 0) { app.ui.scrollToId('results-container'); }
   };
 
   app.findByName = function (name) {
@@ -40,7 +51,7 @@ app = app || {};
         $('#tooManyResultsModal .results-count').text(data.rows.length);
         $('#tooManyResultsModal').modal();
       } else {
-        data.rows.forEach(addRow);
+        updateUI(data.rows);
       }
     }).error(function (errors) {
       app.ui.resetSearchBtns();
@@ -53,8 +64,9 @@ app = app || {};
   app.findByLocation = function () {
 
     // clean up any previous result
-    $('#results-container .result').remove();
-    $('#results-container').empty();
+    $('#map-container .result').remove();
+    $('#map-container').empty();
+
     app.maps = [];
 
     var lat = app.lat;
@@ -81,10 +93,12 @@ app = app || {};
             app.ui.resetSearchBtns();
             $('#noResultsForAddressModal').modal();
           }
-          data.rows.forEach(addRow);
+          updateUI(data.rows);
+          // data.rows.forEach(addRow);
         });
       } else {
-        data.rows.forEach(addRow);
+        updateUI(data.rows);
+        // data.rows.forEach(addRow);
       }
     });
   };
