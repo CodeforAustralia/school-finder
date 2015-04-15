@@ -70,17 +70,16 @@ app = app || {};
 
 
   var addRow = function (row, i) {
-    var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
+    var mapID, schoolsSQL, catchmentsSQL;
     var resultID = "result-" + i;
     mapID = "cartodb-map-" + i;
     $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
 
-    context = app.School.toTemplateContext(row, i);
-    source = $("#result-template").html();
-    template = Handlebars.compile(source);
-    html = template(context);
+    var school = new app.School(row);
+    var schoolView = new app.SchoolView(school, i);
+    schoolView.render();
+
     var $result = $('#' + resultID);
-    $result.html(html);
 
     // school level may be unspecified (if just searching by school name)
     // allow for that

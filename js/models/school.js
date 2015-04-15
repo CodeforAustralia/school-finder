@@ -8,10 +8,13 @@ app = app || {};
   });
 
   /* create a new School. */
-  app.School = function () {
+  app.School = function (fields) {
+    this.fields = fields;
   };
 
-  app.School.toTemplateContext = function (fields, i) {
+  app.School.toTemplateContext = function (i) {
+
+    var fields = this.fields;
 
     var context = _.extend(fields,
       {
