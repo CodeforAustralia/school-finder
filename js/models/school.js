@@ -9,34 +9,24 @@ app = app || {};
 
   /* create a new School. */
   app.School = function (fields) {
-    this.fields = fields;
-  };
-
-  app.School.prototype.school_code = function () {
-    return this.fields.school_code;
-  };
-
-  app.School.prototype.school_name = function () {
-    return this.fields.school_name;
+    _.extend(this, fields);
   };
 
   app.School.toTemplateContext = function (i) {
 
-    var fields = this.fields;
-
-    var context = _.extend(fields,
+    var context = _.extend(this,
       {
         resultNumber: i,
-        website: fields.website.replace("http://", ""),
+        website: this.website.replace("http://", ""),
         level: function () {
           return app.level ? app.level.capitalize() : 'School';
         },
-        grades: fields.subtype,
+        grades: this.subtype,
         established: function () {
           // try to return something human friendly if we can parse date.
-          var d = new Date(fields.date_1st_teacher);
+          var d = new Date(this.date_1st_teacher);
           if (d) { return d.getFullYear(); }
-          return fields.date_1st_teacher;
+          return this.date_1st_teacher;
         },
         homeAddress: app.address,
         homeLat: app.lat,
@@ -48,11 +38,11 @@ app = app || {};
           if (!app.lat || !app.lng) { return; }
 
           var userLatLng = new L.latLng(app.lat, app.lng);
-          var schoolLatLng = new L.latLng(fields.latitude, fields.longitude);
+          var schoolLatLng = new L.latLng(this.latitude, this.longitude);
           var dist = userLatLng.distanceTo(schoolLatLng);
 
           // lookup distance along road network and insert it into page when the results come back.
-          app.calculateRouteDistance(fields.latitude, fields.longitude, '#result-' + i + ' .route-distance');
+          app.calculateRouteDistance(this.latitude, this.longitude, '#result-' + i + ' .route-distance');
 
           return "About " + app.util.roundToOne(dist / 1000) + " km";
         },

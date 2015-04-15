@@ -20,7 +20,7 @@ app = app || {};
 
     var context = {
       schools: _.map(this.schools.schools, function (school) {
-        return {school_name: school.school_name(), school_code: school.school_code() };
+        return {school_name: school.school_name, school_code: school.school_code };
       }),
     };
     var html = this.template(context);
