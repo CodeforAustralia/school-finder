@@ -29,7 +29,8 @@ app = app || {};
                  "WHERE school_code = '" + row.school_code + "'";
     catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code = '" + row.school_code + "'";
-    var map = app.addMap(mapID, schoolsSQL, catchmentsSQL, row);
+    var map = new app.Map(mapID, schoolsSQL, catchmentsSQL, row);
+    app.maps.push(map);
 
     L.marker([row.latitude, row.longitude], {icon: app.geo.resultIcon})
       .addTo(map.map)
@@ -112,16 +113,6 @@ app = app || {};
         data.rows.forEach(addRow);
       }
     });
-  };
-
-
-  app.addMap = function (id, schoolsSQL, catchmentsSQL, row) {
-
-    catchmentsSQL = catchmentsSQL || "SELECT * FROM " + app.db.polygons + " WHERE ST_CONTAINS(the_geom, ST_SetSRID(ST_Point(" + app.lng + "," + app.lat + "),4326)) AND school_type ~* '" + app.level + "'";
-
-    var m = new app.Map(id, schoolsSQL, catchmentsSQL, row);
-    app.maps.push(m);
-    return m;
   };
 
 
