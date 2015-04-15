@@ -3,7 +3,20 @@ app = app || {};
 
 (function () {
 
-  var Map = function (mapID, schoolsSQL, catchmentsSQL, school) {
+  var Map = function (mapID, school) {
+
+    // school level may be unspecified (if just searching by school name)
+    // allow for that
+    var levelFilter = '';
+    if (app.level) {
+      levelFilter = "school_type ~* '" + app.level + "' AND ";
+    }
+
+    var schoolsSQL = "SELECT * FROM " + app.db.points + " " +
+                 "WHERE school_code = '" + school.school_code + "'";
+    var catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";
+
     this.mapID = mapID;
     this.schoolsSQL = schoolsSQL;
     this.catchmentsSQL = catchmentsSQL;
@@ -108,6 +121,16 @@ app = app || {};
     });
 
     L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
+    L.marker([this.school.latitude, this.school.longitude], {icon: app.geo.resultIcon})
+      .addTo(map)
+      // note we're using a bigger offset on the popup to reduce flickering;
+      // since we hide the popup on mouseout, if the popup is too close to the marker,
+      // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+      // moves near the edge between the marker and popup, making the popup flicker on and off.
+      .bindPopup("<b>" + this.school.school_name + "</b>", {offset: [0, -28]})
+      .on('mouseover', app.Map.onMouseOverOut)
+      .on('mouseout', app.Map.onMouseOverOut);
+
 
     cartodb.createLayer(map, {
       user_name: app.db.user,

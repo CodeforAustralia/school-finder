@@ -9,38 +9,12 @@ app = app || {};
 
 
   var addRow = function (row, i) {
-    var mapID, schoolsSQL, catchmentsSQL;
-    var resultID = "result-" + i;
-    mapID = "cartodb-map-" + i;
-    $('#results-container').append('<div class="result" id="' + resultID + '"></div>');
 
     var school = new app.School(row);
     var schoolView = new app.SchoolView(school, i);
     schoolView.render();
 
-    // school level may be unspecified (if just searching by school name)
-    // allow for that
-    var levelFilter = '';
-    if (app.level) {
-      levelFilter = "school_type ~* '" + app.level + "' AND ";
-    }
-
-    schoolsSQL = "SELECT * FROM " + app.db.points + " " +
-                 "WHERE school_code = '" + row.school_code + "'";
-    catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + row.school_code + "'";
-    var map = new app.Map(mapID, schoolsSQL, catchmentsSQL, row);
-    app.maps.push(map);
-
-    L.marker([row.latitude, row.longitude], {icon: app.geo.resultIcon})
-      .addTo(map.map)
-      // note we're using a bigger offset on the popup to reduce flickering;
-      // since we hide the popup on mouseout, if the popup is too close to the marker,
-      // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-      // moves near the edge between the marker and popup, making the popup flicker on and off.
-      .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
-      .on('mouseover', app.Map.onMouseOverOut)
-      .on('mouseout', app.Map.onMouseOverOut);
+    var map = new app.Map(row);
 
     if (i === 0) { app.ui.scrollToId('results-container'); }
   };
