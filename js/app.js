@@ -15,8 +15,11 @@ app = app || {};
 
   var updateUI = function (rows) {
     app.schools.update(rows);
+
     app.listView.update(app.schools);
     app.mapView.update(app.schools);
+    app.schoolView.update(app.schools);
+
     app.ui.scrollToId('results-container');
   };
 

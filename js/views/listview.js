@@ -10,6 +10,12 @@ app = app || {};
 
   app.ListView = ListView;
 
+
+  ListView.prototype.update = function (schools) {
+    this.schools = schools;
+    this.render();
+  };
+
   ListView.prototype.render = function () {
 
     // dummy - testing.

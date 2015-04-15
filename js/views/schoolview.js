@@ -11,7 +11,14 @@ app = app || {};
 
   app.SchoolView = SchoolView;
 
+  SchoolView.prototype.update = function (schools) {
+    this.school = schools.selected();
+    this.render();
+  };
+
   SchoolView.prototype.render = function () {
+    if (!this.school) { return; } // no use rendering if the school hasn't been set
+
     var context = this.school.toTemplateContext(this.i);
     var html = this.template(context);
 
