@@ -56,6 +56,7 @@ app = app || {};
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
     var that = this;
+    var school = this.schools.selected();
 
     // get current view's bounding box
     var mapBounds = this.map.getBounds();
@@ -74,8 +75,8 @@ app = app || {};
     // then for now just show schools of that type (instead of all schools).
     // Later we may want to let users control which markers are visible (TODO)
     // Include SSP here in case people are looking for that (later we can add a filtering step)
-    q.setSchoolType([app.level || this.school.type, 'ssp'])
-      .where("s.school_code != " + this.school.school_code)
+    q.setSchoolType([app.level || school.type, 'ssp'])
+      .where("s.school_code != " + school.school_code)
       .byBounds(bounds);
     q.run(function (data) {
       // add schools (except this one, already added) to map
@@ -103,6 +104,8 @@ app = app || {};
 
   MapView.prototype.init = function () {
 
+    var school = this.schools.selected();
+
     // school level may be unspecified (if just searching by school name)
     // allow for that
     var levelFilter = '';
@@ -122,8 +125,8 @@ app = app || {};
     var center = null;
     if (app.lat && app.lng) {
       center = [app.lat, app.lng];
-    } else if (this.school.latitude && this.school.longitude) {
-      center = [this.school.latitude, this.school.longitude];
+    } else if (school.latitude && school.longitude) {
+      center = [school.latitude, school.longitude];
     }
 
     // initiate leaflet map
@@ -141,13 +144,13 @@ app = app || {};
     });
 
     L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
-    L.marker([this.school.latitude, this.school.longitude], {icon: app.geo.resultIcon})
+    L.marker([school.latitude, school.longitude], {icon: app.geo.resultIcon})
       .addTo(map)
       // note we're using a bigger offset on the popup to reduce flickering;
       // since we hide the popup on mouseout, if the popup is too close to the marker,
       // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
       // moves near the edge between the marker and popup, making the popup flicker on and off.
-      .bindPopup("<b>" + this.school.school_name + "</b>", {offset: [0, -28]})
+      .bindPopup("<b>" + school.school_name + "</b>", {offset: [0, -28]})
       .on('mouseover', app.MapView.onMouseOverOut)
       .on('mouseout', app.MapView.onMouseOverOut);
 
@@ -163,7 +166,7 @@ app = app || {};
       sublayers:
         [
           { // background layer; all but selected polygon, for context
-            sql: "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code != '" + this.school.school_code + "'",
+            sql: "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code != '" + school.school_code + "'",
             cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
           },
           { // selected boundary
@@ -200,7 +203,7 @@ app = app || {};
           }
         }
 
-        var hasCatchment = that.school.shape_area ? true : false;
+        var hasCatchment = school.shape_area ? true : false;
         if (hasCatchment) {
           // zoom in to show the full catchment area
           app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
@@ -208,7 +211,7 @@ app = app || {};
           });
         } else if (app.lat && app.lng) {
           // zoom to fit selected school + user location
-          var southWest = L.latLng(that.school.latitude, that.school.longitude);
+          var southWest = L.latLng(school.latitude, school.longitude);
           var northEast = L.latLng(app.lat, app.lng);
           map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
         }
