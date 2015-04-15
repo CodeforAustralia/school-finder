@@ -76,7 +76,7 @@ app = app || {};
     // Later we may want to let users control which markers are visible (TODO)
     // Include SSP here in case people are looking for that (later we can add a filtering step)
     q.setSchoolType([app.level || school.type, 'ssp'])
-      .where("s.school_code != " + school.school_code)
+      .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
     q.run(function (data) {
       // add schools (except this one, already added) to map
@@ -141,15 +141,26 @@ app = app || {};
     });
 
     L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
-    L.marker([school.latitude, school.longitude], {icon: app.geo.resultIcon})
-      .addTo(map)
-      // note we're using a bigger offset on the popup to reduce flickering;
-      // since we hide the popup on mouseout, if the popup is too close to the marker,
-      // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-      // moves near the edge between the marker and popup, making the popup flicker on and off.
-      .bindPopup("<b>" + school.school_name + "</b>", {offset: [0, -28]})
-      .on('mouseover', app.MapView.onMouseOverOut)
-      .on('mouseout', app.MapView.onMouseOverOut);
+
+    // add result set to map
+    this.schools.schools.forEach(function (resultSchool) {
+      var icon;
+      if (resultSchool === school) { // a result that's also the currently selected school
+        icon = app.geo.pickedIcon;
+      } else {
+        icon = app.geo.resultIcon;
+      }
+      L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
+        .addTo(map)
+        // note we're using a bigger offset on the popup to reduce flickering;
+        // since we hide the popup on mouseout, if the popup is too close to the marker,
+        // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+        // moves near the edge between the marker and popup, making the popup flicker on and off.
+        .bindPopup("<b>" + resultSchool.school_name + "</b>", {offset: [0, -28]})
+        .on('mouseover', app.MapView.onMouseOverOut)
+        .on('mouseout', app.MapView.onMouseOverOut);
+    });
+
 
 
     cartodb.createLayer(map, {
