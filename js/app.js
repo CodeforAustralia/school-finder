@@ -6,28 +6,22 @@ app = app || {};
   app.maps = [];
   app.sql = new cartodb.SQL({ user: app.db.user });
 
-  var searchMethod; // 'address' or 'name';
-
-  var getSearchBtn = function () {
-    var $btn;
-    if (searchMethod === 'name') {
-      $btn = $('#button-search-name');
-    } else if (searchMethod === 'address') {
-      $btn = $('#button-search-address');
-    }
-    return $btn;
-  };
-
-  // Reset Search button to it's default state
-  var resetSearchBtn = function () {
-    var $btn = getSearchBtn();
-    $btn.text($btn.data('default-text'));
-    $btn.removeClass("working");
+  var resetSearchBtns = function () {
+    var $btns = $('.btn.search');
+    $btns.each(function () {
+      // set default text
+      var $btn = $(this);
+      var normalText = $btn.data('default-text');
+      if (normalText) {
+        $btn.text(normalText);
+        $btn.removeClass('working');
+      } // if normalText wasn't set, button had never entered 'working' state
+    });
   };
 
   // Put Search button in 'Working' (show status) state
-  var setSearchBtnToWorking = function () {
-    var $btn = getSearchBtn();
+  var setSearchBtnToWorking = function (btnId) {
+    var $btn = $("#" + btnId);
 
     // if we're already working, our work here is done.
     if ($btn.html().indexOf('Working') !== -1) { return; }
@@ -42,9 +36,38 @@ app = app || {};
     $('html, body').animate({
       scrollTop: $result.offset().top,
     }, 500, function () {
-      resetSearchBtn();
+      resetSearchBtns();
     });
   };
+
+  var schoolNameCompleter = function (request, response) {
+    var $input = $(this.element);
+
+    var processResults = function (data) {
+      var autocompleteResponses = [];
+      var haveResponses = false;
+      data.rows.forEach(function (row) {
+        autocompleteResponses.push({value: row.school_name});
+        haveResponses = true;
+      });
+      if (haveResponses) {
+        if (data.rows.length === 1) { // exact match found
+          $input.autocomplete("close");
+          $input.val(data.rows[0].school_name);
+        } else {  // show suggestions
+          response(autocompleteResponses);
+        }
+      } else {
+        $input.autocomplete("close");
+      }
+    };
+
+    // ask cartodb for all school names starting with the request
+    // SELECT * FROM dec_schools WHERE school_name ILIKE '%sydney%'
+    var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '" + request.term + "%'";
+    app.sql.execute(query).done(processResults);
+  };
+
 
   var mapRow = function (row, i) {
     var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
@@ -91,14 +114,14 @@ app = app || {};
     if ($.inArray(name, ['public', 'school', 'high', 'central', 'infant', ' ']) !== -1) {
       $('#tooManyResultsModal .results-count').text('way too many');
       $('#tooManyResultsModal').modal();
-      resetSearchBtn();
+      resetSearchBtns();
       return;
     }
 
     // Find schools by name
     var q = new app.Query();
     q.byName(name).run(function (data) {
-      resetSearchBtn();
+      resetSearchBtns();
       if (data.rows.length < 1) {
         console.log("No luck; go fish!");
         $('#noResultsForNameModal').modal();
@@ -109,7 +132,7 @@ app = app || {};
         data.rows.forEach(mapRow);
       }
     }).error(function (errors) {
-      resetSearchBtn();
+      resetSearchBtns();
       // errors contains a list of errors
       console.log("errors:" + errors);
     });
@@ -144,7 +167,7 @@ app = app || {};
         q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
-            resetSearchBtn();
+            resetSearchBtns();
             $('#noResultsForAddressModal').modal();
           }
           data.rows.forEach(mapRow);
@@ -165,6 +188,29 @@ app = app || {};
     return m;
   };
 
+  // given a function (processInput), return a callback function
+  // that handles the search button click in a standard way (error checking, etc)
+  // and then runns the processInput function if all looks good.
+  var searchBtnFunction = function (processInput) {
+    return function (e) {
+      e.preventDefault();
+
+      var inputId = $(e.target).data('input');
+
+      // Use Search button as status
+      setSearchBtnToWorking(e.target.id);
+
+      var inputText = $("#" + inputId).val();
+
+      if (!inputText) {
+        console.log('nothing entered to search for, not trying!');
+        setTimeout(function () {resetSearchBtns(); }, 200);
+      } else {
+        processInput(inputText);
+      }
+    };
+  };
+
   $(document).ready(function () {
 
     var clickSchoolType = function (e) {
@@ -180,44 +226,16 @@ app = app || {};
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
-    $("#button-search-name").click(function () {
 
-      searchMethod = 'name';
-
-      // Use Search button as status
-      setSearchBtnToWorking();
-
-      var name = $('.school-name-search input').val();
-      console.log("looking for...");
-      console.log(name);
-
-      if (!name) {
-        console.log('nothing entered to search for, not trying!');
-        setTimeout(function () {resetSearchBtn(); }, 200);
-      } else {
-        $('.block-address').hide();
-        app.findByName(name);
-      }
-    });
-
-    $("#button-search-address").click(function (e) {
-      e.preventDefault();
-
-      searchMethod = 'address';
-
-      // Use Search button as status
-      setSearchBtnToWorking();
-
-      if (!$('#address').val()) {
-        console.log('nothing entered to search for, not trying!');
-        setTimeout(function () {resetSearchBtn(); }, 200);
-        return;
-      }
-
+    $("#button-search-address").click(searchBtnFunction(function () {
       // Geocode address then show results
       app.geocodeAddress(app.findByLocation);
+    }));
 
-    });
+    $("#button-search-name").click(searchBtnFunction(function (inputText) {
+      $('.block-address').hide();
+      app.findByName(inputText);
+    }));
 
     $("#address").keyup(function (event) {
       if (event.keyCode === 13) {
@@ -225,33 +243,8 @@ app = app || {};
       }
     });
 
+    $("#schoolname").autocomplete({minLength: 3, delay: 700, source: schoolNameCompleter });
 
-    $("#schoolnameInput").autocomplete({minLength: 3, delay: 700,
-      source: function (request, response) {
-        var processResults = function (data) {
-          var autocompleteResponses = [];
-          var haveResponses = false;
-          data.rows.forEach(function (row) {
-            autocompleteResponses.push({value: row.school_name});
-            haveResponses = true;
-          });
-          if (haveResponses) {
-            if (data.rows.length === 1) { // exact match found
-              $("#schoolnameInput").autocomplete("close");
-              $("#schoolnameInput").val(data.rows[0].school_name);
-            } else {  // show suggestions
-              response(autocompleteResponses);
-            }
-          } else {
-            $("#schoolnameInput").autocomplete("close");
-          }
-        };
-
-        // ask cartodb for all school names starting with the request
-        // SELECT * FROM dec_schools WHERE school_name ILIKE '%sydney%'
-        var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '" + request.term + "%'";
-        app.sql.execute(query).done(processResults);
-      }});
   });
 
 }());
