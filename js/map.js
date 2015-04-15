@@ -22,6 +22,20 @@ app = app || {};
     }
   };
 
+  // Let a user move the home marker to re-search at that location
+  Map.onMarkerDragEnd = function (event) {
+    var marker = event.target;
+    marker.closePopup();
+    app.showHomeHelpPopup = false; // keep hidden from now on.
+    var ll = marker.getLatLng();
+    console.log(ll);
+    app.lat = ll.lat;
+    app.lng = ll.lng;
+    // reverse geocode to grab the selected address, then get results.
+    app.reverseGeocode(app.findByLocation);
+  };
+
+
   // Fetch nearby schools and add them to the map for context
   Map.prototype.loadNearby = function () {
     var that = this;
@@ -132,24 +146,11 @@ app = app || {};
           }
         });
 
-        // Let a user move the home marker to re-search at that location
-        var onMarkerDragEnd = function (event) {
-          var marker = event.target;
-          marker.closePopup();
-          app.showHomeHelpPopup = false; // keep hidden from now on.
-          var ll = marker.getLatLng();
-          console.log(ll);
-          app.lat = ll.lat;
-          app.lng = ll.lng;
-          // reverse geocode to grab the selected address, then get results.
-          app.reverseGeocode(app.findByLocation);
-        };
-
         // add a 'home' looking icon to represent the user's location
         if (app.lat && app.lng) {
           var marker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon, draggable: true})
                         .addTo(map)
-                        .on('dragend', onMarkerDragEnd);
+                        .on('dragend', Map.onMarkerDragEnd);
           if (app.showHomeHelpPopup) {
             marker.bindPopup("<b>Your location (draggable)</b>")
                   .openPopup();
