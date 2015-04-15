@@ -12,7 +12,7 @@ app = app || {};
     _.extend(this, fields);
   };
 
-  app.School.toTemplateContext = function (i) {
+  app.School.prototype.toTemplateContext = function (i) {
 
     var context = _.extend(this,
       {
