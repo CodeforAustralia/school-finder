@@ -10,6 +10,11 @@ app = app || {};
 
   app.MapView = MapView;
 
+  MapView.prototype.update = function (schools) {
+    this.schools = schools;
+    this.render();
+  };
+
   MapView.prototype.render = function () {
 
     var context = {};
