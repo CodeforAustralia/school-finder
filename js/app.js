@@ -23,15 +23,6 @@ app = app || {};
     app.ui.scrollToId('results-container');
   };
 
-  var addRow = function (row, i) {
-
-    var school = new app.School(row);
-    var schoolView = new app.SchoolView(school, i);
-    schoolView.render();
-
-    var map = new app.Map(row);
-
-  };
 
   app.findByName = function (name) {
 
@@ -97,11 +88,9 @@ app = app || {};
             $('#noResultsForAddressModal').modal();
           }
           updateUI(data.rows);
-          // data.rows.forEach(addRow);
         });
       } else {
         updateUI(data.rows);
-        // data.rows.forEach(addRow);
       }
     });
   };
