@@ -69,7 +69,7 @@ app = app || {};
   };
 
 
-  var mapRow = function (row, i) {
+  var addRow = function (row, i) {
     var context, source, template, html, mapID, schoolsSQL, catchmentsSQL;
     var resultID = "result-" + i;
     mapID = "cartodb-map-" + i;
@@ -129,7 +129,7 @@ app = app || {};
         $('#tooManyResultsModal .results-count').text(data.rows.length);
         $('#tooManyResultsModal').modal();
       } else {
-        data.rows.forEach(mapRow);
+        data.rows.forEach(addRow);
       }
     }).error(function (errors) {
       resetSearchBtns();
@@ -170,10 +170,10 @@ app = app || {};
             resetSearchBtns();
             $('#noResultsForAddressModal').modal();
           }
-          data.rows.forEach(mapRow);
+          data.rows.forEach(addRow);
         });
       } else {
-        data.rows.forEach(mapRow);
+        data.rows.forEach(addRow);
       }
     });
   };
