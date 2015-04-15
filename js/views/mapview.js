@@ -113,12 +113,9 @@ app = app || {};
       levelFilter = "school_type ~* '" + app.level + "' AND ";
     }
 
-    var schoolsSQL = "SELECT * FROM " + app.db.points + " " +
-                 "WHERE school_code = '" + school.school_code + "'";
     var catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";
 
-    this.schoolsSQL = schoolsSQL;
     this.catchmentsSQL = catchmentsSQL;
 
     // center on either user's location or selected school
