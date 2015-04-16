@@ -68,8 +68,6 @@ app = app || {};
     $('#map-container .result').remove();
     $('#map-container').empty();
 
-    app.maps = [];
-
     var lat = app.lat;
     var lng = app.lng;
 
