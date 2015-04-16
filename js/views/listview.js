@@ -23,6 +23,22 @@ app = app || {};
     // clean up any previous result & re-add
     this.$el.empty();
     this.$el.append(html);
+
+    this.$el.find(".btn").click(function (e) {
+      // determine the school of interest
+      var school_code = $(e.target).data('school-code');
+
+      // select that school from the list
+      app.schools.select(school_code);
+
+      // update the UI
+      app.listView.update(app.schools);
+      app.mapView.update(app.schools);
+      app.schoolView.update(app.schools);
+
+      app.ui.scrollTo('.cartodb-map');
+    });
+
   };
 
 }());

@@ -162,7 +162,7 @@
         <p class="lead">We found the following results; select one to view.</p>
         <ul>
           {{#each schools}}
-            <li data-school-code="{{school_code}}" {{#if selected}} class="selected" {{/if}}><button class="btn" type="button">{{school_name}}</button></li>
+            <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}</button></li>
           {{/each}}
         </ul>
       </div>
