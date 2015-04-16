@@ -157,8 +157,9 @@
     </div>
 
     <script id="result-list-template" type="text/x-handlebars-template">
-      <div class="results-list">
+      <div class="jumbotron results-list">
         <h1>Results</h1>
+        <p class="lead">We found the following results; select one to view.</p>
         <ul>
           {{#each schools}}
             <li data-school-code="{{school_code}}" {{#if selected}} class="selected" {{/if}}><button class="btn" type="button">{{school_name}}</button></li>

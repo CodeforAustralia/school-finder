@@ -50,6 +50,10 @@ a:hover .fa-stack-1x {
 }
 
 
+#map-container {
+ margin-top: 25em;
+}
+
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
 /* Results */
@@ -59,51 +63,23 @@ a:hover .fa-stack-1x {
 }
 
 #list-container {
-	text-align: center;
-	background-color: rgb(247, 246, 246);
-	padding-bottom: 1.5em;
 }
 .results-list {
-	text-align: left;
-	display: inline-block;
-	background-color: rgb(247, 246, 246);
-	margin: 0 auto;
-	/* width: 400px; */
-}
-.results-list ul {
-    margin-bottom: 0;
+	margin-top: 25em;
 }
 .results-list li {
     list-style: none;
 }
-.results-list li.selected, .results-list li.selected .btn {
+.results-list li.selected .btn {
     font-weight: bold;
-    color: rgb(215, 45, 108);
-}
-
-.results-list li.selected .btn:active,
-.results-list li.selected .btn:focus,
-.results-list li.selected .btn:hover {
-	color: white;
-}
-
-.results-list h1 {
-    color: rgb(57, 172, 201);
+    background-color: rgb(57, 172, 201);
 }
 
 .results-list .btn {
     width: 100%;
     text-align: left;
     margin-bottom: .5em;
-    background-color: white;
-    color: rgb(215, 45, 108);
     padding: 1em;
-}
-.results-list .btn:active,
-.results-list .btn:focus,
-.results-list .btn:hover {
-	background-color: #39acc9;
-	color: white;
 }
 
 @media (min-width: 980px) { /* desktop and up */
