@@ -10,6 +10,10 @@ app = app || {};
 
   app.MapView = MapView;
 
+  MapView.filters = {
+    distance: "(s.distance_education IN ('null') OR distance_education IS NULL)",
+  };
+
   MapView.prototype.update = function (schools) {
     this.schools = schools;
     this.render();
@@ -94,6 +98,9 @@ app = app || {};
     q.setSchoolType([app.level || school.type, 'ssp'])
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
+    if (this.whereFilter) { // add custom filter if it has been set
+      q.where(this.whereFilter);
+    }
     q.run(function (data) {
       // add schools (except this one, already added) to map
       console.log(data);
@@ -245,6 +252,22 @@ app = app || {};
         //log the error
         console.error(err); // TODO: console.XYZ needs definition on some older browsers
       });
+
+    L.easyButton('fa-ship',
+      function () {
+        if (that.whereFilter === MapView.filters.distance) {
+          that.whereFilter = undefined; // disable filter
+        } else {
+          that.whereFilter = MapView.filters.distance;
+        }
+        // that.whereFilter = "s.distance_education = true";
+
+        that.loadNearby();
+      },
+      'Show only distance-education options',
+      this.map
+      );
+
   };
 
 
