@@ -11,8 +11,12 @@ app = app || {};
 
   app.SchoolView = SchoolView;
 
-  SchoolView.prototype.update = function (schools) {
-    this.school = schools.selected();
+  SchoolView.prototype.update = function (schoolOrSchools) {
+    if (schoolOrSchools instanceof app.Schools) {
+      this.school = schoolOrSchools.selected();
+    } else { // just a School
+      this.school = schoolOrSchools;
+    }
     this.render();
   };
 
