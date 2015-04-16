@@ -20,7 +20,7 @@ app = app || {};
     app.mapView.update(app.schools);
     app.schoolView.update(app.schools);
 
-    app.ui.scrollToId('results-container');
+    app.ui.scrollTo('#results-container');
   };
 
 

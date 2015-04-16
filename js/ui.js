@@ -29,10 +29,10 @@ app.ui = app.ui || {};
     $btn.addClass("working");
   };
 
-  app.ui.scrollToId = function (id) {
-    // scroll to first result
+  // animated scroll to element with specified selector
+  app.ui.scrollTo = function (selector) {
     $('html, body').animate({
-      scrollTop: $('#' + id).offset().top,
+      scrollTop: $(selector).offset().top,
     }, 500, function () {
       app.ui.resetSearchBtns();
     });
