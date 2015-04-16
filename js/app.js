@@ -20,7 +20,14 @@ app = app || {};
     app.mapView.update(app.schools);
     app.schoolView.update(app.schools);
 
-    app.ui.scrollTo('#results-container');
+    // usually (with just one result) we'll want to skip right to the map
+    if (app.schools.schools.length === 1) {
+      app.ui.scrollTo('.cartodb-map');
+    } else {
+      // but sometimes we'll need to let the user pick from multiple results
+      app.ui.scrollTo('.results-list');
+    }
+
   };
 
 
