@@ -161,7 +161,7 @@
         <h1>Results</h1>
         <ul>
           {{#each schools}}
-          <li data-school-code="{{school_code}}" {{#if selected}} class="selected" {{/if}}>{{school_name}}</li>
+            <li data-school-code="{{school_code}}" {{#if selected}} class="selected" {{/if}}><button class="btn" type="button">{{school_name}}</button></li>
           {{/each}}
         </ul>
       </div>

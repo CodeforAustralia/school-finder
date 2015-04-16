@@ -76,11 +76,34 @@ a:hover .fa-stack-1x {
 .results-list li {
     list-style: none;
 }
-.results-list li.selected {
+.results-list li.selected, .results-list li.selected .btn {
     font-weight: bold;
     color: rgb(215, 45, 108);
 }
+
+.results-list li.selected .btn:active,
+.results-list li.selected .btn:focus,
+.results-list li.selected .btn:hover {
+	color: white;
+}
+
 .results-list h1 {
+    color: rgb(57, 172, 201);
+}
+
+.results-list .btn {
+    width: 100%;
+    text-align: left;
+    margin-bottom: .5em;
+    background-color: white;
+    color: rgb(215, 45, 108);
+    padding: 1em;
+}
+.results-list .btn:active,
+.results-list .btn:focus,
+.results-list .btn:hover {
+	background-color: #39acc9;
+	color: white;
 }
 
 @media (min-width: 980px) { /* desktop and up */
