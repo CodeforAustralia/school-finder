@@ -43,7 +43,7 @@ app = app || {};
   MapView.onMarkerDragEnd = function (event) {
     var marker = event.target;
     marker.closePopup();
-    app.showHomeHelpPopup = false; // keep hidden from now on.
+    app.config.showHomeHelpPopup = false; // keep hidden from now on.
     var ll = marker.getLatLng();
     console.log(ll);
     app.lat = ll.lat;
@@ -205,7 +205,7 @@ app = app || {};
           var marker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon, draggable: true})
                         .addTo(map)
                         .on('dragend', MapView.onMarkerDragEnd);
-          if (app.showHomeHelpPopup) {
+          if (app.config.showHomeHelpPopup) {
             marker.bindPopup("<b>Your location (draggable)</b>")
                   .openPopup();
           }

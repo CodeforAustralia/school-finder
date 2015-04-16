@@ -30,9 +30,9 @@ app = app || {};
   };
 
   app.config = {
-    maxRuralTravel: "105000" // maximum meters someone would travel to a rural school; used to find schools w/o catchments
+    maxRuralTravel: "105000", // maximum meters someone would travel to a rural school; used to find schools w/o catchments
+    showHomeHelpPopup: true // whether or not to show "Your location (draggable)" tooltip on map load
   };
-  app.showHomeHelpPopup = true;
 
 }());
 
