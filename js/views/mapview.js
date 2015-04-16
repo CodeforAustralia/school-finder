@@ -53,6 +53,13 @@ app = app || {};
   };
 
 
+  MapView.prototype.clickSchool = function (row) {
+    return function (e) {
+      // tell the school view to show this particular school
+      app.schoolView.update(new app.School(row));
+    };
+  };
+
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
     var that = this;
@@ -89,6 +96,7 @@ app = app || {};
           // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
           // moves near the edge between the marker and popup, making the popup flicker on and off.
           .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
+          .on('click', that.clickSchool(row))
           .on('mouseover', MapView.onMouseOverOut)
           .on('mouseout', MapView.onMouseOverOut);
         markers.push(marker);
