@@ -12,6 +12,11 @@ app = app || {};
 
   MapView.filters = {
     distance: "(s.distance_education IN ('null') OR distance_education IS NULL)",
+    boys: "s.gender = 'boys'",
+    girls: "s.gender = 'girls'",
+    oshc: "s.oshc = true",
+    difficult: "(s.opportunity_class = true OR s.selective_school IN ('Partially Selective', 'Fully Selective'))",
+    specialty: "school_specialty_type NOT IN ('Comprehensive')",
   };
 
   MapView.prototype.update = function (schools) {
@@ -267,6 +272,72 @@ app = app || {};
       'Show only distance-education options',
       this.map
       );
+
+    L.easyButton('fa-male',
+      function () {
+        if (that.whereFilter === MapView.filters.boys) {
+          that.whereFilter = undefined; // disable filter
+        } else {
+          that.whereFilter = MapView.filters.boys;
+        }
+        that.loadNearby();
+      },
+      'Show only boys schools',
+      this.map
+      );
+
+    L.easyButton('fa-female',
+      function () {
+        if (that.whereFilter === MapView.filters.girls) {
+          that.whereFilter = undefined; // disable filter
+        } else {
+          that.whereFilter = MapView.filters.girls;
+        }
+        that.loadNearby();
+      },
+      'Show only girls schools',
+      this.map
+      );
+
+    L.easyButton('fa-child',
+      function () {
+        if (that.whereFilter === MapView.filters.oshc) {
+          that.whereFilter = undefined; // disable filter
+        } else {
+          that.whereFilter = MapView.filters.oshc;
+        }
+        that.loadNearby();
+      },
+      'Show only schools with Outside School Hours Care',
+      this.map
+      );
+
+    L.easyButton('fa-bolt',
+      function () {
+        if (that.whereFilter === MapView.filters.difficult) {
+          that.whereFilter = undefined; // disable filter
+        } else {
+          that.whereFilter = MapView.filters.difficult;
+        }
+        that.loadNearby();
+      },
+      'Show only selective or opportunity class schools',
+      this.map
+      );
+
+    L.easyButton('fa-magic',
+      function () {
+        if (that.whereFilter === MapView.filters.specialty) {
+          that.whereFilter = undefined; // disable filter
+        } else {
+          that.whereFilter = MapView.filters.specialty;
+        }
+        that.loadNearby();
+      },
+      'Show only specialty schools',
+      this.map
+      );
+
 
   };
 
