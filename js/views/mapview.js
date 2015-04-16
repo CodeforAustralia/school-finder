@@ -35,7 +35,10 @@ app = app || {};
     if (e.type === 'mouseover') {
       marker.openPopup();
     } else if (e.type === 'mouseout') {
-      marker.closePopup();
+      if (!this.selectedMarker || marker !== this.selectedMarker) {
+        // only auto close on mouse out if the marker hasn't been specifically selected (clicked)
+        marker.closePopup();
+      }
     }
   };
 
@@ -54,7 +57,13 @@ app = app || {};
 
 
   MapView.prototype.clickSchool = function (row) {
+    var that = this;
     return function (e) {
+      // open the school name popup
+      var marker = e.target;
+      marker.openPopup();
+      that.selectedMarker = marker;
+
       // tell the school view to show this particular school
       app.schoolView.update(new app.School(row));
     };
@@ -97,8 +106,8 @@ app = app || {};
           // moves near the edge between the marker and popup, making the popup flicker on and off.
           .bindPopup("<b>" + row.school_name + "</b>", {offset: [0, -28]})
           .on('click', that.clickSchool(row))
-          .on('mouseover', MapView.onMouseOverOut)
-          .on('mouseout', MapView.onMouseOverOut);
+          .on('mouseover', MapView.onMouseOverOut, that)
+          .on('mouseout', MapView.onMouseOverOut, that);
         markers.push(marker);
       });
       if (that.nearbyMarkersGroup) {
