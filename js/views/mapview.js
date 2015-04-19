@@ -10,26 +10,49 @@ app = app || {};
 
   app.MapView = MapView;
 
-  MapView.filtersSQL = {
-    distance: "(s.distance_education IN ('null') OR distance_education IS NULL)",
-    boys: "s.gender = 'boys'",
-    girls: "s.gender = 'girls'",
-    oshc: "s.oshc = true",
-    difficult: "(s.opportunity_class = true OR s.selective_school IN ('Partially Selective', 'Fully Selective'))",
-    specialty: "school_specialty_type NOT IN ('Comprehensive')",
-  };
-
-  var getFilterLabel = function (filter) {
-    if (filter === 'difficult') {
-      switch (app.level) {
-      case 'primary':
-        return 'Show only schools with opportunity classes.';
-      case 'secondary':
-        return 'Show only schools with a selective option.';
-      default:
-        return 'Show only selective or opportunity class schools';
-      }
-    }
+  MapView.filters = {
+    distance: {
+      sql: "(s.distance_education IN ('null') OR distance_education IS NULL)",
+      icon: 'fa-ship',
+      title: 'Show only distance-education options',
+      id: 'filter-distance'
+    },
+    boys: {
+      sql: "s.gender = 'boys'",
+      icon: 'fa-male',
+      title: 'Show only boys schools',
+      id: 'filters-boys',
+    },
+    girls: {
+      sql: "s.gender = 'girls'",
+      icon: 'fa-female',
+      title: 'Show only girls schools',
+      id: 'filters-girls',
+    },
+    oshc: {
+      sql: "s.oshc = true",
+      icon: 'fa-child',
+      title: 'Show only schools with Outside School Hours Care',
+      id: 'filters-oshc'
+    },
+    opportunity_class: {
+      sql: "s.opportunity_class = true",
+      icon: 'fa-bolt',
+      title: 'Show only schools with opportunity classes',
+      id: 'filters-opportunity-class',
+    },
+    selective_school: {
+      sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')",
+      icon: 'fa-bolt',
+      title: 'Show only schools with a selective option',
+      id: 'filters-selective',
+    },
+    specialty: {
+      sql: "school_specialty_type NOT IN ('Comprehensive')",
+      icon: 'fa-magic',
+      title: 'Show only specialty schools',
+      id: 'filters-specialty',
+    },
   };
 
 
@@ -182,83 +205,27 @@ app = app || {};
     var that = this;
     this.filterControls = {};
 
-    L.easyButton('fa-ship',
-      function () {
-        if (that.whereFilter === MapView.filtersSQL.distance) {
-          that.whereFilter = undefined; // disable filter
-        } else {
-          that.whereFilter = MapView.filtersSQL.distance;
-        }
-        that.loadNearby();
-      },
-      'Show only distance-education options',
-      this.map
-      );
+    _.each(MapView.filters, function (filter) {
 
-    L.easyButton('fa-male',
-      function () {
-        if (that.whereFilter === MapView.filtersSQL.boys) {
-          that.whereFilter = undefined; // disable filter
-        } else {
-          that.whereFilter = MapView.filtersSQL.boys;
-        }
-        that.loadNearby();
-      },
-      'Show only boys schools',
-      this.map
-      );
+      L.easyButton(filter.icon,
+        function () {
+          if (that.whereFilter === filter.sql) {
+            that.whereFilter = undefined; // disable filter
+            $('#' + this.options.id).parent().removeClass('active-filter');
+          } else {
+            that.whereFilter = filter.sql;
+            $('.leaflet-control .active-filter').removeClass('active-filter');
+            $('#' + this.options.id).parent().addClass('active-filter');
+          }
+          that.loadNearby();
+        },
+        filter.title,
+        that.map,
+        filter.id
+        );
+      $('#' + filter.id).closest('.leaflet-control').addClass(filter.id);
 
-    L.easyButton('fa-female',
-      function () {
-        if (that.whereFilter === MapView.filtersSQL.girls) {
-          that.whereFilter = undefined; // disable filter
-        } else {
-          that.whereFilter = MapView.filtersSQL.girls;
-        }
-        that.loadNearby();
-      },
-      'Show only girls schools',
-      this.map
-      );
-
-    L.easyButton('fa-child',
-      function () {
-        if (that.whereFilter === MapView.filtersSQL.oshc) {
-          that.whereFilter = undefined; // disable filter
-        } else {
-          that.whereFilter = MapView.filtersSQL.oshc;
-        }
-        that.loadNearby();
-      },
-      'Show only schools with Outside School Hours Care',
-      this.map
-      );
-
-    this.filterControls.difficult = L.easyButton('fa-bolt',
-      function () {
-        if (that.whereFilter === MapView.filtersSQL.difficult) {
-          that.whereFilter = undefined; // disable filter
-        } else {
-          that.whereFilter = MapView.filtersSQL.difficult;
-        }
-        that.loadNearby();
-      },
-      getFilterLabel('difficult'),
-      this.map
-      );
-
-    L.easyButton('fa-magic',
-      function () {
-        if (that.whereFilter === MapView.filtersSQL.specialty) {
-          that.whereFilter = undefined; // disable filter
-        } else {
-          that.whereFilter = MapView.filtersSQL.specialty;
-        }
-        that.loadNearby();
-      },
-      'Show only specialty schools',
-      this.map
-      );
+    });
   };
 
 
@@ -395,7 +362,15 @@ app = app || {};
     } else {
       map = this.map;
       that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
-      this.filterControls.difficult.link.title = getFilterLabel('difficult');
+    }
+
+    if (app.level === 'primary') {
+      $('body').addClass('level-primary');
+      $('body').removeClass('level-secondary');
+    }
+    if (app.level === 'secondary') {
+      $('body').addClass('level-secondary');
+      $('body').removeClass('level-primary');
     }
 
     // add result set to map
