@@ -232,11 +232,22 @@ app = app || {};
   MapView.prototype.addHomeMarker = function () {
     if (!this.map) { return; } // can't add marker if map doesn't yet exist.
 
-    if (this.homeMarker) { return; } // it's already on the map. we're done here.
+    var markerLatLng;
+    if (app.lat && app.lng) {
+      markerLatLng = [app.lat, app.lng];
+    }
+
+    if (this.homeMarker) {
+      // it's already on the map, just make sure it's in the right spot.
+      if (markerLatLng) {
+        this.homeMarker.setLatLng(markerLatLng);
+      }
+      return;
+    }
 
     // add a 'home' looking icon to represent the user's location
-    if (app.lat && app.lng) {
-      this.homeMarker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon, draggable: true})
+    if (markerLatLng) {
+      this.homeMarker = L.marker(markerLatLng, {icon: app.geo.homeIcon, draggable: true})
                     .addTo(this.map)
                     .on('dragend', MapView.onMarkerDragEnd);
       if (app.config.showHomeHelpPopup) {
@@ -357,12 +368,14 @@ app = app || {};
           console.error(err); // TODO: console.XYZ needs definition on some older browsers
         });
 
-      this.addHomeMarker();
       this.addFilters();
     } else {
       map = this.map;
       that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
     }
+
+    this.addHomeMarker();
+
 
     if (app.level === 'primary') {
       $('body').addClass('level-primary');
