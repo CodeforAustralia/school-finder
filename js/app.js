@@ -64,10 +64,6 @@ app = app || {};
   // update results for a specific lat/lng
   app.findByLocation = function () {
 
-    // clean up any previous result
-    $('#map-container .result').remove();
-    $('#map-container').empty();
-
     var lat = app.lat;
     var lng = app.lng;
 

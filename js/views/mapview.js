@@ -19,23 +19,30 @@ app = app || {};
     specialty: "school_specialty_type NOT IN ('Comprehensive')",
   };
 
+
   MapView.prototype.update = function (schools) {
     this.schools = schools;
     this.render();
   };
 
+
   MapView.prototype.render = function () {
 
     if (!this.schools) { return; } /* must update() w/ school list before rendering */
 
-    var context = {};
-    var html = this.template(context);
+    if (!this.rendered) {
 
-    // clean up any previous result & re-add
-    this.$el.empty();
-    this.$el.append(html);
+      var context = {};
+      var html = this.template(context);
+
+      // clean up any previous result & re-add
+      // this.$el.empty();
+      this.$el.append(html);
+    }
 
     this.init();
+
+    this.rendered = true;
   };
 
 
@@ -50,6 +57,7 @@ app = app || {};
       }
     }
   };
+
 
   // Let a user move the home marker to re-search at that location
   MapView.onMarkerDragEnd = function (event) {
@@ -77,6 +85,30 @@ app = app || {};
       app.schoolView.update(new app.School(row));
     };
   };
+
+
+  MapView.prototype.clickResultSchool = function (school) {
+    var that = this;
+    return function (e) {
+
+      // open the school name popup
+      var marker = e.target;
+      marker.openPopup();
+
+      that.selectedMarker = marker;
+
+      // select that school from the list
+      app.schools.select(school.school_code);
+
+      // update the UI
+      app.listView.update(app.schools);
+      app.mapView.update(app.schools);
+      app.schoolView.update(app.schools);
+
+      app.ui.scrollTo('.cartodb-map');
+    };
+  };
+
 
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
@@ -131,132 +163,10 @@ app = app || {};
     });
   };
 
-  MapView.prototype.init = function () {
 
-    var school = this.schools.selected();
+  MapView.prototype.addFilters = function () {
 
-    // school level may be unspecified (if just searching by school name)
-    // allow for that
-    var levelFilter = '';
-    if (app.level) {
-      levelFilter = "school_type ~* '" + app.level + "' AND ";
-    }
-
-    var catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";
-
-    this.catchmentsSQL = catchmentsSQL;
-
-    // center on either user's location or selected school
-    var center = null;
-    if (app.lat && app.lng) {
-      center = [app.lat, app.lng];
-    } else if (school.latitude && school.longitude) {
-      center = [school.latitude, school.longitude];
-    }
-
-    // initiate leaflet map
-    var mapEl = this.$el.find(":first")[0];
-    var map = new L.Map(mapEl, {
-      center: center,
-      zoom: 12,
-      scrollWheelZoom: false,
-    });
-    this.map = map;
     var that = this;
-
-    map.on('viewreset moveend', function () {
-      that.loadNearby();
-    });
-
-    L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
-
-    // add result set to map
-    this.schools.schools.forEach(function (resultSchool) {
-      var icon;
-      if (resultSchool === school) { // a result that's also the currently selected school
-        icon = app.geo.pickedIcon;
-      } else {
-        icon = app.geo.resultIcon;
-      }
-      L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
-        .addTo(map)
-        // note we're using a bigger offset on the popup to reduce flickering;
-        // since we hide the popup on mouseout, if the popup is too close to the marker,
-        // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-        // moves near the edge between the marker and popup, making the popup flicker on and off.
-        .bindPopup("<b>" + resultSchool.school_name + "</b>", {offset: [0, -28]})
-        .on('mouseover', app.MapView.onMouseOverOut)
-        .on('mouseout', app.MapView.onMouseOverOut);
-    });
-
-
-
-    cartodb.createLayer(map, {
-      user_name: app.db.user,
-      https: true,
-      tiler_protocol: 'https',
-      tiler_port: '443',
-      sql_port: "443",
-      sql_protocol: "https",
-      type: 'cartodb',
-      sublayers:
-        [
-          { // background layer; all but selected polygon, for context
-            sql: "SELECT * FROM " + app.db.polygons + " WHERE school_type ~* '" + app.level + "' AND school_code != '" + school.school_code + "'",
-            cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
-          },
-          { // selected boundary
-            sql: this.catchmentsSQL,
-            cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
-          },
-        ]
-    }).addTo(map)
-      .done(function (layer) {
-        that.layer = layer;
-        that.layers = {};
-        that.layers.catchment = layer.getSubLayer(1);
-
-        // Let a user shift-click the map to find school districts.
-        map.on('click', function (e) {
-          console.log(e.latlng);
-          if (e.originalEvent.shiftKey) {
-            app.lat = e.latlng.lat;
-            app.lng = e.latlng.lng;
-
-            // reverse geocode to grab the selected address, then get results.
-            app.reverseGeocode(app.findByLocation);
-          }
-        });
-
-        // add a 'home' looking icon to represent the user's location
-        if (app.lat && app.lng) {
-          var marker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon, draggable: true})
-                        .addTo(map)
-                        .on('dragend', MapView.onMarkerDragEnd);
-          if (app.config.showHomeHelpPopup) {
-            marker.bindPopup("<b>Your location (draggable)</b>")
-                  .openPopup();
-          }
-        }
-
-        var hasCatchment = school.shape_area ? true : false;
-        if (hasCatchment) {
-          // zoom in to show the full catchment area
-          app.sql.getBounds(that.catchmentsSQL).done(function (bounds) {
-            that.map.fitBounds(bounds);
-          });
-        } else if (app.lat && app.lng) {
-          // zoom to fit selected school + user location
-          var southWest = L.latLng(school.latitude, school.longitude);
-          var northEast = L.latLng(app.lat, app.lng);
-          map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
-        }
-      })
-      .error(function (err) {
-        //log the error
-        console.error(err); // TODO: console.XYZ needs definition on some older browsers
-      });
 
     L.easyButton('fa-ship',
       function () {
@@ -337,12 +247,173 @@ app = app || {};
       'Show only specialty schools',
       this.map
       );
-
-
   };
 
 
+  MapView.prototype.addHomeMarker = function () {
+    if (!this.map) { return; } // can't add marker if map doesn't yet exist.
+
+    if (this.homeMarker) { return; } // it's already on the map. we're done here.
+
+    // add a 'home' looking icon to represent the user's location
+    if (app.lat && app.lng) {
+      this.homeMarker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon, draggable: true})
+                    .addTo(this.map)
+                    .on('dragend', MapView.onMarkerDragEnd);
+      if (app.config.showHomeHelpPopup) {
+        this.homeMarker.bindPopup("<b>Your location (draggable)</b>")
+              .openPopup();
+      }
+    }
+  };
 
 
+  MapView.prototype.fitBounds = function () {
+    if (!this.map) { return; } // can't zoom on a map doesn't yet exist.
+    var that = this;
+
+    var school = this.schools.selected();
+    var hasCatchment = school.shape_area ? true : false;
+    if (hasCatchment) {
+      // zoom in to show the full catchment area
+      app.sql.getBounds(this.catchmentsSQL).done(function (bounds) {
+        that.map.fitBounds(bounds);
+      });
+    } else if (app.lat && app.lng) {
+      // zoom to fit selected school + user location
+      var southWest = L.latLng(school.latitude, school.longitude);
+      var northEast = L.latLng(app.lat, app.lng);
+      this.map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
+    }
+  };
+
+
+  MapView.prototype.init = function () {
+    var that = this;
+
+    // TODO: don't re-render if we click the already-selected school
+
+    var school = this.schools.selected();
+
+    // school level may be unspecified (if just searching by school name)
+    // allow for that
+    var levelFilter = '';
+    if (app.level) {
+      levelFilter = "school_type ~* '" + app.level + "' AND ";
+    }
+
+    this.catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";
+    this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
+                 "WHERE " + levelFilter + "school_code != '" + school.school_code + "'";
+
+
+    // initiate leaflet map
+    var map;
+    if (!this.map) { // create map for first time
+
+      // center on either user's location or selected school
+      var center = null;
+      if (app.lat && app.lng) {
+        center = [app.lat, app.lng];
+      } else if (school.latitude && school.longitude) {
+        center = [school.latitude, school.longitude];
+      }
+
+      var mapEl = this.$el.find(":first")[0];
+      map = new L.Map(mapEl, {
+        center: center,
+        zoom: 12,
+        scrollWheelZoom: false,
+      });
+      this.map = map;
+
+      map.on('viewreset moveend', function () {
+        that.loadNearby();
+      });
+
+      L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
+
+      cartodb.createLayer(map, {
+        user_name: app.db.user,
+        https: true,
+        tiler_protocol: 'https',
+        tiler_port: '443',
+        sql_port: "443",
+        sql_protocol: "https",
+        type: 'cartodb',
+        sublayers:
+          [
+            { // background layer; all but selected polygon, for context
+              sql: this.otherCatchmentsSQL,
+              cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
+            },
+            { // selected boundary
+              sql: this.catchmentsSQL,
+              cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
+            },
+          ]
+      }).addTo(map)
+        .done(function (layer) {
+          that.layer = layer;
+          that.sublayers = {
+            otherCatchments: layer.getSubLayer(0),
+            selectedCatchment: layer.getSubLayer(1),
+          };
+
+          // Let a user shift-click the map to find school districts.
+          map.on('click', function (e) {
+            console.log(e.latlng);
+            if (e.originalEvent.shiftKey) {
+              app.lat = e.latlng.lat;
+              app.lng = e.latlng.lng;
+
+              // reverse geocode to grab the selected address, then get results.
+              app.reverseGeocode(app.findByLocation);
+            }
+          });
+        })
+        .error(function (err) {
+          //log the error
+          console.error(err); // TODO: console.XYZ needs definition on some older browsers
+        });
+
+      this.addHomeMarker();
+      this.addFilters();
+    } else {
+      map = this.map;
+      that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
+    }
+
+    // add result set to map
+    var markers = [];
+    this.schools.schools.forEach(function (resultSchool) {
+      var icon;
+      if (resultSchool === school) { // a result that's also the currently selected school
+        icon = app.geo.pickedIcon;
+      } else {
+        icon = app.geo.resultIcon;
+      }
+      var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
+        // note we're using a bigger offset on the popup to reduce flickering;
+        // since we hide the popup on mouseout, if the popup is too close to the marker,
+        // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+        // moves near the edge between the marker and popup, making the popup flicker on and off.
+        .bindPopup("<b>" + resultSchool.school_name + "</b>", {offset: [0, -28]})
+        .on('click', that.clickResultSchool(resultSchool))
+        .on('mouseover', MapView.onMouseOverOut, that)
+        .on('mouseout', MapView.onMouseOverOut, that);
+      markers.push(marker);
+    });
+
+    if (this.resultMarkersGroup) {
+      this.map.removeLayer(this.resultMarkersGroup);
+    }
+    this.resultMarkersGroup = new L.featureGroup(markers);
+    this.map.addLayer(this.resultMarkersGroup);
+
+    // pan + zoom to the selected results
+    this.fitBounds();
+  };
 
 }());
