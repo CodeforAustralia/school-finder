@@ -78,6 +78,9 @@
 
       <!-- RESULT -->
       <div id="results-container">
+        <div id="list-container"></div>
+        <div id="map-container"></div>
+        <div id="school-info-container"></div>
       </div>
 
       <footer class="footer">
@@ -153,30 +156,26 @@
       </div>
     </div>
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArZNZZBVUo35_M6KS7eiE35fIWTmutLpc&libraries=places">
+    <script id="result-list-template" type="text/x-handlebars-template">
+      <div class="jumbotron results-list">
+        <h1>Results</h1>
+        <p class="lead">We found the following results; select one to view.</p>
+        <ul>
+          {{#each schools}}
+            <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}</button></li>
+          {{/each}}
+        </ul>
+      </div>
     </script>
-    <script src="js/vendor/jquery-ui/jquery-ui.js"></script> <!-- for autocomplete -->
-    <!-- script src="js/vendor/cartodb.js"></script-->
-    <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.12/cartodb.js"></script>
-    <script src="js/vendor/handlebars-v3.0.0.js"></script>
-    <script src="js/vendor/Leaflet.MakiMarkers.js"></script>
-    <script src="js/google_geocoder.js"></script>
-    <script src="js/map.js"></script>
-    <script src="js/school.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/query.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/app.js"></script>
+
+    <script id="map-template" type="text/x-handlebars-template">
+      <div class="cartodb-map" id="cartodb-map">
+      </div>
+    </script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
-    <script id="result-template" type="text/x-handlebars-template">
-      <div class="cartodb-map" id="cartodb-map-{{resultNumber}}">
-      </div>
+    <script id="school-info-template" type="text/x-handlebars-template">
 
       <div class="school-info">
 
@@ -244,5 +243,30 @@
       </div>
 
     </script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArZNZZBVUo35_M6KS7eiE35fIWTmutLpc&libraries=places">
+    </script>
+    <script src="js/vendor/jquery-ui/jquery-ui.js"></script> <!-- for autocomplete -->
+    <!-- script src="js/vendor/cartodb.js"></script-->
+    <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.12/cartodb.js"></script>
+    <script src="js/vendor/handlebars-v3.0.0.js"></script>
+    <script src="js/vendor/Leaflet.MakiMarkers.js"></script>
+    <script src="js/vendor/leaflet-easy-button.js"></script>
+    <script src="js/google_geocoder.js"></script>
+    <script src="js/models/school.js"></script>
+    <script src="js/collections/schools.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/query.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/views/mapview.js"></script>
+    <script src="js/views/listview.js"></script>
+    <script src="js/views/schoolview.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
   </body>
 </html>

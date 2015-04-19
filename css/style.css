@@ -50,15 +50,36 @@ a:hover .fa-stack-1x {
 }
 
 
+#map-container {
+ margin-top: 25em;
+}
+
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
 /* Results */
 #results-container {
 	margin-top: 25em;
+	margin-bottom: 100px;
 }
 
-.result {
-	margin-bottom: 100px;
+#list-container {
+}
+.results-list {
+	margin-top: 25em;
+}
+.results-list li {
+    list-style: none;
+}
+.results-list li.selected .btn {
+    font-weight: bold;
+    background-color: rgb(57, 172, 201);
+}
+
+.results-list .btn {
+    width: 100%;
+    text-align: left;
+    margin-bottom: .5em;
+    padding: 1em;
 }
 
 @media (min-width: 980px) { /* desktop and up */

@@ -155,7 +155,7 @@ app = app || {};
       }).join('');
     }
 
-    this.where("(s.type = '" + app.level + "' " + otherTypesExpression + ")");
+    this.where("(s.type = '" + type + "' " + otherTypesExpression + ")");
     return this;
   };
 

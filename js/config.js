@@ -23,15 +23,16 @@ app = app || {};
     // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
     // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
     // Color may also be set to null, which will result in a gray marker.
+    pickedIcon: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "l"}),
     resultIcon: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"}),
     nearbyIcon: L.MakiMarkers.icon({icon: "school", color: "#F5B4CC", size: "m", opacity: 0.5}),
     homeIcon:   L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"}),
   };
 
   app.config = {
-    maxRuralTravel: "105000" // maximum meters someone would travel to a rural school; used to find schools w/o catchments
+    maxRuralTravel: "105000", // maximum meters someone would travel to a rural school; used to find schools w/o catchments
+    showHomeHelpPopup: true // whether or not to show "Your location (draggable)" tooltip on map load
   };
-  app.showHomeHelpPopup = true;
 
 }());
 
