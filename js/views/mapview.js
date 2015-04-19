@@ -10,13 +10,26 @@ app = app || {};
 
   app.MapView = MapView;
 
-  MapView.filters = {
+  MapView.filtersSQL = {
     distance: "(s.distance_education IN ('null') OR distance_education IS NULL)",
     boys: "s.gender = 'boys'",
     girls: "s.gender = 'girls'",
     oshc: "s.oshc = true",
     difficult: "(s.opportunity_class = true OR s.selective_school IN ('Partially Selective', 'Fully Selective'))",
     specialty: "school_specialty_type NOT IN ('Comprehensive')",
+  };
+
+  var getFilterLabel = function (filter) {
+    if (filter === 'difficult') {
+      switch (app.level) {
+      case 'primary':
+        return 'Show only schools with opportunity classes.';
+      case 'secondary':
+        return 'Show only schools with a selective option.';
+      default:
+        return 'Show only selective or opportunity class schools';
+      }
+    }
   };
 
 
@@ -167,16 +180,15 @@ app = app || {};
   MapView.prototype.addFilters = function () {
 
     var that = this;
+    this.filterControls = {};
 
     L.easyButton('fa-ship',
       function () {
-        if (that.whereFilter === MapView.filters.distance) {
+        if (that.whereFilter === MapView.filtersSQL.distance) {
           that.whereFilter = undefined; // disable filter
         } else {
-          that.whereFilter = MapView.filters.distance;
+          that.whereFilter = MapView.filtersSQL.distance;
         }
-        // that.whereFilter = "s.distance_education = true";
-
         that.loadNearby();
       },
       'Show only distance-education options',
@@ -185,10 +197,10 @@ app = app || {};
 
     L.easyButton('fa-male',
       function () {
-        if (that.whereFilter === MapView.filters.boys) {
+        if (that.whereFilter === MapView.filtersSQL.boys) {
           that.whereFilter = undefined; // disable filter
         } else {
-          that.whereFilter = MapView.filters.boys;
+          that.whereFilter = MapView.filtersSQL.boys;
         }
         that.loadNearby();
       },
@@ -198,10 +210,10 @@ app = app || {};
 
     L.easyButton('fa-female',
       function () {
-        if (that.whereFilter === MapView.filters.girls) {
+        if (that.whereFilter === MapView.filtersSQL.girls) {
           that.whereFilter = undefined; // disable filter
         } else {
-          that.whereFilter = MapView.filters.girls;
+          that.whereFilter = MapView.filtersSQL.girls;
         }
         that.loadNearby();
       },
@@ -211,10 +223,10 @@ app = app || {};
 
     L.easyButton('fa-child',
       function () {
-        if (that.whereFilter === MapView.filters.oshc) {
+        if (that.whereFilter === MapView.filtersSQL.oshc) {
           that.whereFilter = undefined; // disable filter
         } else {
-          that.whereFilter = MapView.filters.oshc;
+          that.whereFilter = MapView.filtersSQL.oshc;
         }
         that.loadNearby();
       },
@@ -222,25 +234,25 @@ app = app || {};
       this.map
       );
 
-    L.easyButton('fa-bolt',
+    this.filterControls.difficult = L.easyButton('fa-bolt',
       function () {
-        if (that.whereFilter === MapView.filters.difficult) {
+        if (that.whereFilter === MapView.filtersSQL.difficult) {
           that.whereFilter = undefined; // disable filter
         } else {
-          that.whereFilter = MapView.filters.difficult;
+          that.whereFilter = MapView.filtersSQL.difficult;
         }
         that.loadNearby();
       },
-      'Show only selective or opportunity class schools',
+      getFilterLabel('difficult'),
       this.map
       );
 
     L.easyButton('fa-magic',
       function () {
-        if (that.whereFilter === MapView.filters.specialty) {
+        if (that.whereFilter === MapView.filtersSQL.specialty) {
           that.whereFilter = undefined; // disable filter
         } else {
-          that.whereFilter = MapView.filters.specialty;
+          that.whereFilter = MapView.filtersSQL.specialty;
         }
         that.loadNearby();
       },
@@ -383,6 +395,7 @@ app = app || {};
     } else {
       map = this.map;
       that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
+      this.filterControls.difficult.link.title = getFilterLabel('difficult');
     }
 
     // add result set to map
