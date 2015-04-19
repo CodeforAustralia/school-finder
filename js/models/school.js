@@ -12,6 +12,27 @@ app = app || {};
     _.extend(this, fields);
   };
 
+  // output of SELECT distinct(type) FROM dec_schools WHERE preschool IN (true)
+  var is_preschool_possible = function (type) {
+    return type === 'primary' || type === 'infants' || type === 'other' || type === 'central';
+  };
+
+  // output of SELECT distinct(type) FROM dec_schools WHERE oshc IN (true)
+  var is_opportunity_class_possible = function (type) {
+    return type === 'primary' || type === 'central';
+  };
+
+  // SELECT distinct(type) FROM dec_schools WHERE selective_school IN ('Partially Selective', 'Fully Selective')
+  var is_selective_possible = function (type) {
+    return type === 'secondary' || type === 'central';
+  };
+
+  // SELECT distinct(type) FROM dec_schools WHERE school_specialty_type NOT IN ('Comprehensive')
+  var is_specialty_possible = function (type) {
+    return type === 'secondary' || type === 'central';
+  };
+
+
   app.School.prototype.toTemplateContext = function (i) {
 
     var context = _.extend(this,
@@ -46,6 +67,11 @@ app = app || {};
 
           return "About " + app.util.roundToOne(dist / 1000) + " km";
         },
+        is_preschool_possible: is_preschool_possible(this.type),
+        is_opportunity_class_possible: is_opportunity_class_possible(this.type),
+        is_selective_possible: is_selective_possible(this.type),
+        is_specialty_possible: is_specialty_possible(this.type),
+
       });
 
     return context;
