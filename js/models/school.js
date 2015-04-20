@@ -63,7 +63,7 @@ app = app || {};
           var dist = userLatLng.distanceTo(schoolLatLng);
 
           // lookup distance along road network and insert it into page when the results come back.
-          app.calculateRouteDistance(this.latitude, this.longitude, '#result-' + i + ' .route-distance');
+          app.calculateRouteDistance(this.latitude, this.longitude, '#school-info-' + this.school_code + ' .route-distance');
 
           return "About " + app.util.roundToOne(dist / 1000) + " km";
         },
