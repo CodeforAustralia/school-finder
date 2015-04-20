@@ -25,8 +25,38 @@ app = app || {};
     // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
     // Color may also be set to null, which will result in a gray marker.
     pickedIcon: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "l"}),
+    pickedIcons: {
+      ssp: L.MakiMarkers.icon({icon: "school", color: "#279644", size: "l"}),
+      // TODO: that green looks like the active primary color for color blind people.
+      primary: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "l"}),
+      secondary: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "l"}),
+      central: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "l"}),
+      infants: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
+      environmental: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
+      other: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
+    },
     resultIcon: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"}),
+    resultIcons: {
+      ssp: L.MakiMarkers.icon({icon: "school", color: "#279644", size: "m"}),
+      // TODO: that green looks like the active primary color for color blind people.
+      primary: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"}),
+      secondary: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "m"}),
+      central: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "m"}),
+      infants: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
+      environmental: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
+      other: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
+    },
     nearbyIcon: L.MakiMarkers.icon({icon: "school", color: "#F5B4CC", size: "m", opacity: 0.5}),
+    nearbyIcons: {
+      ssp: L.MakiMarkers.icon({icon: "school", color: "#6ba87b", size: "m", opacity: 0.5}),
+      // TODO: that green looks like the active primary color for color blind people.
+      primary: L.MakiMarkers.icon({icon: "school", color: "#F5B4CC", size: "m", opacity: 0.5}),
+      secondary: L.MakiMarkers.icon({icon: "school", color: "#DA99E3", size: "m", opacity: 0.5}),
+      central: L.MakiMarkers.icon({icon: "school", color: "#DA99E3", size: "m", opacity: 0.5}),
+      infants: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
+      environmental: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
+      other: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
+    },
     homeIcon:   L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"}),
   };
 
