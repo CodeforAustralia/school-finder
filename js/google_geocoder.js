@@ -81,7 +81,7 @@ function callBacker(selector) {
 
 
 // calculate distance from user's location to specified location
-app.calculateRouteDistance = function (lat, lng, elSelector) {
+app.calculateRouteDistanceToUser = function (lat, lng, elSelector) {
   var service = new google.maps.DistanceMatrixService();
 
   var origin1 = new google.maps.LatLng(app.lat, app.lng);

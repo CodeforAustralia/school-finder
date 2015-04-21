@@ -162,7 +162,7 @@
         <p class="lead">We found the following results; select one to view.</p>
         <ul>
           {{#each schools}}
-            <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}</button></li>
+            <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}{{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}</button></li>
           {{/each}}
         </ul>
       </div>
@@ -193,7 +193,8 @@
           <ul class="school-details col-md-6">
 
               {{#if distance}}
-                <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data">{{distance}} as the crow flies</span><span class="route-distance"></span></p></li>
+                <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data">About {{distance}} km as the crow flies</span><span class="route-distance"></span></p></li>
+
               {{/if}}
 
               <li class="school-address"><span class="field-label">Contact: </span><br><span class="field-data"><abbr title="{{street}}, {{town_suburb}} NSW {{postcode}}">{{street}}, {{town_suburb}}</abbr> <a href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>

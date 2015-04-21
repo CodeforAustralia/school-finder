@@ -25,6 +25,9 @@ app = app || {};
         return {
           school_name: school.school_name,
           school_code: school.school_code,
+          distance: function () {
+            return school.distanceToUser();
+          },
           selected: school.school_code === that.selected_school
         };
       }),
