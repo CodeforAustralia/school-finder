@@ -184,6 +184,10 @@
           {{school_name}}
         </div>
 
+        {{#if closed}}
+        <div class="alert alert-warning" role="alert">This school is currently closed due to severe weather.</div>
+        {{/if}}
+
         <div class="school-details-container row">
 
           <div class="school-description col-md-6">
@@ -264,6 +268,7 @@
     <script src="js/vendor/handlebars-v3.0.0.js"></script>
     <script src="js/vendor/Leaflet.MakiMarkers.js"></script>
     <script src="js/vendor/leaflet-easy-button.js"></script>
+    <script src="js/vendor/lodash.min.js"></script>
     <script src="js/google_geocoder.js"></script>
     <script src="js/models/school.js"></script>
     <script src="js/collections/schools.js"></script>
