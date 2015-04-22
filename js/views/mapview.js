@@ -301,6 +301,9 @@ app = app || {};
       var southWest = L.latLng(school.latitude, school.longitude);
       var northEast = L.latLng(app.lat, app.lng);
       this.map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
+    } else {
+      // no school catchment & no user location, so just zoom to the school's location
+      this.map.panTo([school.latitude, school.longitude]);
     }
   };
 
