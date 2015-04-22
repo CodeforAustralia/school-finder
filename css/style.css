@@ -171,6 +171,10 @@ ul.school-details {
 	margin-left: 0.5em;
 }
 
+.school-details .school-support li {
+	margin-left: 2em;
+}
+
 .school-details li {
 	line-height: 1.75em;
 }

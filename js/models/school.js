@@ -75,6 +75,9 @@ app = app || {};
         is_opportunity_class_possible: is_opportunity_class_possible(this.type),
         is_selective_possible: is_selective_possible(this.type),
         is_specialty_possible: is_specialty_possible(this.type),
+        support_offered: this.support_ids ? _.map(this.support_ids, function (id) {
+          return app.supports[id];
+        }) : false,
 
       });
 
