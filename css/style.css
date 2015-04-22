@@ -101,6 +101,15 @@ a:hover .fa-stack-1x {
     padding: 1em;
 }
 
+.results-list .school-distance {
+	float: right;
+	font-weight: lighter;
+}
+
+.results-list .selected .school-distance {
+	font-weight: normal;
+}
+
 @media (min-width: 980px) { /* desktop and up */
 	.school-details-container {
 		margin-right: 0px;

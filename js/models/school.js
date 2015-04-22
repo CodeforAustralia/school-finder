@@ -33,6 +33,22 @@ app = app || {};
   };
 
 
+  // return approx distance (km rounded to nearest tenths) from this school to the user,
+  // or nothing if user location is unset
+  app.School.prototype.distanceToUser = function () {
+
+    // We don't always have a user location
+    // (e.g. if searching for a specific school)
+    // That's OK, return nothing in that case.
+    if (!app.lat || !app.lng) { return; }
+
+    var userLatLng = new L.latLng(app.lat, app.lng);
+    var schoolLatLng = new L.latLng(this.latitude, this.longitude);
+    var meters = userLatLng.distanceTo(schoolLatLng);
+
+    return app.util.roundToOne(meters / 1000);
+  };
+
   app.School.prototype.toTemplateContext = function (i) {
 
     var context = _.extend(this,
@@ -53,19 +69,7 @@ app = app || {};
         homeLat: app.lat,
         homeLng: app.lng,
         distance: function () {
-          // We don't always have a user location
-          // (e.g. if searching for a specific school)
-          // That's OK, return nothing in that case.
-          if (!app.lat || !app.lng) { return; }
-
-          var userLatLng = new L.latLng(app.lat, app.lng);
-          var schoolLatLng = new L.latLng(this.latitude, this.longitude);
-          var dist = userLatLng.distanceTo(schoolLatLng);
-
-          // lookup distance along road network and insert it into page when the results come back.
-          app.calculateRouteDistance(this.latitude, this.longitude, '#school-info-' + this.school_code + ' .route-distance');
-
-          return "About " + app.util.roundToOne(dist / 1000) + " km";
+          return this.distanceToUser();
         },
         is_preschool_possible: is_preschool_possible(this.type),
         is_opportunity_class_possible: is_opportunity_class_possible(this.type),
