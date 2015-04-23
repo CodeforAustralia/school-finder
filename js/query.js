@@ -230,9 +230,15 @@ app = app || {};
       whereCondition += ' AND ' + this.whereConditions.join(' AND ');
     }
 
+    // app.needs_support = true;
+    var supportField = "";
+    if (app.needs_support) {
+      supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";
+    }
+
     // build query
     query =
-      "SELECT s.*, b.shape_area " + otherFields + " " +
+      "SELECT s.*, b.shape_area " + supportField + otherFields + " " +
       "FROM " + app.db.points + " AS s " + joinSubtype + " " +
       "JOIN " + app.db.polygons + " AS b " +
       "ON s.school_code = b.school_code " +
