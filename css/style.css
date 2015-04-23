@@ -212,7 +212,7 @@ ul.school-details {
 	margin-bottom: 1em;
 }
 
-.block-address {
+.block-address, .block-support {
 	display: none;
 }
 
@@ -241,12 +241,12 @@ ul.school-details {
 	background-color: rgba(255, 255, 255, 0.9);
 }
 
-.block-intro .btn.school-level {
+.block-intro .btn.school-level, .block-support .btn {
 	margin-bottom: 0.5em; /* vertically separate buttons on narrow screens */
 	width: 100%;
 }
 @media (min-width: 570px) { /* breaks at < 570px */
-	.block-intro .btn.school-level {
+	.block-intro .btn.school-level, .block-support .btn {
 		width: 42%; /* Make school level buttons equal width */
 	}
 }
