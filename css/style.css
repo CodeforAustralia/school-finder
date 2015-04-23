@@ -2,7 +2,7 @@ html, body {width:100%; height:100%; padding: 0; margin: 0;}
 body { background-color: #39acc9; color: #3e3e3e; }
 .header h3 {color: #f7f6f6;}
 
-.container .jumbotron { background-color: #f7f6f6; border-radius: 0px;}
+.container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
 .btn {
 	border: none;
 	border-radius: 0px;
@@ -77,14 +77,10 @@ a:hover .fa-stack-1x {
 
 /* Results */
 #results-container {
-	margin-top: 25em;
 	margin-bottom: 100px;
 }
 
 #list-container {
-}
-.results-list {
-	margin-top: 25em;
 }
 .results-list li {
     list-style: none;
@@ -218,7 +214,6 @@ ul.school-details {
 
 .block-address {
 	display: none;
-	margin-top: 25em;
 }
 
 
