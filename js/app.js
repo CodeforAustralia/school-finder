@@ -103,6 +103,17 @@ app = app || {};
       e.preventDefault();
       app.level = e.data.level;
       // jump to the address search
+      $(".block-support").show();
+      // $(".block-address").show();
+      $('html, body').animate({
+        scrollTop: $(".block-support").offset().top - 100 //HACK to center in window.
+      }, 500);
+    };
+
+    var clickSupport = function (e) {
+      e.preventDefault();
+      app.needs_support = $(this).data('support');
+
       $(".block-address").show();
       $('html, body').animate({
         scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
@@ -112,6 +123,8 @@ app = app || {};
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
+
+    $(".block-support .btn").click(clickSupport);
 
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
