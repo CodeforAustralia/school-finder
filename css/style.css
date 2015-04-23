@@ -167,6 +167,9 @@ ul.school-details {
 	margin-left: 0.5em;
 }
 
+.jumbotron h1 {
+	font-weight: lighter;
+}
 .school-details .school-support li {
 	margin-left: 2em;
 }
