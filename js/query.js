@@ -234,6 +234,7 @@ app = app || {};
     var supportField = "";
     if (app.needs_support) {
       supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";
+      whereCondition += ' AND s.school_code IN (SELECT school_code FROM support_classes)';
     }
 
     // build query
