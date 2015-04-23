@@ -244,12 +244,51 @@ ul.school-details {
 	background-color: rgba(255, 255, 255, 0.9);
 }
 
-.block-intro .btn.school-level, .block-support .btn {
+.block-support .btn-yes {
+	width: 70%;
+}
+.block-support .btn.dropdown-toggle {
+	width: 30%;
+	border-left: 2px solid;
+}
+.block-support ul.dropdown-menu {
+    background: rgb(215, 45, 108);
+    width: 100%;
+    border: 1px solid rgb(57, 172, 201);
+    padding-bottom: 0;
+    padding-top: 0;
+    border: 2px solid white;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-top: 0;
+    margin-top: 1px;
+}
+.block-support ul.dropdown-menu li a {
+	color: rgb(247, 246, 246);
+	font-size: 21px;
+	/* margin-top: 2px; */
+	border-top: 2px solid white;
+	padding-top: .5em;
+	padding-bottom: .5em;
+}
+.block-support ul.dropdown-menu li a:hover,
+.block-support ul.dropdown-menu li a:active,
+.block-support ul.dropdown-menu li a:focus {
+	/*background: rgb(129, 35, 70);*/
+	background: rgb(57, 172, 201);
+}
+.caret {
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    border-top: 7px solid;
+}
+
+.block-intro .btn.school-level, .block-support .btn-no, .block-support .btn-group {
 	margin-bottom: 0.5em; /* vertically separate buttons on narrow screens */
 	width: 100%;
 }
 @media (min-width: 570px) { /* breaks at < 570px */
-	.block-intro .btn.school-level, .block-support .btn {
+	.block-intro .btn.school-level, .block-support .btn-no, .block-support .btn-group {
 		width: 42%; /* Make school level buttons equal width */
 	}
 }

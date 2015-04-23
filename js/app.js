@@ -124,7 +124,7 @@ app = app || {};
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
 
-    $(".block-support .btn").click(clickSupport);
+    $(".block-support .btn-yes").click(clickSupport);
 
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
