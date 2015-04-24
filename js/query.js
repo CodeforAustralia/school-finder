@@ -233,8 +233,10 @@ app = app || {};
     // app.needs_support = true;
     var supportField = "";
     if (app.needs_support) {
+      var support_id = _.find(app.supports, function (s) { return s.shortcode === app.support; });
+      support_id = support_id.id;
       supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";
-      whereCondition += ' AND s.school_code IN (SELECT school_code FROM support_classes)';
+      whereCondition += ' AND s.school_code IN (SELECT school_code FROM support_classes WHERE scdefid = ' + support_id + ')';
     }
 
     // build query

@@ -112,7 +112,12 @@ app = app || {};
 
     var clickSupport = function (e) {
       e.preventDefault();
-      app.needs_support = $(this).data('support');
+      var support_option = $(this).closest('.block-support').find('option:selected').val();
+
+      app.needs_support = !(support_option === 'no');
+      if (app.needs_support) {
+        app.support = support_option;
+      }
 
       $(".block-address").show();
       $('html, body').animate({
@@ -124,7 +129,7 @@ app = app || {};
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
 
-    $(".block-support .btn").click(clickSupport);
+    $(".block-support .search").click(clickSupport);
 
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results

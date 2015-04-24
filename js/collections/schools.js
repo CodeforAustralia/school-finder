@@ -31,6 +31,7 @@ app = app || {};
           selected: school.school_code === that.selected_school
         };
       }),
+      needs_support: app.needs_support,
     };
 
     return context;
