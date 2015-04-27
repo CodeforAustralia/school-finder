@@ -13,8 +13,10 @@ app = app || {};
   Schools.prototype.update = function (rows) {
     // store the new rows
     this.schools = [];
-    this.schools = _.map(rows, function (row) { return new app.School(row); });
-    this.select(this.schools[0].school_code);
+    if (rows && rows.length > 0) {
+      this.schools = _.map(rows, function (row) { return new app.School(row); });
+      this.select(this.schools[0].school_code);
+    }
   };
 
   Schools.prototype.toTemplateContext = function () {

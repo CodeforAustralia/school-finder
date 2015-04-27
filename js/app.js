@@ -12,9 +12,10 @@ app = app || {};
   app.schoolView = new app.SchoolView(); // info area for one school
   app.mapView = new app.MapView(); // map of results and surrounding schools
 
-
   var updateUI = function (rows) {
     app.schools.update(rows);
+
+    if (!rows || rows.length < 1) { return; }
 
     app.listView.update(app.schools);
     app.mapView.update(app.schools);

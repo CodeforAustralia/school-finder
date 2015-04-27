@@ -64,7 +64,7 @@ app = app || {};
 
   MapView.prototype.render = function () {
 
-    if (!this.schools) { return; } /* must update() w/ school list before rendering */
+    if (!this.schools || this.schools.schools.length < 1) { return; } /* must update() w/ school list before rendering */
 
     if (!this.rendered) {
 
