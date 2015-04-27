@@ -4,7 +4,8 @@ body { background-color: #39acc9; color: #3e3e3e;
 }
 .header h3 {color: #f7f6f6;
 	font-family: 'Pacifico', 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
-
+	margin-top: 0.5em;
+	padding-bottom: 0px;
 }
 
 .container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
