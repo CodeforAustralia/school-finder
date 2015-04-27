@@ -88,6 +88,12 @@ app = app || {};
           console.log(data);
           if (data.rows.length < 1) {
             app.ui.resetSearchBtns();
+
+            // populate modal, then show it
+            var html = app.modalNoResultsTemplate({needs_support: app.needs_support});
+            var $el = $('#modal-container');
+            $el.empty();
+            $el.append(html);
             $('#noResultsForAddressModal').modal();
           }
           updateUI(data.rows);
@@ -100,6 +106,8 @@ app = app || {};
 
 
   $(document).ready(function () {
+
+    app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
 
     var clickSchoolType = function (e) {
       e.preventDefault();
