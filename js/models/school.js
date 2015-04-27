@@ -7,14 +7,6 @@ app = app || {};
     return field ? "Yes" : "No";
   });
 
-  Handlebars.registerHelper('support_description', function () {
-    var support_wanted = _.find(app.supports, function (s) { return s.shortcode === app.support; });
-    if (support_wanted) {
-      return support_wanted.long_description;
-    }
-    return "";
-  });
-
   /* create a new School. */
   app.School = function (fields) {
     _.extend(this, fields);

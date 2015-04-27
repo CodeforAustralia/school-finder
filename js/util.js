@@ -4,6 +4,14 @@ app.util = app.util || {};
 
 (function () {
 
+  Handlebars.registerHelper('support_description', function () {
+    var support_wanted = _.find(app.supports, function (s) { return s.shortcode === app.support; });
+    if (support_wanted) {
+      return support_wanted.long_description;
+    }
+    return "";
+  });
+
   String.prototype.capitalize = String.prototype.capitalize || function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
   };
