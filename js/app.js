@@ -123,6 +123,13 @@ app = app || {};
       app.level = e.data.level;
       // jump to the address search
       $(".block-support").show();
+
+      if (!app.support_needed && app.support_needed_previously) {
+        app.support = app.support_previously;
+        app.support_needed = app.support_needed_previously;
+        $('.block-support select').val(app.support);
+      }
+
       // $(".block-address").show();
       $('html, body').animate({
         scrollTop: $(".block-support").offset().top - 100 //HACK to center in window.
@@ -133,9 +140,9 @@ app = app || {};
       e.preventDefault();
       var support_option = $(this).closest('.block-support').find('option:selected').val();
 
-      app.support_needed = !(support_option === 'no');
+      app.support_needed = app.support_needed_previously = !(support_option === 'no');
       if (app.support_needed) {
-        app.support = support_option;
+        app.support = app.support_previously = support_option;
       }
 
       $(".block-address").show();
