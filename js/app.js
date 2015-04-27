@@ -90,15 +90,15 @@ app = app || {};
             app.ui.resetSearchBtns();
 
             // populate modal, then show it
-            var html = app.modalNoResultsTemplate({needs_support: app.needs_support});
+            var html = app.modalNoResultsTemplate({support_needed: app.support_needed});
             var $el = $('#modal-container');
             $el.empty();
             $el.append(html);
             $('#noResultsForAddressModal').modal();
             $('#noResultsForAddressModal').on('hidden.bs.modal', function () {
-              if (app.needs_support) {
+              if (app.support_needed) {
                 console.log('searching again, this time sans support');
-                app.needs_support = false;
+                app.support_needed = false;
                 $('.block-support select').val('no');
                 $("#button-search-address").click();
               }
@@ -132,8 +132,8 @@ app = app || {};
       e.preventDefault();
       var support_option = $(this).closest('.block-support').find('option:selected').val();
 
-      app.needs_support = !(support_option === 'no');
-      if (app.needs_support) {
+      app.support_needed = !(support_option === 'no');
+      if (app.support_needed) {
         app.support = support_option;
       }
 

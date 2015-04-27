@@ -231,7 +231,7 @@ app = app || {};
     }
 
     var supportField = "";
-    if (app.needs_support) {
+    if (app.support_needed) {
       var support_id = _.find(app.supports, function (s) { return s.shortcode === app.support; });
       support_id = support_id.id;
       supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";
