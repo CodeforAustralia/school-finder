@@ -230,7 +230,6 @@ app = app || {};
       whereCondition += ' AND ' + this.whereConditions.join(' AND ');
     }
 
-    // app.needs_support = true;
     var supportField = "";
     if (app.needs_support) {
       var support_id = _.find(app.supports, function (s) { return s.shortcode === app.support; });
