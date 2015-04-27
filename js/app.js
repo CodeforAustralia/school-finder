@@ -78,9 +78,10 @@ app = app || {};
     q.run(function (data) {
       if (data.rows.length < 1) {
         // this location isn't within any catchment area.
-        // Try searching for schools within 100 KM, X nearest (where X is default from app.Query).
+        // Try searching for schools within a distance of searchRadius, returning
+        // the nearest X results (where X is default from app.Query).
         var q2 = new app.Query();
-        q2.byDistance(lat, lng, 100 * 1000); /* 100 * 1000 m = 100 km */
+        q2.byDistance(lat, lng, app.config.searchRadius);
         q2.setSchoolType(app.level);
         q2.run(function (data) {
           console.log(data);

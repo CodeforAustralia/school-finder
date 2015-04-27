@@ -61,7 +61,7 @@ app = app || {};
   };
 
   app.config = {
-    maxRuralTravel: "105000", // maximum meters someone would travel to a rural school; used to find schools w/o catchments
+    searchRadius: 105 * 1000, // maximum meters someone would travel to a rural or special school if their local school doesn't work... 
     showHomeHelpPopup: true // whether or not to show "Your location (draggable)" tooltip on map load
   };
 
