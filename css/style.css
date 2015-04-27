@@ -27,7 +27,7 @@ body { background-color: #39acc9; color: #3e3e3e;
 	background-color: grey;
 }
 .footer { margin-bottom: 1.5em; }
-.footer p {color: #f7f6f6;}
+.footer p {color: #f7f6f6; font-weight: lighter; }
 .footer a {color: #f7f6f6; font-weight: bold;}
 .footer a:hover {  text-decoration: none; border-bottom: 1px solid; }
 .footer .fa-inverse {color:  #76BFD1;}
