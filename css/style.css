@@ -7,6 +7,9 @@ body { background-color: #39acc9; color: #3e3e3e;
 	margin-top: 0.5em;
 	padding-bottom: 0px;
 }
+.header .sitename {
+	text-shadow: 0px 0px 1px rgb(55, 90, 99);
+}
 .org-logo img {
 	height: 28px;
 	vertical-align: baseline;
