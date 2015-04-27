@@ -159,6 +159,10 @@ app = app || {};
     return this;
   };
 
+  Query.prototype.setSupport = function (support) {
+    this.support = support;
+  };
+
   Query.prototype.byCatchment = function (lat, lng) {
     this.queryBy = 'catchment';
     this.lat = lat;
@@ -231,7 +235,7 @@ app = app || {};
     }
 
     var supportField = "";
-    if (app.support_needed) {
+    if (this.support) {
       var support_id = _.find(app.supports, function (s) { return s.shortcode === app.support; });
       support_id = support_id.id;
       supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";

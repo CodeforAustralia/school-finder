@@ -75,7 +75,7 @@ app = app || {};
     // one for primary level, one for secondary level.
     // See: SELECT * FROM dec_schools as s WHERE (SELECT count(*) from catchments WHERE school_code = s.school_code) > 1
     // So we have to check school_type on the *catchment*, not level_of_schooling on the *school*.
-    q.byCatchment(lat, lng).addFilter("catchment_level", app.level);
+    q.byCatchment(lat, lng).addFilter("catchment_level", app.level).setSupport(app.support_needed);
     q.run(function (data) {
       if (data.rows.length < 1) {
         // this location isn't within any catchment area.
@@ -84,6 +84,7 @@ app = app || {};
         var q2 = new app.Query();
         q2.byDistance(lat, lng, app.config.searchRadius);
         q2.setSchoolType(app.level);
+        q2.setSupport(app.support_needed);
         q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
