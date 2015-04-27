@@ -166,7 +166,7 @@ app = app || {};
     return this;
   };
 
-  Query.prototype.byDistance = function (lat, lng, distanceInMeters) { // maxRuralTravel
+  Query.prototype.byDistance = function (lat, lng, distanceInMeters) {
     this.queryBy = 'distance';
     this.radius = distanceInMeters;
     this.lat = lat;
