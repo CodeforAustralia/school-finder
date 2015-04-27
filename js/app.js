@@ -157,6 +157,9 @@ app = app || {};
 
     $("#button-search-name").click(app.ui.searchBtnFunction(function (inputText) {
       $('.block-address').hide();
+      app.support_needed = false;
+      app.support = 'no';
+      $('.block-support').hide();
       app.findByName(inputText);
     }));
 
