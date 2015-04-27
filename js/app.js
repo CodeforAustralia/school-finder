@@ -95,6 +95,14 @@ app = app || {};
             $el.empty();
             $el.append(html);
             $('#noResultsForAddressModal').modal();
+            $('#noResultsForAddressModal').on('hidden.bs.modal', function () {
+              if (app.needs_support) {
+                console.log('searching again, this time sans support');
+                app.needs_support = false;
+                $('.block-support select').val('no');
+                $("#button-search-address").click();
+              }
+            });
           }
           updateUI(data.rows);
         });
