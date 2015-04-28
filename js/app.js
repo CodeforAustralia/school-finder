@@ -78,7 +78,8 @@ app = app || {};
     q.byCatchment(lat, lng).addFilter("catchment_level", app.level).setSupport(app.support_needed);
     q.run(function (data) {
       if (data.rows.length < 1) {
-        // this location isn't within any catchment area.
+        // this location isn't within any catchment area
+        // (or w/in a catchment area of a school providing the support needed)
         // Try searching for schools within a distance of searchRadius, returning
         // the nearest X results (where X is default from app.Query).
         var q2 = new app.Query();
