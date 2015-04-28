@@ -44,6 +44,7 @@ app = app || {};
 
     // Find schools by name
     var q = new app.Query();
+    app.activeQuery = q;
     q.byName(name).run(function (data) {
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
@@ -71,6 +72,7 @@ app = app || {};
 
     // Find schools whose catchment area serves a specific point
     var q = new app.Query();
+    app.activeQuery = q;
     // Sometimes a single school will have multiple catchment areas,
     // one for primary level, one for secondary level.
     // See: SELECT * FROM dec_schools as s WHERE (SELECT count(*) from catchments WHERE school_code = s.school_code) > 1
@@ -87,6 +89,7 @@ app = app || {};
           types.push('ssp');
         }
         var q2 = new app.Query();
+        app.activeQuery = q2;
         q2.byDistance(lat, lng, app.config.searchRadius).setLimit(app.config.nearbyLimit);
         q2.setSupport(app.support_needed);
         q2.setSchoolType(types);

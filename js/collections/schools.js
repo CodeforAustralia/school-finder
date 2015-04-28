@@ -34,6 +34,7 @@ app = app || {};
         };
       }),
       support_needed: app.support_needed,
+      search_by_distance: app.activeQuery.queryBy === 'distance',
     };
 
     return context;

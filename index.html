@@ -194,7 +194,7 @@
     <script id="result-list-template" type="text/x-handlebars-template">
       <div class="jumbotron results-list">
         <h1>Results</h1>
-        <p class="lead">We found the following results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
+        <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
         <ul>
           {{#each schools}}
             <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}{{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}</button></li>
