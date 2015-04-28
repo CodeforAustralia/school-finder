@@ -429,6 +429,11 @@ app = app || {};
         .on('click', that.clickResultSchool(resultSchool))
         .on('mouseover', MapView.onMouseOverOut, that)
         .on('mouseout', MapView.onMouseOverOut, that);
+
+      if (resultSchool === school) {
+        that.selectedMarker = marker;
+      }
+
       markers.push(marker);
     });
 
@@ -440,6 +445,7 @@ app = app || {};
 
     // pan + zoom to the selected results
     this.fitBounds();
+    this.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
   };
 
 }());
