@@ -161,6 +161,7 @@ app = app || {};
 
   Query.prototype.setSupport = function (support) {
     this.support = support;
+    return this;
   };
 
   Query.prototype.byCatchment = function (lat, lng) {
