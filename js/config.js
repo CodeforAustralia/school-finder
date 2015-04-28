@@ -62,7 +62,6 @@ app = app || {};
 
   app.config = {
     searchRadius: 105 * 1000, // maximum distance (meters) someone would be expected to travel to any school before we suggest distance schools
-    showHomeHelpPopup: true // whether or not to show "Your location (draggable)" tooltip on map load
   };
 
   app.supports = [
