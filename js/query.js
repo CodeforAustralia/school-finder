@@ -213,7 +213,7 @@ app = app || {};
       joinSubtype = "LEFT OUTER";
       otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
       whereCondition = "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) < " + this.radius;
-      orderBy = "ORDER BY dist ASC LIMIT 5";
+      orderBy = "ORDER BY dist ASC";
 
     } else if (this.queryBy === 'bounds') {
 

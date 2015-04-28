@@ -87,7 +87,7 @@ app = app || {};
           types.push('ssp');
         }
         var q2 = new app.Query();
-        q2.byDistance(lat, lng, app.config.searchRadius);
+        q2.byDistance(lat, lng, app.config.searchRadius).setLimit(app.config.nearbyLimit);
         q2.setSupport(app.support_needed);
         q2.setSchoolType(types);
         q2.run(function (data) {
