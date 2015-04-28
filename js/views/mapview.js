@@ -130,15 +130,25 @@ app = app || {};
       var marker = e.target;
       marker.openPopup();
 
+      if (that.selectedMarker === marker) {
+        return; // nothing to do
+      }
+
       that.selectedMarker = marker;
 
       // select that school from the list
       app.schools.select(school.school_code);
 
       // update the UI
-      app.listView.update(app.schools);
+      app.listView.update();
+      app.schoolView.update(app.schools.selected());
+
+      if (that.activeResultMarker === marker) {
+        // reselected already-shown result school; nothing to do
+        return;
+      }
+
       app.mapView.update(app.schools);
-      app.schoolView.update(app.schools);
 
       app.ui.scrollTo('.cartodb-map');
     };
@@ -432,6 +442,7 @@ app = app || {};
 
       if (resultSchool === school) {
         that.selectedMarker = marker;
+        that.activeResultMarker = marker;
       }
 
       markers.push(marker);
