@@ -82,10 +82,14 @@ app = app || {};
         // (or w/in a catchment area of a school providing the support needed)
         // Try searching for schools within a distance of searchRadius, returning
         // the nearest X results (where X is default from app.Query).
+        var types = [app.level];
+        if (app.support_needed) {
+          types.push('ssp');
+        }
         var q2 = new app.Query();
         q2.byDistance(lat, lng, app.config.searchRadius);
-        q2.setSchoolType(app.level);
         q2.setSupport(app.support_needed);
+        q2.setSchoolType(types);
         q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
