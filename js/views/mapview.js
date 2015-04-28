@@ -205,7 +205,6 @@ app = app || {};
       console.log(data);
       var markers = [];
       data.rows.forEach(function (row) {
-        // var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
         var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcons[row.type]})
           // note we're using a bigger offset on the popup to reduce flickering;
           // since we hide the popup on mouseout, if the popup is too close to the marker,
@@ -421,10 +420,8 @@ app = app || {};
     this.schools.schools.forEach(function (resultSchool) {
       var icon;
       if (resultSchool === school) { // a result that's also the currently selected school
-        // icon = app.geo.pickedIcon;
         icon = app.geo.pickedIcons[school.type];
       } else {
-        // icon = app.geo.resultIcon;
         icon = app.geo.resultIcons[school.type];
       }
       var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
