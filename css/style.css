@@ -114,6 +114,9 @@ a:hover .fa-stack-1x {
 	float: right;
 	font-weight: lighter;
 }
+.jumbotron p {
+	color: black;
+}
 
 .results-list .selected .school-distance {
 	font-weight: normal;
