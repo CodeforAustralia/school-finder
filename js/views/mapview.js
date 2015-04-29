@@ -426,9 +426,9 @@ app = app || {};
     this.schools.schools.forEach(function (resultSchool) {
       var icon;
       if (resultSchool === school) { // a result that's also the currently selected school
-        icon = app.geo.pickedIcons[school.type];
+        icon = app.geo.pickedIcons[resultSchool.type];
       } else {
-        icon = app.geo.resultIcons[school.type];
+        icon = app.geo.resultIcons[resultSchool.type];
       }
       var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
         // note we're using a bigger offset on the popup to reduce flickering;
