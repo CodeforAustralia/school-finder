@@ -185,7 +185,7 @@ ul.school-details {
 }
 
 .jumbotron h1 {
-	font-weight: lighter;
+	font-weight: inherit;
 }
 .school-details .school-support li {
 	margin-left: 2em;
