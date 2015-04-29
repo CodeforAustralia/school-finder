@@ -37,8 +37,11 @@ app = app || {};
     this.$el.append(html);
 
     this.$el.find(".btn").click(function (e) {
+      var el = $(this);
+      e.preventDefault();
+
       // determine the school of interest
-      var school_code = $(e.target).data('school-code');
+      var school_code = el.data('school-code');
 
       // select that school from the list
       app.schools.select(school_code);

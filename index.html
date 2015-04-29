@@ -197,7 +197,19 @@
         <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
         <ul>
           {{#each schools}}
-            <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}{{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}</button></li>
+            <li {{#if selected}} class="selected" {{/if}}>
+              <a class="btn" type="button" data-school-code="{{school_code}}">
+                <div>
+                  {{school_name}}
+                  {{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}
+                </div>
+                {{#if support_needed}}
+                <div class="school-type">
+                  {{level_of_schooling}}
+                </div>
+                {{/if}}
+              </a>
+            </li>
           {{/each}}
         </ul>
       </div>
