@@ -55,9 +55,6 @@ app = app || {};
       {
         resultNumber: i,
         website: this.website.replace("http://", ""),
-        level: function () {
-          return app.level ? app.level.capitalize() : 'School';
-        },
         grades: this.subtype,
         established: function () {
           // try to return something human friendly if we can parse date.
