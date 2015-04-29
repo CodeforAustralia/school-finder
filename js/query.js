@@ -159,6 +159,11 @@ app = app || {};
     return this;
   };
 
+  Query.prototype.setSupport = function (support) {
+    this.support = support;
+    return this;
+  };
+
   Query.prototype.byCatchment = function (lat, lng) {
     this.queryBy = 'catchment';
     this.lat = lat;
@@ -166,7 +171,7 @@ app = app || {};
     return this;
   };
 
-  Query.prototype.byDistance = function (lat, lng, distanceInMeters) { // maxRuralTravel
+  Query.prototype.byDistance = function (lat, lng, distanceInMeters) {
     this.queryBy = 'distance';
     this.radius = distanceInMeters;
     this.lat = lat;
@@ -208,7 +213,7 @@ app = app || {};
       joinSubtype = "LEFT OUTER";
       otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
       whereCondition = "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) < " + this.radius;
-      orderBy = "ORDER BY dist ASC LIMIT 5";
+      orderBy = "ORDER BY dist ASC";
 
     } else if (this.queryBy === 'bounds') {
 
@@ -230,9 +235,17 @@ app = app || {};
       whereCondition += ' AND ' + this.whereConditions.join(' AND ');
     }
 
+    var supportField = "";
+    if (this.support) {
+      var support_id = _.find(app.supports, function (s) { return s.shortcode === app.support; });
+      support_id = support_id.id;
+      supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";
+      whereCondition += ' AND s.school_code IN (SELECT school_code FROM support_classes WHERE scdefid = ' + support_id + ')';
+    }
+
     // build query
     query =
-      "SELECT s.*, b.shape_area " + otherFields + " " +
+      "SELECT s.*, b.shape_area " + supportField + otherFields + " " +
       "FROM " + app.db.points + " AS s " + joinSubtype + " " +
       "JOIN " + app.db.polygons + " AS b " +
       "ON s.school_code = b.school_code " +

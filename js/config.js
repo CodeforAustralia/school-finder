@@ -61,9 +61,24 @@ app = app || {};
   };
 
   app.config = {
-    maxRuralTravel: "105000", // maximum meters someone would travel to a rural school; used to find schools w/o catchments
-    showHomeHelpPopup: true // whether or not to show "Your location (draggable)" tooltip on map load
+    searchRadius: 105 * 1000, // maximum distance (meters) someone would be expected to travel to any school before we suggest distance schools
+    nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
   };
+
+  app.supports = [
+    { id: 0, shortcode: "ignoreme" },
+    { id: 1, shortcode: "AU", filter: "Autism", long_description: "students with autism"},
+    { id: 2, shortcode: "BD", filter: "Behaviour disorder", long_description: "students with behaviour disorder"},
+    { id: 3, shortcode: "DB", filter: "Deaf or blind", long_description: "students with deafness or hearing impairment and blindness or vision impairment"},
+    { id: 4, shortcode: "EI", filter: "Early intervention", long_description: "students with early intervention support needs"},
+    { id: 5, shortcode: "ED", filter: "Emotional disturbance", long_description: "students with emotional disturbance"},
+    { id: 6, shortcode: "H", filter: "Hearing impairment", long_description: "students with deafness or hearing impairment"},
+    { id: 7, shortcode: "ID", filter: "Intellectual disability", long_description: "students with intellectual disability"},
+    { id: 8, shortcode: "Multicategorical", filter: "Multicategorical", long_description: "students with a range of disabilities with similar support needs"},
+    { id: 9, shortcode: "P", filter: "Physical disability", long_description: "students with physical disability"},
+    { id: 10, shortcode: "Tut", filter: "Tutorial Centre", long_description: "Tutorial Centre for students with intensive behaviour and educational support needs"},
+    { id: 11, shortcode: "V", filter: "Vision impairment", long_description: "students with blindness or vision impairment"},
+  ];
 
 }());
 

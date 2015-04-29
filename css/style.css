@@ -2,7 +2,7 @@ html, body {width:100%; height:100%; padding: 0; margin: 0;}
 body { background-color: #39acc9; color: #3e3e3e; }
 .header h3 {color: #f7f6f6;}
 
-.container .jumbotron { background-color: #f7f6f6; border-radius: 0px;}
+.container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
 .btn {
 	border: none;
 	border-radius: 0px;
@@ -77,14 +77,10 @@ a:hover .fa-stack-1x {
 
 /* Results */
 #results-container {
-	margin-top: 25em;
 	margin-bottom: 100px;
 }
 
 #list-container {
-}
-.results-list {
-	margin-top: 25em;
 }
 .results-list li {
     list-style: none;
@@ -108,6 +104,11 @@ a:hover .fa-stack-1x {
 
 .results-list .selected .school-distance {
 	font-weight: normal;
+}
+
+.results-list .school-type {
+	font-size: small;
+	font-style: italic;
 }
 
 @media (min-width: 980px) { /* desktop and up */
@@ -171,6 +172,16 @@ ul.school-details {
 	margin-left: 0.5em;
 }
 
+.jumbotron h1 {
+	font-weight: lighter;
+}
+.school-details .school-support li {
+	margin-left: 2em;
+}
+.school-support p.overview {
+	margin: 1em 0 0 1em;
+}
+
 .school-details li {
 	line-height: 1.75em;
 }
@@ -212,9 +223,32 @@ ul.school-details {
 	margin-bottom: 1em;
 }
 
-.block-address {
+.block-address, .block-support {
 	display: none;
-	margin-top: 25em;
+}
+
+
+/* -------------------- Select Box Styles: stackoverflow.com Method */
+/* -------------------- Source: http://stackoverflow.com/a/5809186 */
+select#soflow {
+   -webkit-appearance: button;
+   -webkit-border-radius: 2px;
+   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+   -webkit-padding-end: 20px;
+   -webkit-padding-start: 2px;
+   -webkit-user-select: none;
+    background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5); 
+   background-position: 97% center;
+   background-repeat: no-repeat;
+   border: 1px solid #AAA;
+   color: #555;
+   font-size: inherit;
+   margin: 20px;
+   overflow: hidden;
+   padding: 5px 10px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   width: 300px;
 }
 
 

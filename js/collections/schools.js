@@ -13,8 +13,10 @@ app = app || {};
   Schools.prototype.update = function (rows) {
     // store the new rows
     this.schools = [];
-    this.schools = _.map(rows, function (row) { return new app.School(row); });
-    this.select(this.schools[0].school_code);
+    if (rows && rows.length > 0) {
+      this.schools = _.map(rows, function (row) { return new app.School(row); });
+      this.select(this.schools[0].school_code);
+    }
   };
 
   Schools.prototype.toTemplateContext = function () {
@@ -28,9 +30,21 @@ app = app || {};
           distance: function () {
             return school.distanceToUser();
           },
-          selected: school.school_code === that.selected_school
+          selected: school.school_code === that.selected_school,
+          level_of_schooling: function () {
+            if (school.type === 'ssp') {
+              return "School for Specific Purpose";
+            }
+            if (school.support_ids && school.support_ids.length > 0) {
+              return "Public school with support classes";
+            }
+            return school.level_of_schooling;
+          },
+          support_needed: app.support_needed,
         };
       }),
+      support_needed: app.support_needed,
+      search_by_distance: app.activeQuery.queryBy === 'distance',
     };
 
     return context;

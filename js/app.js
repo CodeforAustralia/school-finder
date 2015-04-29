@@ -12,9 +12,10 @@ app = app || {};
   app.schoolView = new app.SchoolView(); // info area for one school
   app.mapView = new app.MapView(); // map of results and surrounding schools
 
-
   var updateUI = function (rows) {
     app.schools.update(rows);
+
+    if (!rows || rows.length < 1) { return; }
 
     app.listView.update(app.schools);
     app.mapView.update(app.schools);
@@ -43,6 +44,7 @@ app = app || {};
 
     // Find schools by name
     var q = new app.Query();
+    app.activeQuery = q;
     q.byName(name).run(function (data) {
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
@@ -70,23 +72,46 @@ app = app || {};
 
     // Find schools whose catchment area serves a specific point
     var q = new app.Query();
+    app.activeQuery = q;
     // Sometimes a single school will have multiple catchment areas,
     // one for primary level, one for secondary level.
     // See: SELECT * FROM dec_schools as s WHERE (SELECT count(*) from catchments WHERE school_code = s.school_code) > 1
     // So we have to check school_type on the *catchment*, not level_of_schooling on the *school*.
-    q.byCatchment(lat, lng).addFilter("catchment_level", app.level);
+    q.byCatchment(lat, lng).addFilter("catchment_level", app.level).setSupport(app.support_needed);
     q.run(function (data) {
       if (data.rows.length < 1) {
-        // this location isn't within any catchment area.
-        // Try searching for schools within 100 KM, X nearest (where X is default from app.Query).
+        // this location isn't within any catchment area
+        // (or w/in a catchment area of a school providing the support needed)
+        // Try searching for schools within a distance of searchRadius, returning
+        // the nearest X results (where X is default from app.Query).
+        var types = [app.level];
+        if (app.support_needed) {
+          types.push('ssp');
+        }
         var q2 = new app.Query();
-        q2.byDistance(lat, lng, 100 * 1000); /* 100 * 1000 m = 100 km */
-        q2.setSchoolType(app.level);
+        app.activeQuery = q2;
+        q2.byDistance(lat, lng, app.config.searchRadius).setLimit(app.config.nearbyLimit);
+        q2.setSupport(app.support_needed);
+        q2.setSchoolType(types);
         q2.run(function (data) {
           console.log(data);
           if (data.rows.length < 1) {
             app.ui.resetSearchBtns();
+
+            // populate modal, then show it
+            var html = app.modalNoResultsTemplate({support_needed: app.support_needed});
+            var $el = $('#modal-container');
+            $el.empty();
+            $el.append(html);
             $('#noResultsForAddressModal').modal();
+            $('#noResultsForAddressModal').on('hidden.bs.modal', function () {
+              if (app.support_needed) {
+                console.log('searching again, this time sans support');
+                app.support_needed = false;
+                $('.block-support select').val('no');
+                $("#button-search-address").click();
+              }
+            });
           }
           updateUI(data.rows);
         });
@@ -99,10 +124,35 @@ app = app || {};
 
   $(document).ready(function () {
 
+    app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
+
     var clickSchoolType = function (e) {
       e.preventDefault();
       app.level = e.data.level;
       // jump to the address search
+      $(".block-support").show();
+
+      if (!app.support_needed && app.support_needed_previously) {
+        app.support = app.support_previously;
+        app.support_needed = app.support_needed_previously;
+        $('.block-support select').val(app.support);
+      }
+
+      // $(".block-address").show();
+      $('html, body').animate({
+        scrollTop: $(".block-support").offset().top - 100 //HACK to center in window.
+      }, 500);
+    };
+
+    var clickSupport = function (e) {
+      e.preventDefault();
+      var support_option = $(this).closest('.block-support').find('option:selected').val();
+
+      app.support_needed = app.support_needed_previously = !(support_option === 'no');
+      if (app.support_needed) {
+        app.support = app.support_previously = support_option;
+      }
+
       $(".block-address").show();
       $('html, body').animate({
         scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
@@ -113,6 +163,8 @@ app = app || {};
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
 
+    $(".block-support .search").click(clickSupport);
+
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
       app.geocodeAddress(app.findByLocation);
@@ -120,6 +172,9 @@ app = app || {};
 
     $("#button-search-name").click(app.ui.searchBtnFunction(function (inputText) {
       $('.block-address').hide();
+      app.support_needed = false;
+      app.support = 'no';
+      $('.block-support').hide();
       app.findByName(inputText);
     }));
 

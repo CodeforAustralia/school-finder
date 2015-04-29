@@ -68,6 +68,29 @@
         <p class="disclaimer">Information subject to change; by using this, you agree to not sue us.</p>
       </div>
 
+      <div class="jumbotron block-support">
+        <h1>Need extra support?</h1>
+        <p>
+          <select id="soflow" class="selectpicker">
+            <option value="no">No, none needed</option>
+            <option value="AU">Autism</option>
+            <option value="BD">Behaviour disorder</option>
+            <option value="DB">Deaf or blind</option>
+            <option value="EI">Early intervention</option>
+            <option value="ED">Emotional disturbance</option>
+            <option value="H">Hearing impairment</option>
+            <option value="ID">Intellectual disability</option>
+            <option value="Multicategorical">Multicategorical</option>
+            <option value="P">Physical disability</option>
+            <option value="Tut">Tutorial Centre</option>
+            <option value="V">Vision impairment</option>
+          </select>
+        </p>
+        <p>
+        <a class="btn search" href="#" role="button">Next</a>
+
+      </div>
+
       <div class="jumbotron block-address">
         <h1>I live at:</h1>
         <p class="lead">Provide your location so we can look up nearby schools:</p>
@@ -104,23 +127,7 @@
     </div> <!-- /container -->
 
     <!-- Modal -->
-    <div class="modal fade" id="noResultsForAddressModal" tabindex="-1" role="dialog" aria-labelledby="noResultsForAddressModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
-          </div>
-          <div class="modal-body">
-            <p>Sorry, I don't know of any schools there. Feel free to try another search though!</p>
-            <p class="more-info">You might be interested in <a href="http://www.schools.nsw.edu.au/rde/ruraledu/index.php" target="_blank">rural and distance education</a> options.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn" data-dismiss="modal">OK</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="modal-container"></div>
 
     <div class="modal fade" id="noResultsForNameModal" tabindex="-1" role="dialog" aria-labelledby="noResultsForNameModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -156,13 +163,53 @@
       </div>
     </div>
 
+    <script id="modal-no-result-template" type="text/x-handlebars-template">
+    <div class="modal fade" id="noResultsForAddressModal" tabindex="-1" role="dialog" aria-labelledby="noResultsForAddressModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
+          </div>
+          <div class="modal-body">
+            {{#if support_needed}}
+              <p class="more-info">Sorry, it seems there is no school within {{search_radius}} of your location that currently has support for  {{support_description}}.</p>
+              <p><strong>Your local school may be able to arrange services; let's try looking for nearby schools that don't (yet) support {{support_description}}.</strong></p>
+              <p>You can always contact Disabilities Support at (02) 9244 5085 or <a target="_blank" href="http://www.schools.nsw.edu.au/studentsupport/programs/disability.php">learn more online</a>.</p>
+            {{else}}
+            <p>Sorry, I don't know of any schools within {{search_radius}} of your location. Feel free to try another search though!</p>
+            {{/if}}
+            <p class="more-info">You might also be interested in <a href="http://www.schools.nsw.edu.au/rde/ruraledu/index.php" target="_blank">rural and distance education</a> options.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </script>
+
+
+
     <script id="result-list-template" type="text/x-handlebars-template">
       <div class="jumbotron results-list">
         <h1>Results</h1>
-        <p class="lead">We found the following results; select one to view.</p>
+        <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
         <ul>
           {{#each schools}}
-            <li {{#if selected}} class="selected" {{/if}}><button class="btn" type="button" data-school-code="{{school_code}}">{{school_name}}{{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}</button></li>
+            <li {{#if selected}} class="selected" {{/if}}>
+              <a class="btn" type="button" data-school-code="{{school_code}}">
+                <div>
+                  {{school_name}}
+                  {{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}
+                </div>
+                {{#if support_needed}}
+                <div class="school-type">
+                  {{level_of_schooling}}
+                </div>
+                {{/if}}
+              </a>
+            </li>
           {{/each}}
         </ul>
       </div>
@@ -219,7 +266,7 @@
                 </span>
                 <span class="sr-only">Website: </span><span class="field-data"><a href="http://{{website}}" target="_blank">{{website}}</a></span>
               </li>
-              <li class="school-level"><span class="field-label">Level: </span><span class="field-data">{{level}}, {{grades}}</span>
+              <li class="school-level"><span class="field-label">Level: </span><span class="field-data">{{level_of_schooling}}, {{grades}}</span>
               {{#if is_specialty_possible}}
               <li class="school-specialty"><span class="field-label">Specialty: </span><span class="field-data">{{school_specialty_type}}</span></li>
               {{/if}}
@@ -230,6 +277,23 @@
               {{/if}}
               {{#if is_selective_possible}}
               <li class="school-selective"><span class="field-label">Selective: </span><span class="field-data">{{selective_school}}</span></li>
+              {{/if}}
+              {{#if support_offered}}
+              <li class="school-support">
+                <span class="field-label">Support for:</span>
+                <ul>
+                {{#each support_offered}}
+                  <li>{{long_description}}</li>
+                {{/each}}
+                </ul>
+                <p class="overview">Support info:
+                  <ul>
+                  <li>contact this school, or</li>
+                  <li><a href="http://www.schools.nsw.edu.au/studentsupport/programs/disability.php">see general support overview</a>, or</li>
+                  <li><span>call disabilities support: (02) 9244 5085</span></li>
+                  </ul>
+                </p>
+              </li>
               {{/if}}
               <li class="school-enrollment"><span class="field-label">Enrolment trends: </span><span class="field-data"><a href="http://172.31.64.43:8000/views/NSW_NSSC_Dashboard/DashboardNSSCEnrolments?Deewr%20Id=4921" target="_blank">See CESE Data</a></span></li>
               <div style="display:none">

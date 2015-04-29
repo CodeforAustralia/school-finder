@@ -64,7 +64,7 @@ app = app || {};
 
   MapView.prototype.render = function () {
 
-    if (!this.schools) { return; } /* must update() w/ school list before rendering */
+    if (!this.schools || this.schools.schools.length < 1) { return; } /* must update() w/ school list before rendering */
 
     if (!this.rendered) {
 
@@ -99,7 +99,6 @@ app = app || {};
   MapView.onMarkerDragEnd = function (event) {
     var marker = event.target;
     marker.closePopup();
-    app.config.showHomeHelpPopup = false; // keep hidden from now on.
     var ll = marker.getLatLng();
     console.log(ll);
     app.lat = ll.lat;
@@ -131,15 +130,25 @@ app = app || {};
       var marker = e.target;
       marker.openPopup();
 
+      if (that.selectedMarker === marker) {
+        return; // nothing to do
+      }
+
       that.selectedMarker = marker;
 
       // select that school from the list
       app.schools.select(school.school_code);
 
       // update the UI
-      app.listView.update(app.schools);
+      app.listView.update();
+      app.schoolView.update(app.schools.selected());
+
+      if (that.activeResultMarker === marker) {
+        // reselected already-shown result school; nothing to do
+        return;
+      }
+
       app.mapView.update(app.schools);
-      app.schoolView.update(app.schools);
 
       app.ui.scrollTo('.cartodb-map');
     };
@@ -194,7 +203,7 @@ app = app || {};
     // then for now just show schools of that type (instead of all schools).
     // Later we may want to let users control which markers are visible (TODO)
     // Include SSP here in case people are looking for that (later we can add a filtering step)
-    q.setSchoolType([app.level || school.type, 'ssp'])
+    q.setSchoolType([app.level || school.type, 'ssp']).setSupport(app.support_needed)
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
     if (this.whereFilter) { // add custom filter if it has been set
@@ -205,7 +214,6 @@ app = app || {};
       console.log(data);
       var markers = [];
       data.rows.forEach(function (row) {
-        // var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcon})
         var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcons[row.type]})
           // note we're using a bigger offset on the popup to reduce flickering;
           // since we hide the popup on mouseout, if the popup is too close to the marker,
@@ -276,11 +284,8 @@ app = app || {};
     if (markerLatLng) {
       this.homeMarker = L.marker(markerLatLng, {icon: app.geo.homeIcon, draggable: true})
                     .addTo(this.map)
-                    .on('dragend', MapView.onMarkerDragEnd);
-      if (app.config.showHomeHelpPopup) {
-        this.homeMarker.bindPopup("<b>Your location (draggable)</b>")
-              .openPopup();
-      }
+                    .on('dragend', MapView.onMarkerDragEnd)
+                    .bindPopup("<b>Your location (draggable)</b>");
     }
   };
 
@@ -421,11 +426,9 @@ app = app || {};
     this.schools.schools.forEach(function (resultSchool) {
       var icon;
       if (resultSchool === school) { // a result that's also the currently selected school
-        // icon = app.geo.pickedIcon;
-        icon = app.geo.pickedIcons[school.type];
+        icon = app.geo.pickedIcons[resultSchool.type];
       } else {
-        // icon = app.geo.resultIcon;
-        icon = app.geo.resultIcons[school.type];
+        icon = app.geo.resultIcons[resultSchool.type];
       }
       var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
         // note we're using a bigger offset on the popup to reduce flickering;
@@ -436,6 +439,12 @@ app = app || {};
         .on('click', that.clickResultSchool(resultSchool))
         .on('mouseover', MapView.onMouseOverOut, that)
         .on('mouseout', MapView.onMouseOverOut, that);
+
+      if (resultSchool === school) {
+        that.selectedMarker = marker;
+        that.activeResultMarker = marker;
+      }
+
       markers.push(marker);
     });
 
@@ -447,6 +456,7 @@ app = app || {};
 
     // pan + zoom to the selected results
     this.fitBounds();
+    this.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
   };
 
 }());

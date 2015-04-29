@@ -55,9 +55,6 @@ app = app || {};
       {
         resultNumber: i,
         website: this.website.replace("http://", ""),
-        level: function () {
-          return app.level ? app.level.capitalize() : 'School';
-        },
         grades: this.subtype,
         established: function () {
           // try to return something human friendly if we can parse date.
@@ -75,6 +72,9 @@ app = app || {};
         is_opportunity_class_possible: is_opportunity_class_possible(this.type),
         is_selective_possible: is_selective_possible(this.type),
         is_specialty_possible: is_specialty_possible(this.type),
+        support_offered: this.support_ids ? _.map(this.support_ids, function (id) {
+          return app.supports[id];
+        }) : false,
 
       });
 
