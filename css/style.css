@@ -156,6 +156,7 @@ a:hover .fa-stack-1x {
 .school-description .field-label {
 	font-size: 25px;
 	color: #d72d6c;
+	font-weight: bolder;
 }
 
 ul.school-details {
