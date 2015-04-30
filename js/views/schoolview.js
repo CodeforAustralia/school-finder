@@ -64,7 +64,7 @@ app = app || {};
 
     var result;
     if (breakpoint < text.length) { // build a teaser and full text.
-      var continueReading = '<a class="readmore"> &rarr; Continue Reading </a>';
+      var continueReading = '<a href="#" class="readmore"> &rarr; Continue Reading </a>';
 
       // regex looking for short_text worth of characters + whatever it takes to get to a whitespace
       // (we only want to break on whitespace, so we don't cut words in half)
