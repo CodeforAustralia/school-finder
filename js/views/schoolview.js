@@ -104,26 +104,12 @@ app = app || {};
         }
       }
     );
-    // var paragraphs = _.reduce(sentences, function (memo, sentence, i, sentences) { //i, sentences
     var paragraphs = _.reduce(sentences, function (memo, sentence, i) { //i, sentences
 
       // group every two sentences into a paragraph.
 
       var sentence_num = i + 1; // consider first as sentence_num 1, not 0
-
       var odd = sentence_num % 2; //currently processing an odd numbered element ()
-      // var open_p, close_p;
-
-      // if (odd) {
-      //   open_p = true; // odd sentences open paragraphs
-      // }
-
-      // if (!odd || // even sentences always close paragraphs
-      //     (odd && (sentence_num === sentences.length))) { // the last sentence, if odd, closes p
-      //   close_p = true;
-      // }
-
-      // return memo + (open_p ? '<p>' : '') + sentence + (close_p ? '</p>' : '');
       return memo + sentence + (!odd ? '\n\n' : '');
 
     }, '');
