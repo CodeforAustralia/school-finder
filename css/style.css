@@ -1,6 +1,7 @@
 html, body {width:100%; height:100%; padding: 0; margin: 0;}
 body { background-color: #39acc9; color: #3e3e3e;
 	font-family: 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
+	font-weight: 300;
 }
 .header h3 {color: #f7f6f6;
 	font-family: 'Pacifico', 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
@@ -14,7 +15,9 @@ body { background-color: #39acc9; color: #3e3e3e;
 	height: 28px;
 	vertical-align: baseline;
 }
-
+.block-intro input, .block-address input, .block-support select {
+	font-weight: normal;
+}
 .container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
 .btn {
 	border: none;
@@ -30,7 +33,7 @@ body { background-color: #39acc9; color: #3e3e3e;
 	background-color: grey;
 }
 .footer { margin-bottom: 1.5em; }
-.footer p {color: #f7f6f6; font-weight: lighter; }
+.footer p {color: #f7f6f6;}
 .footer a {color: #f7f6f6; font-weight: bold;}
 .footer a:hover {  text-decoration: none; border-bottom: 1px solid; }
 .footer .fa-inverse {color:  #76BFD1;}
@@ -114,14 +117,14 @@ a:hover .fa-stack-1x {
 	float: right;
 	font-weight: lighter;
 }
-
-.results-list .selected .school-distance {
-	font-weight: normal;
+.jumbotron p {
+	color: black;
 }
 
 .results-list .school-type {
 	font-size: small;
 	font-style: italic;
+	font-weight: lighter;
 }
 
 @media (min-width: 980px) { /* desktop and up */
@@ -153,6 +156,7 @@ a:hover .fa-stack-1x {
 .school-description .field-label {
 	font-size: 25px;
 	color: #d72d6c;
+	font-weight: bolder;
 }
 
 ul.school-details {
@@ -186,7 +190,7 @@ ul.school-details {
 }
 
 .jumbotron h1 {
-	font-weight: lighter;
+	font-weight: inherit;
 }
 .school-details .school-support li {
 	margin-left: 2em;
@@ -304,7 +308,7 @@ select#soflow {
 
 .jumbotron #or {
 	text-transform: uppercase;
-	font-weight: 800;
+	font-weight: bold;
 	margin-top: 0;
 	font-size: 21px;
 }

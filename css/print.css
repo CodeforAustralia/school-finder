@@ -1,0 +1,50 @@
+@media print {
+
+	.org-logo a, .block-intro, .block-support, .block-address, .results-list, .leaflet-control, .leaflet-popup-close-button, .cartodb-logo, .footer {
+		display: none !important;
+	}
+
+	#map-container {
+		margin-top: 1em;
+	}
+	#results-container {
+		margin-bottom: 1em;
+	}
+
+	.leaflet-popup-content {margin:0;}
+	.leaflet-popup {bottom:18px !important;}
+
+	.field-label {
+		font-weight: bolder;
+	}
+	a.get-directions {
+		display: none;
+	}
+	.fa-stack-1x {
+		background-color:white !important;
+	}
+	.school-name {margin-bottom: 0;}
+	.school-email a:after, .school-website a:after {
+		content:none;
+	}
+	.school-info {border-bottom: none;}
+
+	.org-logo {
+		text-align: right;
+	}
+	.org-logo:after {
+		/* we've hidden default logo; but show a print version */
+		content: url('/css/images/dept-logo-black-on-white-40h.png') !important;
+	}
+}
+
+@media print and (min-width: 500px) {
+	/* force two column layout on printing (it should fit just fine) */
+	/* see https://github.com/twbs/bootstrap/issues/12078 and
+	   https://github.com/twbs/bootstrap/pull/12345 */
+	.col-md-6 {
+		width: 50%;
+		float: left;
+	}
+}
+

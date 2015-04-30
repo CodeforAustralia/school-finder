@@ -10,11 +10,12 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400|Pacifico' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Pacifico' rel='stylesheet' type='text/css'>
     <link href="css/jquery-ui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/cartodb.css" />
     <link rel="stylesheet" href="css/jumbotron-narrow.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/print.css" media="print" />
 	<!--font-awesome icons  -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!--[if lte IE 8]>
@@ -46,8 +47,8 @@
         -->
         <h3 class="row">
           <div class="col-xs-8 sitename">Chocolate! The tasty school finder.</div>
-          <div class="col-xs-4">
-            <a class="org-logo pull-right" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
+          <div class="col-xs-4 org-logo">
+            <a class="pull-right" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
           </div>
         </h3>
       </div>
@@ -251,7 +252,7 @@
 
               {{/if}}
 
-              <li class="school-address"><span class="field-label">Contact: </span><br><span class="field-data"><abbr title="{{street}}, {{town_suburb}} NSW {{postcode}}">{{street}}, {{town_suburb}}</abbr> <a href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
+              <li class="school-address"><span class="field-label">Contact: </span><br><span class="field-data"><abbr title="{{street}}, {{town_suburb}} NSW {{postcode}}">{{street}}, {{town_suburb}}</abbr> <a class="get-directions" href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
               <li class="school-phone">
                 <span class="fa-stack">
                   <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
