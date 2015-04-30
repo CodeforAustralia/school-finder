@@ -1,7 +1,7 @@
 html, body {width:100%; height:100%; padding: 0; margin: 0;}
 body { background-color: #39acc9; color: #3e3e3e;
 	font-family: 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
-	font-weight: 300;
+	font-weight: normal;
 }
 .header h3 {color: #f7f6f6;
 	font-family: 'Pacifico', 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
@@ -118,7 +118,7 @@ a:hover .fa-stack-1x {
 	font-weight: lighter;
 }
 .jumbotron p {
-	color: black;
+	font-weight: normal;
 }
 
 .results-list .school-type {
@@ -190,7 +190,7 @@ ul.school-details {
 }
 
 .jumbotron h1 {
-	font-weight: inherit;
+	font-weight: 200;
 }
 .school-details .school-support li {
 	margin-left: 2em;
