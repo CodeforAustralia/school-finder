@@ -104,14 +104,11 @@ app = app || {};
         }
       }
     );
-    var paragraphs = _.reduce(sentences, function (memo, sentence, i) { //i, sentences
 
+    var paragraphs = _.reduce(sentences, function (memo, sentence, i) {
       // group every two sentences into a paragraph.
-
-      var sentence_num = i + 1; // consider first as sentence_num 1, not 0
-      var odd = sentence_num % 2; //currently processing an odd numbered element ()
-      return memo + sentence + (!odd ? '\n\n' : '');
-
+      var even = ((i % 2) === 0);
+      return memo + sentence + (even ? '\n\n' : '');
     }, '');
 
     return paragraphs;
