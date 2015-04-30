@@ -35,12 +35,8 @@ app.util = app.util || {};
         haveResponses = true;
       });
       if (haveResponses) {
-        if (data.rows.length === 1) { // exact match found
-          $input.autocomplete("close");
-          $input.val(data.rows[0].school_name);
-        } else {  // show suggestions
-          response(autocompleteResponses);
-        }
+        // show suggestions
+        response(autocompleteResponses);
       } else {
         $input.autocomplete("close");
       }
