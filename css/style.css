@@ -152,6 +152,7 @@ a:hover .fa-stack-1x {
 .school-info .field-label {
 	color: rgb(189, 239, 252); /* based on background blue but lighter for readability */
 }
+.expandable-text .body { display:none; }
 
 .school-description .field-label {
 	font-size: 25px;
