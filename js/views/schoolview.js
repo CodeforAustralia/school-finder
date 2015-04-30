@@ -24,7 +24,7 @@ app = app || {};
     if (!this.school) { return; } // no use rendering if the school hasn't been set
 
     var context = this.school.toTemplateContext(this.i);
-    context.body = SchoolView.summarize(this.school.description);
+    context.body = SchoolView.summarize(SchoolView.blobToParagraphs(this.school.description));
     var html = this.template(context);
 
     // clean up any previous result & re-add
@@ -77,6 +77,58 @@ app = app || {};
       result = p(text);
     }
     return result;
+  };
+
+  SchoolView.blobToParagraphs = function (text) {
+    // split text on periods.
+    // Example data: "This is a sentence. And. This. Is. Not."
+    // Idea: If 'sentence' length < 30 characters, combine with previous 'sentence'.
+    // (Works for ".", "...", "P.S.", "Whatever. Dude.")
+
+    var fragments = text.split(/(\.+[\W])/);
+    // The regex matches like:
+    // "Foo. Bar. This is good.Yeah another thing." -> ["Foo", ".", "Bar", ".", "This is good.Yeah another thing", "."]
+    var sentences = [];
+    _.each(
+      fragments,
+      function (fragment) {
+        if (!fragment.length) { return; }
+        if (!sentences.length) {
+          sentences.push(fragment);
+        } else if (fragment.length < 30) {
+          var addition = fragment;
+          console.log('adding: ' + addition);
+          sentences[sentences.length - 1] += addition;
+        } else {
+          sentences.push(fragment);
+        }
+      }
+    );
+    // var paragraphs = _.reduce(sentences, function (memo, sentence, i, sentences) { //i, sentences
+    var paragraphs = _.reduce(sentences, function (memo, sentence, i) { //i, sentences
+
+      // group every two sentences into a paragraph.
+
+      var sentence_num = i + 1; // consider first as sentence_num 1, not 0
+
+      var odd = sentence_num % 2; //currently processing an odd numbered element ()
+      // var open_p, close_p;
+
+      // if (odd) {
+      //   open_p = true; // odd sentences open paragraphs
+      // }
+
+      // if (!odd || // even sentences always close paragraphs
+      //     (odd && (sentence_num === sentences.length))) { // the last sentence, if odd, closes p
+      //   close_p = true;
+      // }
+
+      // return memo + (open_p ? '<p>' : '') + sentence + (close_p ? '</p>' : '');
+      return memo + sentence + (!odd ? '\n\n' : '');
+
+    }, '');
+
+    return paragraphs;
   };
 
 }());
