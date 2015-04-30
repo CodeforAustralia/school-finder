@@ -33,7 +33,7 @@ app = app || {};
           selected: school.school_code === that.selected_school,
           level_of_schooling: function () {
             if (school.type === 'ssp') {
-              return "School for Specific Purpose";
+              return "School for Specific Purposes";
             }
             if (school.support_ids && school.support_ids.length > 0) {
               return "Public school with support classes";
