@@ -97,7 +97,6 @@ app = app || {};
           sentences.push(fragment);
         } else if (fragment.length < 30) {
           var addition = fragment;
-          console.log('adding: ' + addition);
           sentences[sentences.length - 1] += addition;
         } else {
           sentences.push(fragment);
