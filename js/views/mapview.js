@@ -353,6 +353,8 @@ app = app || {};
       });
       this.map = map;
 
+      L.schoolsNearby(map); // add nearby schools control
+
       map.on('viewreset moveend', function () {
         that.loadNearby();
       });
