@@ -4,7 +4,7 @@ body { background-color: #39acc9; color: #3e3e3e;
 	font-weight: normal;
 }
 .header h3 {color: #f7f6f6;
-	font-family: 'Pacifico', 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
+	font-family: 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
 	margin-top: 0.5em;
 	padding-bottom: 0px;
 }
@@ -255,7 +255,7 @@ select#soflow {
    -webkit-padding-end: 20px;
    -webkit-padding-start: 2px;
    -webkit-user-select: none;
-    background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5); 
+    background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
    background-position: 97% center;
    background-repeat: no-repeat;
    border: 1px solid #AAA;
