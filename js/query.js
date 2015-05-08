@@ -131,9 +131,12 @@ app = app || {};
   // if you are looking for a primary school, secondary, or infants school,
   // then a central school will provide the same thing so this adds that in.
   // if you don't want that functionality, then just use q.where('type = whatever')
+  // or set exact_type_search to true (defaults to false).
 
   // accepts either a single type e.g. "primary" or multiple, e.g. ['primary', 'community']
-  Query.prototype.setSchoolType = function (typeOrTypes) {
+  Query.prototype.setSchoolType = function (typeOrTypes, exact_type_search) {
+
+    var exact = exact_type_search || true;
 
     var type, otherTypes, otherTypesExpression = '';
 
@@ -145,7 +148,7 @@ app = app || {};
       otherTypes = _.rest(typeOrTypes);
     }
 
-    if (type === 'infants' || type === 'primary' || type === 'secondary') {
+    if (!exact && (type === 'infants' || type === 'primary' || type === 'secondary')) {
       otherTypes.push('central');
     }
 
@@ -155,7 +158,13 @@ app = app || {};
       }).join('');
     }
 
-    this.where("(s.type = '" + type + "' " + otherTypesExpression + ")");
+    if (type === 'all') {
+      this.where("(1=1)");
+    } else if (type === 'distance') {
+      this.where("(s.distance_education IN ('null') OR s.distance_education IS NULL " + otherTypesExpression + ")");
+    } else {
+      this.where("(s.type = '" + type + "' " + otherTypesExpression + ")");
+    }
     return this;
   };
 
