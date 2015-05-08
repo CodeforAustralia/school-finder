@@ -15,7 +15,7 @@ var L, app;
         '<div class="nearby-schools-control-toggle">' +
         '  <input type="checkbox" id="nearby-schools-show" value="all">' +
         '  <label for="nearby-schools-show">Show nearby schools</label>' +
-        '<button type="button" class="expander" aria-label="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
+        '<button type="button" class="expander" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
         '</div>' +
         '<div class="school-filters">' +
         ' <label for="nearby-schools-type">Type:</label>' +
@@ -124,9 +124,13 @@ var L, app;
         var icon = $('i', this);
         if (icon.hasClass('fa-caret-left')) { // expand:
           icon.removeClass('fa-caret-left').addClass('fa-caret-down');
+          this.title = "Collapse";
+          this.setAttribute('aria-label', this.title);
           $('.school-filters').show();
         } else if (icon.hasClass('fa-caret-down')) { // collapse:
           icon.removeClass('fa-caret-down').addClass('fa-caret-left');
+          this.title = "Expand";
+          this.setAttribute('aria-label', this.title);
           $('.school-filters').hide();
         }
       });
