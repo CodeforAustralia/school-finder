@@ -114,7 +114,8 @@ var L, app;
           app.mapView.loadNearby();
         } else {
           // remove nearby markers from map
-          app.mapView.map.removeLayer(app.mapView.nearbyMarkersGroup);
+          app.state.showNearby = false;
+          app.mapView.loadNearby();
         }
 
       });

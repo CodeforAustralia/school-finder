@@ -184,6 +184,9 @@ app = app || {};
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
     if (!app.state.showNearby) {
+      if (this.nearbyMarkersGroup) {
+        this.map.removeLayer(this.nearbyMarkersGroup);
+      }
       return;
     }
     var that = this;
@@ -203,10 +206,10 @@ app = app || {};
 
     var q = new app.Query();
     // If app.level is unspecified (when someone just first searched for a school by name),
-    // then for now just show schools of that type (instead of all schools).
-    // Later we may want to let users control which markers are visible (TODO)
-    // Include SSP here in case people are looking for that (later we can add a filtering step)
-    q.setSchoolType([app.level || school.type, 'ssp']).setSupport(app.support_needed)
+    // then just show schools of that type (instead of all schools).
+    // But the nearby school selector widget can override this (via app.state.nearby.type)
+    var type = app.state.nearby.type || app.level || school.type;
+    q.setSchoolType(type, true).setSupport(app.support_needed)
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
     if (this.whereFilter) { // add custom filter if it has been set
