@@ -183,6 +183,9 @@ app = app || {};
 
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
+    if (!app.state.showNearby) {
+      return;
+    }
     var that = this;
     var school = this.schools.selected();
 

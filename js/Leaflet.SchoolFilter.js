@@ -110,6 +110,7 @@ var L, app;
         if (this_was_unchecked) {
           // add nearby markers to map
           // app.mapView.map.addLayer(app.mapView.nearbyMarkersGroup);
+          app.state.showNearby = true;
           app.mapView.loadNearby();
         } else {
           // remove nearby markers from map
@@ -140,6 +141,9 @@ var L, app;
 
         $('.nearby-schools-options fieldset.' + type).show();
         $('.nearby-schools-options fieldset div.' + type).show();
+
+        app.state.nearby.type = type;
+        app.mapView.loadNearby();
       });
 
 

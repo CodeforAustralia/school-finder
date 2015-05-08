@@ -4,6 +4,8 @@ app = app || {};
 (function () {
 
   app.sql = new cartodb.SQL({ user: app.db.user });
+  app.state = {}; // UI and application state.
+  app.state.nearby = {}; // info about nearby markers to display
 
 
   app.schools = new app.Schools(); // schools results collection
