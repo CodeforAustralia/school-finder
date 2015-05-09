@@ -16,7 +16,7 @@ var L, app;
         '<div class="nearby-schools-control-toggle">' +
         '  <input type="checkbox" id="nearby-schools-show" value="all">' +
         '  <label for="nearby-schools-show">Show nearby schools</label>' +
-        '<button type="button" class="expander" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
+        '<button type="button" class="toggle-filters" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
         '</div>' +
         '<div class="school-filters">' +
         ' <label for="nearby-schools-type">Type:</label>' +
@@ -96,6 +96,7 @@ var L, app;
         ' </div>' +
         '</div>';
 
+      app.state.nearby.showFilters = false;
       this._setEventHandlers();
       this.update();
 
@@ -107,54 +108,37 @@ var L, app;
     _setEventHandlers: function () {
 
       var container = this.container;
+      var that = this;
 
       $('#nearby-schools-show', container).click(function () { // clicked 'Show nearby schools'
-        var filters_is_hidden = $('.school-filters', container).is(':hidden');
-        var this_was_unchecked = $(this).is(':checked'); //is checked now, meaning it was unchecked before click.
-        if (filters_is_hidden && this_was_unchecked) {
-          $('.school-filters').show();
-          $('button.expander', container).click();
-        } else if (!filters_is_hidden && !this_was_unchecked) {
-          $('.school-filters').hide();
-          $('button.expander', container).click();
+        var filters_is_hidden = !app.state.nearby.showFilters;
+        var userWantsNearbyShown = $(this).is(':checked'); //is checked now, meaning it was unchecked before click.
+
+        if ((filters_is_hidden && userWantsNearbyShown) ||
+            (!filters_is_hidden && !userWantsNearbyShown)) {
+          that._toggleFilterVisibility();
         }
 
-        if (this_was_unchecked) {
-          // add nearby markers to map
-          // app.mapView.map.addLayer(app.mapView.nearbyMarkersGroup);
-          app.state.showNearby = true;
-          app.mapView.loadNearby();
-        } else {
-          // remove nearby markers from map
-          app.state.showNearby = false;
-          app.mapView.loadNearby();
-        }
+        app.state.showNearby = userWantsNearbyShown;
+        app.mapView.loadNearby();
       });
 
-      $('button.expander', container).click(function () {
-        var icon = $('i', this);
-        if (icon.hasClass('fa-caret-left')) { // expand:
-          icon.removeClass('fa-caret-left').addClass('fa-caret-down');
-          this.title = "Collapse";
-          this.setAttribute('aria-label', this.title);
-          $('.school-filters').show();
-        } else if (icon.hasClass('fa-caret-down')) { // collapse:
-          icon.removeClass('fa-caret-down').addClass('fa-caret-left');
-          this.title = "Expand";
-          this.setAttribute('aria-label', this.title);
-          $('.school-filters').hide();
-        }
-      });
+      $('button.toggle-filters', container).click($.proxy(this._toggleFilterVisibility, this));
 
       $('select#nearby-schools-type', container).change(function () {
         var type = $('option:selected', this)[0].value;
         console.log("Type selected: " + type);
 
-        this._updateFilterUI(type);
+        that._updateFilterUI(type);
 
         app.state.nearby.type = type;
         app.mapView.loadNearby();
       });
+    },
+
+    _toggleFilterVisibility: function () {
+      app.state.nearby.showFilters = !app.state.nearby.showFilters;
+      this.update();
     },
 
     _updateFilterUI: function (type) {
@@ -170,7 +154,7 @@ var L, app;
       $(container).find('.nearby-schools-options fieldset div.' + type).show();
     },
 
-    // sync UI to model
+    // sync UI to stored state
     update: function () {
 
       var container = this.container;
@@ -179,10 +163,19 @@ var L, app;
       $('#nearby-schools-type', container).val(app.state.nearby.type);
       this._updateFilterUI(app.state.nearby.type);
 
-      if (app.state.showNearby) {
+      var toggleFilterButton = $('button.toggle-filters', container)[0];
+      var toggleFilterIcon = $('i', toggleFilterButton);
+
+      if (app.state.nearby.showFilters) {
         $('.school-filters', container).show();
+        toggleFilterIcon.removeClass('fa-caret-left').addClass('fa-caret-down');
+        toggleFilterButton.title = "Collapse";
+        toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       } else {
         $('.school-filters', container).hide();
+        toggleFilterIcon.removeClass('fa-caret-down').addClass('fa-caret-left');
+        toggleFilterButton.title = "Expand";
+        toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       }
     },
 

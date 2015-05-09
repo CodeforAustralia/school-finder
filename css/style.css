@@ -290,7 +290,7 @@ select#soflow, .styled-select {
     border-top: 1px solid rgb(146, 146, 146);
     padding-top: .25em;
 }
-.nearby-schools-control button.expander {
+.nearby-schools-control button.toggle-filters {
 	background: none;
 	border: 1px solid rgb(219, 219, 219);
 	border-radius: 15px;
@@ -298,12 +298,12 @@ select#soflow, .styled-select {
 	width: 2em;
 	height: 2em;
 }
-.nearby-schools-control button.expander:hover {
+.nearby-schools-control button.toggle-filters:hover {
     background: rgb(90, 90, 90);
     color: white;
     background: rgb(160,160,160);
 }
-.nearby-schools-control button.expander:focus {
+.nearby-schools-control button.toggle-filters:focus {
     outline: none;
     border: 1px solid rgb(91, 157, 217);
 }
