@@ -338,6 +338,7 @@ app = app || {};
     this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code != '" + school.school_code + "'";
 
+    app.state.nearby.type = app.level || school.type;
 
     // initiate leaflet map
     var map;
@@ -359,7 +360,7 @@ app = app || {};
       });
       this.map = map;
 
-      L.schoolsNearby(map); // add nearby schools control
+      this.schoolsNearby = L.schoolsNearby(map); // add nearby schools control
 
       map.on('viewreset moveend', function () {
         that.loadNearby();
@@ -415,6 +416,7 @@ app = app || {};
     } else {
       map = this.map;
       that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
+      this.schoolsNearby.update();
     }
 
     this.addHomeMarker();

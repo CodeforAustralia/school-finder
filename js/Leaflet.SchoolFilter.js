@@ -9,7 +9,8 @@ var L, app;
 
     onAdd: function () { // (map)
       // create the control container with a particular class name
-      var container = L.DomUtil.create('div', 'nearby-schools-control leaflet-bar');
+      this.container = L.DomUtil.create('div', 'nearby-schools-control leaflet-bar');
+      var container = this.container;
 
       container.innerHTML = ' ' +
         '<div class="nearby-schools-control-toggle">' +
@@ -95,6 +96,18 @@ var L, app;
         ' </div>' +
         '</div>';
 
+      this._setEventHandlers();
+      this.update();
+
+      L.DomEvent.disableClickPropagation(container);
+
+      return container;
+    },
+
+    _setEventHandlers: function () {
+
+      var container = this.container;
+
       $('#nearby-schools-show', container).click(function () { // clicked 'Show nearby schools'
         var filters_is_hidden = $('.school-filters', container).is(':hidden');
         var this_was_unchecked = $(this).is(':checked'); //is checked now, meaning it was unchecked before click.
@@ -106,7 +119,6 @@ var L, app;
           $('button.expander', container).click();
         }
 
-
         if (this_was_unchecked) {
           // add nearby markers to map
           // app.mapView.map.addLayer(app.mapView.nearbyMarkersGroup);
@@ -117,7 +129,6 @@ var L, app;
           app.state.showNearby = false;
           app.mapView.loadNearby();
         }
-
       });
 
       $('button.expander', container).click(function () {
@@ -138,29 +149,43 @@ var L, app;
       $('select#nearby-schools-type', container).change(function () {
         var type = $('option:selected', this)[0].value;
         console.log("Type selected: " + type);
-        $('.nearby-schools-feature fieldset').hide();
-        $('.nearby-schools-feature fieldset.' + type).show();
 
-        $('.nearby-schools-options fieldset').hide();
-        $('.nearby-schools-options fieldset div').hide();
-
-        $('.nearby-schools-options fieldset.' + type).show();
-        $('.nearby-schools-options fieldset div.' + type).show();
+        this._updateFilterUI(type);
 
         app.state.nearby.type = type;
         app.mapView.loadNearby();
       });
-
-
-      $('.school-filters', container).hide();
-      $('.nearby-schools-feature fieldset', container).hide();
-      $('.nearby-schools-options fieldset', container).hide();
-
-
-      L.DomEvent.disableClickPropagation(container);
-
-      return container;
     },
+
+    _updateFilterUI: function (type) {
+      var container = this.container;
+
+      $(container).find('.nearby-schools-feature fieldset').hide();
+      $(container).find('.nearby-schools-feature fieldset.' + type).show();
+
+      $(container).find('.nearby-schools-options fieldset').hide();
+      $(container).find('.nearby-schools-options fieldset div').hide();
+
+      $(container).find('.nearby-schools-options fieldset.' + type).show();
+      $(container).find('.nearby-schools-options fieldset div.' + type).show();
+    },
+
+    // sync UI to model
+    update: function () {
+
+      var container = this.container;
+
+      // setup initial UI state based on app state
+      $('#nearby-schools-type', container).val(app.state.nearby.type);
+      this._updateFilterUI(app.state.nearby.type);
+
+      if (app.state.showNearby) {
+        $('.school-filters', container).show();
+      } else {
+        $('.school-filters', container).hide();
+      }
+    },
+
   });
 
 
