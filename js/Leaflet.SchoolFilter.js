@@ -2,6 +2,81 @@ var L, app;
 
 (function () {
 
+  var filters = {
+    // all {
+    //   label: "All",
+    //   category: "General",
+    //   // sql: 'select * from dec_schools' but also vary based on if support needed,
+    // },
+    primary: {
+      label: "Primary",
+      category: "General",
+      type: "primary",
+      features: [
+        {label: "Any", name: "any"},
+        {label: "Outside School Hours Care", name: "oshc", sql: "s.oshc = true"},
+        {label: "Opportunity Classes", name: "oc", sql: "s.opportunity_class = true"},
+        {label: "Distance Classes", name: "distance", sql: "s.distance_education != 'false'"},
+      ],
+      options: [
+        {label: "Include Infant (K-2)", name: "infants", type: "infants"},
+        {label: "Include Central/Community (K-12)", name: "k12", type: "central"}
+      ],
+    },
+    secondary: {
+      label: "Secondary",
+      category: "General",
+      type: "secondary",
+      features: [
+        {label: "Any", name: "any"},
+        {label: "Boys", name: "boys", sql: "s.gender = 'boys'"},
+        {label: "Girls", name: "girls", sql: "s.gender = 'girls'"},
+        {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')"},
+        {label: "Specialty option", name: "specialty", sql: "school_specialty_type NOT IN ('Comprehensive')"},
+        {label: "Distance Classes", name: "distance", sql: "s.distance_education != 'false'"},
+      ],
+      options: [
+        {label: "Include Central/Community (K-12)", name: "k12", type: "central"}
+      ],
+    },
+    supported: {
+      label: "Schools with special support",
+      //sql = ??? ssp OR (do annoying join)
+      category: "General",
+      features: [
+        {label: "Any", name: "any"},
+        {label: "Schools for Specific Purposes"},
+        {label: "Schools with support classes"}
+      ],
+    },
+    distance: {
+      label: "Distance / Online",
+      category: "Specific",
+      sql: "s.distance_education != 'false'",
+    },
+    environmental: {
+      label: "Environmental Centre",
+      category: "Specific",
+      type: "environmental",
+    },
+    k12: {
+      label: "Central / Community (K-12)",
+      category: "Specific",
+      type: "central",
+    },
+    infants: {
+      label: "Infant (K-2)",
+      category: "Specific",
+      type: "infants",
+    },
+    other: {
+      label: "Other",
+      category: "Specific",
+      type: "other",
+    }
+  };
+
+
   L.Control.SchoolsNearby = L.Control.extend({
     options: {
       position: 'topright'
@@ -132,6 +207,19 @@ var L, app;
         that._updateFilterUI(type);
 
         app.state.nearby.type = type;
+        app.mapView.loadNearby();
+      });
+
+
+      $('input:radio', container).click(function () {
+        var featureName = $(this).attr('value');
+        console.log('doing stuff for feature: ' + featureName);
+        var type = app.state.nearby.type;
+        var feature = _.find(filters[type].features, function (feature) {
+          return feature.name === featureName;
+        });
+        console.log(feature);
+        app.state.nearby.filterSQL = feature.sql;
         app.mapView.loadNearby();
       });
     },
