@@ -114,7 +114,7 @@ app = app || {};
     if (school.type !== app.state.nearby.type) {
       popup += "<br> School type: " + school.type;
     }
-    var filter = app.state.nearby.filterFeature;
+    var filter = app.state.nearby.filterFeatureForType[app.state.nearby.type];
     if (filter && filter.name !== "any") {
       if (filter.name === 'specialty') {
         popup += "<br>Specialty offered: " + school.school_specialty_type;
@@ -157,8 +157,8 @@ app = app || {};
     q.setSchoolType(type, true).setSupport(app.support_needed)
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
-    if (app.state.nearby.filterFeature && app.state.nearby.filterFeature.sql) { // add custom filter if it has been set
-      q.where(app.state.nearby.filterFeature.sql);
+    if (app.state.nearby.filterFeatureForType[app.state.nearby.type] && app.state.nearby.filterFeatureForType[app.state.nearby.type].sql) { // add custom filter if it has been set
+      q.where(app.state.nearby.filterFeatureForType[app.state.nearby.type].sql);
     }
     q.run(function (data) {
       // add schools (except this one, already added) to map

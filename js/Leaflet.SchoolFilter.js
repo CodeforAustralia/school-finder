@@ -172,6 +172,7 @@ var L, app;
         '</div>';
 
       app.state.nearby.showFilters = false;
+      app.state.nearby.filterFeatureForType = {};
       this._setEventHandlers();
       this.update();
 
@@ -219,7 +220,9 @@ var L, app;
           return feature.name === featureName;
         });
         console.log(feature);
-        app.state.nearby.filterFeature = feature;
+        if (feature) {
+          app.state.nearby.filterFeatureForType[type] = feature;
+        }
         app.mapView.loadNearby();
       });
     },
