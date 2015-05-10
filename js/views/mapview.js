@@ -155,29 +155,20 @@ app = app || {};
   };
 
 
-  var getPopupForFilter = function (school, filterSQL) {
+  var getPopupForFilter = function (school) {
     var popup = "<b>" + school.school_name + "</b>";
-    if (filterSQL === MapView.filters.distance.sql) {
-      popup += "<br>This is a distance school.";
+    if (school.type !== app.state.nearby.type) {
+      popup += "<br> School type: " + school.type;
     }
-    if (filterSQL === MapView.filters.boys.sql) {
-      popup += "<br>This is a boys school.";
+    var filter = app.state.nearby.filterFeature;
+    if (filter) {
+      if (filter.name === 'specialty') {
+        popup += "<br>Specialty offered: " + school.school_specialty_type;
+      } else {
+        popup += "<br>" + filter.matchLabel;
+      }
     }
-    if (filterSQL === MapView.filters.girls.sql) {
-      popup += "<br>This is a girls school.";
-    }
-    if (filterSQL === MapView.filters.opportunity_class.sql) {
-      popup += "<br>This school offers opportunity classes.";
-    }
-    if (filterSQL === MapView.filters.oshc.sql) {
-      popup += "<br>This school offers Outside School Hours Care.";
-    }
-    if (filterSQL === MapView.filters.selective_school.sql) {
-      popup += "<br>This school offers a selective option.";
-    }
-    if (filterSQL === MapView.filters.specialty.sql) {
-      popup += "<br>Specialty: " + school.school_specialty_type;
-    }
+
     return popup;
   };
 
@@ -225,7 +216,8 @@ app = app || {};
           // since we hide the popup on mouseout, if the popup is too close to the marker,
           // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
           // moves near the edge between the marker and popup, making the popup flicker on and off.
-          .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
+          // .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
+          .bindPopup(getPopupForFilter(row), {offset: [0, -28]})
           .on('click', that.clickSchool(row))
           .on('mouseover', MapView.onMouseOverOut, that)
           .on('mouseout', MapView.onMouseOverOut, that);
