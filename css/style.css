@@ -318,14 +318,21 @@ select#soflow, .styled-select {
 	margin: 0;
 }
 
+.nearby-schools-options {
+	margin-top: 0.5em;
+}
 .nearby-schools-feature legend,
 .nearby-schools-options legend {
     border-bottom: none;
     margin-bottom: 0.5em;
     font-size: 14px;
 }
-.nearby-schools-feature input[type="radio"] {
-	margin: 0 0.5em 0.5em 0.5em;
+.nearby-schools-feature input[type="radio"],
+.nearby-schools-options input[type="checkbox"] {
+	margin: 0em 3px 0.25em 0;
+}
+input#nearby-girls {
+	margin-left:1em;
 }
 .nearby-schools-options label {
 	font-weight: normal;
