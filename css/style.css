@@ -72,17 +72,6 @@ a:hover .fa-stack-1x {
 
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
-.level-primary .filters-selective.leaflet-control,
-.level-primary .filters-specialty.leaflet-control,
-.level-primary .filters-boys.leaflet-control,
-.level-primary .filters-girls.leaflet-control {
-	display: none;
-}
-
-.level-secondary .filters-opportunity-class.leaflet-control {
-	display: none;
-}
-
 .leaflet-control .active-filter {
 	 background-color: rgb(57, 172, 201);
 }

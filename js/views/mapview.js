@@ -10,52 +10,6 @@ app = app || {};
 
   app.MapView = MapView;
 
-  MapView.filters = {
-    distance: {
-      sql: "(s.distance_education IN ('null') OR distance_education IS NULL)",
-      icon: 'fa-ship',
-      title: 'Show only distance-education options',
-      id: 'filter-distance'
-    },
-    boys: {
-      sql: "s.gender = 'boys'",
-      icon: 'fa-male',
-      title: 'Show only boys schools',
-      id: 'filters-boys',
-    },
-    girls: {
-      sql: "s.gender = 'girls'",
-      icon: 'fa-female',
-      title: 'Show only girls schools',
-      id: 'filters-girls',
-    },
-    oshc: {
-      sql: "s.oshc = true",
-      icon: 'fa-child',
-      title: 'Show only schools with Outside School Hours Care',
-      id: 'filters-oshc'
-    },
-    opportunity_class: {
-      sql: "s.opportunity_class = true",
-      icon: 'fa-bolt',
-      title: 'Show only schools with opportunity classes',
-      id: 'filters-opportunity-class',
-    },
-    selective_school: {
-      sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')",
-      icon: 'fa-bolt',
-      title: 'Show only schools with a selective option',
-      id: 'filters-selective',
-    },
-    specialty: {
-      sql: "school_specialty_type NOT IN ('Comprehensive')",
-      icon: 'fa-magic',
-      title: 'Show only specialty schools',
-      id: 'filters-specialty',
-    },
-  };
-
-
   MapView.prototype.update = function (schools) {
     this.schools = schools;
     this.render();
@@ -233,35 +187,6 @@ app = app || {};
   };
 
 
-  MapView.prototype.addFilters = function () {
-
-    var that = this;
-    this.filterControls = {};
-
-    _.each(MapView.filters, function (filter) {
-
-      L.easyButton(filter.icon,
-        function () {
-          if (that.whereFilter === filter.sql) {
-            that.whereFilter = undefined; // disable filter
-            $('#' + this.options.id).parent().removeClass('active-filter');
-          } else {
-            that.whereFilter = filter.sql;
-            $('.leaflet-control .active-filter').removeClass('active-filter');
-            $('#' + this.options.id).parent().addClass('active-filter');
-          }
-          that.loadNearby();
-        },
-        filter.title,
-        that.map,
-        filter.id
-        );
-      $('#' + filter.id).closest('.leaflet-control').addClass(filter.id);
-
-    });
-  };
-
-
   MapView.prototype.addHomeMarker = function () {
     if (!this.map) { return; } // can't add marker if map doesn't yet exist.
 
@@ -404,7 +329,6 @@ app = app || {};
           console.error(err); // TODO: console.XYZ needs definition on some older browsers
         });
 
-      this.addFilters();
     } else {
       map = this.map;
       that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
@@ -412,16 +336,6 @@ app = app || {};
     }
 
     this.addHomeMarker();
-
-
-    if (app.level === 'primary') {
-      $('body').addClass('level-primary');
-      $('body').removeClass('level-secondary');
-    }
-    if (app.level === 'secondary') {
-      $('body').addClass('level-secondary');
-      $('body').removeClass('level-primary');
-    }
 
     // add result set to map
     var markers = [];
