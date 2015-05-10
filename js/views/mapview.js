@@ -203,8 +203,8 @@ app = app || {};
     q.setSchoolType(type, true).setSupport(app.support_needed)
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
-    if (this.whereFilter) { // add custom filter if it has been set
-      q.where(this.whereFilter);
+    if (app.state.nearby.filterFeature) { // add custom filter if it has been set
+      q.where(app.state.nearby.filterFeature.sql);
     }
     q.run(function (data) {
       // add schools (except this one, already added) to map
