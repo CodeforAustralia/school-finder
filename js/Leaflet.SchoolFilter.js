@@ -21,7 +21,7 @@ var L, app;
           {label: "Any", name: "any"},
           {label: "Outside School Hours Care", name: "oshc", sql: "s.oshc = true", matchLabel: "This school offers Outside School Hours Care."},
           {label: "Opportunity Classes", name: "oc", sql: "s.opportunity_class = true", matchLabel: "This school offers opportunity classes."},
-          {label: "Distance Classes", name: "distance", sql: "s.distance_education != 'false'", matchLabel: "This is a distance school."},
+          {label: "Distance Classes", name: "distance",  sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school."},
         ],
         options: [
           {label: "Include Infant (K-2)", name: "infants", type: "infants"},
@@ -38,7 +38,7 @@ var L, app;
           {label: "Girls", name: "girls", sql: "s.gender = 'girls'", matchLabel: "This is a girls school."},
           {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: "This school offers a selective option."},
           {label: "Specialty option", name: "specialty", sql: "school_specialty_type NOT IN ('Comprehensive')", matchLabel: "This school offers specialized classes"},
-          {label: "Distance Classes", name: "distance", sql: "s.distance_education != 'false'", matchLabel: "This is a distance school."},
+          {label: "Distance Classes", name: "distance", sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school."},
         ],
         options: [
           {label: "Include Central/Community (K-12)", name: "k12", type: "central"}
@@ -57,7 +57,8 @@ var L, app;
       distance: {
         label: "Distance / Online",
         category: "Specific",
-        sql: "s.distance_education != 'false'",
+        // sql: "s.distance_education != 'false'",
+        type: "distance",
       },
       environmental: {
         label: "Environmental Centre",

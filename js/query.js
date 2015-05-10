@@ -161,7 +161,7 @@ app = app || {};
     if (type === 'all') {
       this.where("(1=1)");
     } else if (type === 'distance') {
-      this.where("(s.distance_education IN ('null') OR s.distance_education IS NULL " + otherTypesExpression + ")");
+      this.where("((s.distance_education IN ('null') OR s.distance_education IS NULL) " + otherTypesExpression + ")");
     } else {
       this.where("(s.type = '" + type + "' " + otherTypesExpression + ")");
     }
