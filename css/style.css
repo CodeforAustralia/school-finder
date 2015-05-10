@@ -308,6 +308,16 @@ select#soflow, .styled-select {
 	margin: 0.5em 0 1em 0;
 }
 
+.nearby-schools-filter-explanation {
+	font-style: italic;
+	max-width: 16em;
+	margin-bottom: 0.5em;
+	margin-left: 10px;
+}
+.nearby-schools-filter-explanation:empty {
+	margin: 0;
+}
+
 .nearby-schools-feature legend,
 .nearby-schools-options legend {
     border-bottom: none;

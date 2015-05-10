@@ -110,6 +110,7 @@ var L, app;
         '    <option value="other">Other</option>' +
         '     </optgroup>' +
         ' </select>' +
+        ' <div class="nearby-schools-filter-explanation"></div>' +
         ' <div class="nearby-schools-feature">' +
         '   <fieldset class="primary">' +
         '     <legend>With feature:</legend>' +
@@ -255,6 +256,10 @@ var L, app;
 
     _updateFilterUI: function (type) {
       var container = this.container;
+
+      var support = app.util.support_description();
+      var explanation = support && app.support_needed ? "(supporting " + support + ")" : ""; // app.support_needed
+      $('.nearby-schools-filter-explanation', container).text(explanation);
 
       $(container).find('.nearby-schools-feature fieldset').hide();
       $(container).find('.nearby-schools-feature fieldset.' + type).show();
