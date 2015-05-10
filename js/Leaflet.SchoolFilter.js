@@ -25,7 +25,7 @@ var L, app;
         ],
         options: [
           {label: "Include Infant (K-2)", name: "infants", type: "infants"},
-          {label: "Include Central/Community (K-12)", name: "k12", type: "central"}
+          {label: "Include Central/Community (K-12)", name: "central", type: "central"}
         ],
       },
       secondary: {
@@ -41,7 +41,7 @@ var L, app;
           {label: "Distance Classes", name: "distance", sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school."},
         ],
         options: [
-          {label: "Include Central/Community (K-12)", name: "k12", type: "central"}
+          {label: "Include Central/Community (K-12)", name: "central", type: "central"}
         ],
       },
       supported: {
@@ -160,19 +160,25 @@ var L, app;
         '   <fieldset class="primary secondary">' +
         '     <legend>Options:</legend>' +
         '     <div class="option primary">' +
-        '       <input type="checkbox" id="nearby-infants" value="infants" checked>' +
+        '       <input type="checkbox" id="nearby-infants" value="infants">' +
         '       <label for="nearby-infants">Include Infant (K-2)</label>' +
         '     </div>' +
         '     <div class="option primary secondary">' +
-        '       <input type="checkbox" id="nearby-central" value="k12" checked>' +
+        '       <input type="checkbox" id="nearby-central" value="central">' +
         '       <label for="nearby-central">Include Central/Community (K-12)</label>' +
         '     </div>' +
         '   </fieldset>' +
         ' </div>' +
         '</div>';
 
+      // set defaults
       app.state.nearby.showFilters = false;
       app.state.nearby.filterFeatureForType = {};
+      app.state.nearby.othersForType = {
+        primary: ['infants', 'central'],
+        secondary: ['central'],
+      };
+
       this._setEventHandlers();
       this.update();
 
@@ -206,6 +212,7 @@ var L, app;
         console.log("Type selected: " + type);
 
         that._updateFilterUI(type);
+        that._updateOptionsUI(type);
 
         app.state.nearby.type = type;
         app.mapView.loadNearby();
@@ -223,6 +230,20 @@ var L, app;
         if (feature) {
           app.state.nearby.filterFeatureForType[type] = feature;
         }
+        app.mapView.loadNearby();
+      });
+
+      $('.nearby-schools-options input:checkbox', container).click(function () {
+        var type = $(this).attr('value');
+        var includeThis = $(this).is(':checked');
+        var others = app.state.nearby.othersForType[app.state.nearby.type];
+
+        if (includeThis) {
+          app.state.nearby.othersForType[app.state.nearby.type] = _.union(others, type);
+        } else { // unchecked; remove this type
+          app.state.nearby.othersForType[app.state.nearby.type] = _.without(others, type);
+        }
+
         app.mapView.loadNearby();
       });
     },
@@ -243,6 +264,19 @@ var L, app;
 
       $(container).find('.nearby-schools-options fieldset.' + type).show();
       $(container).find('.nearby-schools-options fieldset div.' + type).show();
+    },
+
+    _updateOptionsUI: function (type) {
+      var container = this.container;
+
+      if (app.state.nearby.othersForType[type]) {
+        var others = app.state.nearby.othersForType[type]; //others: things like infants, central
+
+        $(".nearby-schools-options input:checkbox", container).prop('checked', false); // reset: uncheck everything
+        others.forEach(function (otherType) {
+          $("#nearby-" + otherType, container).prop('checked', true);
+        });
+      }
     },
 
     // sync UI to stored state
@@ -268,6 +302,8 @@ var L, app;
         toggleFilterButton.title = "Expand";
         toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       }
+
+      this._updateOptionsUI(app.state.nearby.type);
     },
 
   });

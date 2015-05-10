@@ -154,6 +154,12 @@ app = app || {};
     // then just show schools of that type (instead of all schools).
     // But the nearby school selector widget can override this (via app.state.nearby.type)
     var type = app.state.nearby.type || app.level || school.type;
+
+    var otherTypes = app.state.nearby.othersForType[app.state.nearby.type];
+    if (otherTypes) {
+      type = [type].concat(otherTypes);
+    }
+
     q.setSchoolType(type, true).setSupport(app.support_needed)
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
