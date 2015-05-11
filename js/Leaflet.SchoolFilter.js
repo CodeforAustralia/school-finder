@@ -211,11 +211,10 @@ var L, app;
       $('select#nearby-schools-type', container).change(function () {
         var type = $('option:selected', this)[0].value;
         console.log("Type selected: " + type);
-
-        that._updateFilterUI(type);
-        that._updateOptionsUI(type);
-
         app.state.nearby.type = type;
+
+        that._updateFilterUI();
+        that._updateOptionsUI();
         app.mapView.loadNearby();
       });
 
@@ -254,8 +253,10 @@ var L, app;
       this.update();
     },
 
-    _updateFilterUI: function (type) {
-      var container = this.container;
+    _updateFilterUI: function () {
+      var container = this.container,
+        type = app.state.nearby.type;
+
 
       var support = app.util.support_description();
       var explanation = support && app.support_needed ? "(supporting " + support + ")" : ""; // app.support_needed
@@ -271,8 +272,9 @@ var L, app;
       $(container).find('.nearby-schools-options fieldset div.' + type).show();
     },
 
-    _updateOptionsUI: function (type) {
-      var container = this.container;
+    _updateOptionsUI: function () {
+      var container = this.container,
+        type = app.state.nearby.type;
 
       if (app.state.nearby.othersForType[type]) {
         var others = app.state.nearby.othersForType[type]; //others: things like infants, central
@@ -291,7 +293,7 @@ var L, app;
 
       // setup initial UI state based on app state
       $('#nearby-schools-type', container).val(app.state.nearby.type);
-      this._updateFilterUI(app.state.nearby.type);
+      this._updateFilterUI();
 
       var toggleFilterButton = $('button.toggle-filters', container)[0];
       var toggleFilterIcon = $('i', toggleFilterButton);
@@ -308,7 +310,7 @@ var L, app;
         toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       }
 
-      this._updateOptionsUI(app.state.nearby.type);
+      this._updateOptionsUI();
     },
 
   });
