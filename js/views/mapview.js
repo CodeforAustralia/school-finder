@@ -110,7 +110,7 @@ app = app || {};
 
 
   var getPopupForFilter = function (school, checkMatch) {
-    var popup = '<b><a href="#school-info-container" class="popup-schoolname">' + school.school_name + '</a></b>';
+    var popup = '<b><a href="#school-info-container" class="popup-schoolname" title="Jump to school info">' + school.school_name + '</a></b>';
     if (school.type !== app.state.nearby.type) {
       var displayType = school.type;
       if (school.type === "central") {
