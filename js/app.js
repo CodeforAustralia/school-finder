@@ -184,6 +184,12 @@ app = app || {};
 
     $("#schoolname").autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
 
+    // DEBUG: jump right to the map
+    // $(".btn.primary").click();
+    // $(".block-support .search").click();
+    // $('#address').val("Newtown, NSW");
+    // $("#button-search-address").click();
+
   });
 
 }());
