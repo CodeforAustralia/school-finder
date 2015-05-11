@@ -29,6 +29,7 @@ app = app || {};
     } else {
       // but sometimes we'll need to let the user pick from multiple results
       app.ui.scrollAndCenter('.results-list');
+      app.ui.resetSearchBtns();
     }
 
   };
