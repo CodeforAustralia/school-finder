@@ -109,17 +109,21 @@ app = app || {};
   };
 
 
-  var getPopupForFilter = function (school) {
+  var getPopupForFilter = function (school, checkMatch) {
     var popup = "<b>" + school.school_name + "</b>";
     if (school.type !== app.state.nearby.type) {
       popup += "<br> School type: " + school.type;
     }
     var filter = app.state.nearby.filterFeatureForType[app.state.nearby.type];
     if (filter && filter.name !== "any") {
-      if (filter.name === 'specialty') {
-        popup += "<br>Specialty offered: " + school.school_specialty_type;
+      if (!checkMatch || filter.matchTest(school)) {
+        if (filter.name === 'specialty') {
+          popup += "<br>Specialty offered: " + school.school_specialty_type;
+        } else {
+          popup += "<br>" + filter.matchLabel;
+        }
       } else {
-        popup += "<br>" + filter.matchLabel;
+        popup += "<br>" + filter.mismatchLabel;
       }
     }
 
@@ -177,7 +181,7 @@ app = app || {};
           // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
           // moves near the edge between the marker and popup, making the popup flicker on and off.
           // .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
-          .bindPopup(getPopupForFilter(row), {offset: [0, -28]})
+          .bindPopup(getPopupForFilter(row, false), {offset: [0, -28]})
           .on('click', that.clickSchool(row))
           .on('mouseover', MapView.onMouseOverOut, that)
           .on('mouseout', MapView.onMouseOverOut, that);
@@ -239,6 +243,13 @@ app = app || {};
       // no school catchment & no user location, so just zoom to the school's location
       this.map.panTo([school.latitude, school.longitude]);
     }
+  };
+
+
+  MapView.prototype.updateResultsPopups = function () {
+    this.resultMarkersGroup.eachLayer(function (marker) {
+      marker.setPopupContent(getPopupForFilter(marker.options.school, true));
+    });
   };
 
 
@@ -352,12 +363,12 @@ app = app || {};
       } else {
         icon = app.geo.resultIcons[resultSchool.type];
       }
-      var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
+      var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon, school: resultSchool})
         // note we're using a bigger offset on the popup to reduce flickering;
         // since we hide the popup on mouseout, if the popup is too close to the marker,
         // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
         // moves near the edge between the marker and popup, making the popup flicker on and off.
-        .bindPopup("<b>" + resultSchool.school_name + "</b>", {offset: [0, -28]})
+        .bindPopup(getPopupForFilter(resultSchool, true), {offset: [0, -28]})
         .on('click', that.clickResultSchool(resultSchool))
         .on('mouseover', MapView.onMouseOverOut, that)
         .on('mouseout', MapView.onMouseOverOut, that);
