@@ -214,7 +214,6 @@ ul.school-details {
 	text-decoration: none;
 	padding-top: 0.5em;
 	margin-bottom: 0.5em;
-	padding-left: 15px;
 }
 
 .school-name .icon {
@@ -408,6 +407,35 @@ input#nearby-girls {
 	margin-left: 2em;
 }
 
+@media only screen and (min-width: 980px) {
+	.school-name {
+		padding-left: 15px; /* to keep flush-left with column below */
+	}
+}
+
+@media only screen and (max-width: 320px) {
+	.sitename {
+		font-size: 18px;
+		padding-right: 0;
+	}
+	.org-logo img {
+		height: 22px;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+
+	.school-description .field-label { /* About */
+		font-size: 20px;
+	}
+	#school-info-container .school-name {
+		font-size: 30px;
+	}
+	#school-info-container .school-name .icon {
+		height:  50px;
+	}
+}
+
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 	 /*and (orientation : portrait) */
 	.cartodb-map {
@@ -423,10 +451,6 @@ input#nearby-girls {
 	}
 	.nearby-schools-feature legend, .nearby-schools-options legend {
 		margin-bottom: 0;
-	}
-	#school-info-container .school-name {
-		font-size: 32px;
-		padding-left: 0; /* keep flush with left of content */
 	}
 	.leaflet-top .leaflet-control {
 	    margin-top: 5px;
