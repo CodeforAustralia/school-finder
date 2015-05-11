@@ -112,7 +112,15 @@ app = app || {};
   var getPopupForFilter = function (school, checkMatch) {
     var popup = "<b>" + school.school_name + "</b>";
     if (school.type !== app.state.nearby.type) {
-      popup += "<br> School type: " + school.type;
+      var displayType = school.type;
+      if (school.type === "central") {
+        displayType = "Central/Community";
+      } else if (school.type === "ssp") {
+        displayType = "School for Specific Purposes";
+      } else { // just capitalize type
+        displayType = displayType.charAt(0).toUpperCase() + displayType.substring(1);
+      }
+      popup += "<br> School type: " + displayType;
     }
     var filter = app.state.nearby.filterFeatureForType[app.state.nearby.type];
     if (filter && filter.name !== "any") {
