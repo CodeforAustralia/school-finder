@@ -126,6 +126,12 @@ a:hover .fa-stack-1x {
 	}
 }
 
+
+#school-info-container {
+    margin-top: -1em; padding-top: 1em; /* hack so that jumping here keeps part of the map in view */
+}
+
+
 .school-info {
 	padding-bottom: 20px;
 	border-bottom: 6px solid rgb(62, 62, 62);
@@ -400,4 +406,35 @@ input#nearby-girls {
 .school-name-search {
 	margin-right: 2em;
 	margin-left: 2em;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+	 /*and (orientation : portrait) */
+	.cartodb-map {
+		height: 310px;
+	}
+	.nearby-schools-control {
+	    max-height: 310px;
+	    overflow: auto;
+	    overflow-x:hidden;
+	}
+	#nearby-schools-type {
+		margin-bottom: 0.25em;
+	}
+	.nearby-schools-feature legend, .nearby-schools-options legend {
+		margin-bottom: 0;
+	}
+	#school-info-container .school-name {
+		font-size: 32px;
+		padding-left: 0; /* keep flush with left of content */
+	}
+	.leaflet-top .leaflet-control {
+	    margin-top: 5px;
+	}
+	.leaflet-left .leaflet-control {
+	    margin-left: 5px;
+	}
+	.leaflet-right .leaflet-control {
+	    margin-right: 5px;
+	}
 }
