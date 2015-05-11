@@ -28,7 +28,7 @@ app = app || {};
       app.ui.scrollTo('.cartodb-map');
     } else {
       // but sometimes we'll need to let the user pick from multiple results
-      app.ui.scrollTo('.results-list');
+      app.ui.scrollAndCenter('.results-list');
     }
 
   };
@@ -140,10 +140,7 @@ app = app || {};
         $('.block-support select').val(app.support);
       }
 
-      // $(".block-address").show();
-      $('html, body').animate({
-        scrollTop: $(".block-support").offset().top - 100 //HACK to center in window.
-      }, 500);
+      app.ui.scrollAndCenter('.block-support');
     };
 
     var clickSupport = function (e) {
@@ -156,9 +153,7 @@ app = app || {};
       }
 
       $(".block-address").show();
-      $('html, body').animate({
-        scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
-      }, 500);
+      app.ui.scrollAndCenter('.block-address');
     };
 
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
