@@ -10,52 +10,6 @@ app = app || {};
 
   app.MapView = MapView;
 
-  MapView.filters = {
-    distance: {
-      sql: "(s.distance_education IN ('null') OR distance_education IS NULL)",
-      icon: 'fa-ship',
-      title: 'Show only distance-education options',
-      id: 'filter-distance'
-    },
-    boys: {
-      sql: "s.gender = 'boys'",
-      icon: 'fa-male',
-      title: 'Show only boys schools',
-      id: 'filters-boys',
-    },
-    girls: {
-      sql: "s.gender = 'girls'",
-      icon: 'fa-female',
-      title: 'Show only girls schools',
-      id: 'filters-girls',
-    },
-    oshc: {
-      sql: "s.oshc = true",
-      icon: 'fa-child',
-      title: 'Show only schools with Outside School Hours Care',
-      id: 'filters-oshc'
-    },
-    opportunity_class: {
-      sql: "s.opportunity_class = true",
-      icon: 'fa-bolt',
-      title: 'Show only schools with opportunity classes',
-      id: 'filters-opportunity-class',
-    },
-    selective_school: {
-      sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')",
-      icon: 'fa-bolt',
-      title: 'Show only schools with a selective option',
-      id: 'filters-selective',
-    },
-    specialty: {
-      sql: "school_specialty_type NOT IN ('Comprehensive')",
-      icon: 'fa-magic',
-      title: 'Show only specialty schools',
-      id: 'filters-specialty',
-    },
-  };
-
-
   MapView.prototype.update = function (schools) {
     this.schools = schools;
     this.render();
@@ -155,34 +109,43 @@ app = app || {};
   };
 
 
-  var getPopupForFilter = function (school, filterSQL) {
-    var popup = "<b>" + school.school_name + "</b>";
-    if (filterSQL === MapView.filters.distance.sql) {
-      popup += "<br>This is a distance school.";
+  var getPopupForFilter = function (school, checkMatch) {
+    var popup = '<b><a href="#school-info-container" class="popup-schoolname" title="Jump to school info">' + school.school_name + '</a></b>';
+    if (school.type !== app.state.nearby.type) {
+      var displayType = school.type;
+      if (school.type === "central") {
+        displayType = "Central/Community";
+      } else if (school.type === "ssp") {
+        displayType = "School for Specific Purposes";
+      } else { // just capitalize type
+        displayType = displayType.charAt(0).toUpperCase() + displayType.substring(1);
+      }
+      popup += "<br> School type: " + displayType;
     }
-    if (filterSQL === MapView.filters.boys.sql) {
-      popup += "<br>This is a boys school.";
+    var filter = app.state.nearby.filterFeatureForType[app.state.nearby.type];
+    if (filter && filter.name !== "any") {
+      if (!checkMatch || filter.matchTest(school)) {
+        if (filter.name === 'specialty') {
+          popup += "<br>Specialty offered: " + school.school_specialty_type;
+        } else {
+          popup += "<br>" + filter.matchLabel;
+        }
+      } else {
+        popup += "<br>" + filter.mismatchLabel;
+      }
     }
-    if (filterSQL === MapView.filters.girls.sql) {
-      popup += "<br>This is a girls school.";
-    }
-    if (filterSQL === MapView.filters.opportunity_class.sql) {
-      popup += "<br>This school offers opportunity classes.";
-    }
-    if (filterSQL === MapView.filters.oshc.sql) {
-      popup += "<br>This school offers Outside School Hours Care.";
-    }
-    if (filterSQL === MapView.filters.selective_school.sql) {
-      popup += "<br>This school offers a selective option.";
-    }
-    if (filterSQL === MapView.filters.specialty.sql) {
-      popup += "<br>Specialty: " + school.school_specialty_type;
-    }
+
     return popup;
   };
 
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
+    if (!app.state.showNearby) {
+      if (this.nearbyMarkersGroup) {
+        this.map.removeLayer(this.nearbyMarkersGroup);
+      }
+      return;
+    }
     var that = this;
     var school = this.schools.selected();
 
@@ -200,14 +163,20 @@ app = app || {};
 
     var q = new app.Query();
     // If app.level is unspecified (when someone just first searched for a school by name),
-    // then for now just show schools of that type (instead of all schools).
-    // Later we may want to let users control which markers are visible (TODO)
-    // Include SSP here in case people are looking for that (later we can add a filtering step)
-    q.setSchoolType([app.level || school.type, 'ssp']).setSupport(app.support_needed)
+    // then just show schools of that type (instead of all schools).
+    // But the nearby school selector widget can override this (via app.state.nearby.type)
+    var type = app.state.nearby.type || app.level || school.type;
+
+    var otherTypes = app.state.nearby.othersForType[app.state.nearby.type];
+    if (otherTypes) {
+      type = [type].concat(otherTypes);
+    }
+
+    q.setSchoolType(type, true).setSupport(app.support_needed)
       .where("s.school_code NOT IN (" +  _.pluck(this.schools.schools, 'school_code') + ")")
       .byBounds(bounds);
-    if (this.whereFilter) { // add custom filter if it has been set
-      q.where(this.whereFilter);
+    if (app.state.nearby.filterFeatureForType[app.state.nearby.type] && app.state.nearby.filterFeatureForType[app.state.nearby.type].sql) { // add custom filter if it has been set
+      q.where(app.state.nearby.filterFeatureForType[app.state.nearby.type].sql);
     }
     q.run(function (data) {
       // add schools (except this one, already added) to map
@@ -219,7 +188,8 @@ app = app || {};
           // since we hide the popup on mouseout, if the popup is too close to the marker,
           // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
           // moves near the edge between the marker and popup, making the popup flicker on and off.
-          .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
+          // .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
+          .bindPopup(getPopupForFilter(row, false), {offset: [0, -28]})
           .on('click', that.clickSchool(row))
           .on('mouseover', MapView.onMouseOverOut, that)
           .on('mouseout', MapView.onMouseOverOut, that);
@@ -230,35 +200,6 @@ app = app || {};
       }
       that.nearbyMarkersGroup = new L.featureGroup(markers);
       that.map.addLayer(that.nearbyMarkersGroup);
-
-    });
-  };
-
-
-  MapView.prototype.addFilters = function () {
-
-    var that = this;
-    this.filterControls = {};
-
-    _.each(MapView.filters, function (filter) {
-
-      L.easyButton(filter.icon,
-        function () {
-          if (that.whereFilter === filter.sql) {
-            that.whereFilter = undefined; // disable filter
-            $('#' + this.options.id).parent().removeClass('active-filter');
-          } else {
-            that.whereFilter = filter.sql;
-            $('.leaflet-control .active-filter').removeClass('active-filter');
-            $('#' + this.options.id).parent().addClass('active-filter');
-          }
-          that.loadNearby();
-        },
-        filter.title,
-        that.map,
-        filter.id
-        );
-      $('#' + filter.id).closest('.leaflet-control').addClass(filter.id);
 
     });
   };
@@ -313,6 +254,13 @@ app = app || {};
   };
 
 
+  MapView.prototype.updateResultsPopups = function () {
+    this.resultMarkersGroup.eachLayer(function (marker) {
+      marker.setPopupContent(getPopupForFilter(marker.options.school, true));
+    });
+  };
+
+
   MapView.prototype.init = function () {
     var that = this;
 
@@ -332,6 +280,7 @@ app = app || {};
     this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code != '" + school.school_code + "'";
 
+    app.state.nearby.type = app.level || school.type;
 
     // initiate leaflet map
     var map;
@@ -352,6 +301,8 @@ app = app || {};
         scrollWheelZoom: false,
       });
       this.map = map;
+
+      this.schoolsNearby = L.schoolsNearby(map); // add nearby schools control
 
       map.on('viewreset moveend', function () {
         that.loadNearby();
@@ -403,23 +354,13 @@ app = app || {};
           console.error(err); // TODO: console.XYZ needs definition on some older browsers
         });
 
-      this.addFilters();
     } else {
       map = this.map;
       that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
+      this.schoolsNearby.update();
     }
 
     this.addHomeMarker();
-
-
-    if (app.level === 'primary') {
-      $('body').addClass('level-primary');
-      $('body').removeClass('level-secondary');
-    }
-    if (app.level === 'secondary') {
-      $('body').addClass('level-secondary');
-      $('body').removeClass('level-primary');
-    }
 
     // add result set to map
     var markers = [];
@@ -430,12 +371,12 @@ app = app || {};
       } else {
         icon = app.geo.resultIcons[resultSchool.type];
       }
-      var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon})
+      var marker = L.marker([resultSchool.latitude, resultSchool.longitude], {icon: icon, school: resultSchool})
         // note we're using a bigger offset on the popup to reduce flickering;
         // since we hide the popup on mouseout, if the popup is too close to the marker,
         // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
         // moves near the edge between the marker and popup, making the popup flicker on and off.
-        .bindPopup("<b>" + resultSchool.school_name + "</b>", {offset: [0, -28]})
+        .bindPopup(getPopupForFilter(resultSchool, true), {offset: [0, -28]})
         .on('click', that.clickResultSchool(resultSchool))
         .on('mouseover', MapView.onMouseOverOut, that)
         .on('mouseout', MapView.onMouseOverOut, that);

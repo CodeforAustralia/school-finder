@@ -1,4 +1,4 @@
-var app;
+var app, window;
 app = app || {};
 app.ui = app.ui || {};
 
@@ -27,6 +27,13 @@ app.ui = app.ui || {};
     $btn.data('default-text', $btn.html());
     $btn.html('Working&hellip;');
     $btn.addClass("working");
+  };
+
+  // animated scroll to and center element with specified selector
+  app.ui.scrollAndCenter = function (selector) {
+    var vOffset = ($(window).height() - $(selector).outerHeight()) / 2;
+    var scrollTop = $(selector).offset().top - (vOffset > 0 ? vOffset : 0);
+    $('html, body').animate({scrollTop: scrollTop}, 500);
   };
 
   // animated scroll to element with specified selector

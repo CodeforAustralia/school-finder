@@ -1,9 +1,11 @@
-var app, L, cartodb, google, Handlebars;
+var app, L, cartodb, google, Handlebars, navigator;
 app = app || {};
 
 (function () {
 
   app.sql = new cartodb.SQL({ user: app.db.user });
+  app.state = {}; // UI and application state.
+  app.state.nearby = {}; // info about nearby markers to display
 
 
   app.schools = new app.Schools(); // schools results collection
@@ -26,7 +28,8 @@ app = app || {};
       app.ui.scrollTo('.cartodb-map');
     } else {
       // but sometimes we'll need to let the user pick from multiple results
-      app.ui.scrollTo('.results-list');
+      app.ui.scrollAndCenter('.results-list');
+      app.ui.resetSearchBtns();
     }
 
   };
@@ -124,6 +127,11 @@ app = app || {};
 
   $(document).ready(function () {
 
+    var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+    if (iOS) {
+      $('html').addClass('ios');
+    }
+
     app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
 
     var clickSchoolType = function (e) {
@@ -138,10 +146,7 @@ app = app || {};
         $('.block-support select').val(app.support);
       }
 
-      // $(".block-address").show();
-      $('html, body').animate({
-        scrollTop: $(".block-support").offset().top - 100 //HACK to center in window.
-      }, 500);
+      app.ui.scrollAndCenter('.block-support');
     };
 
     var clickSupport = function (e) {
@@ -154,9 +159,7 @@ app = app || {};
       }
 
       $(".block-address").show();
-      $('html, body').animate({
-        scrollTop: $(".block-address").offset().top - 100 //HACK to center in window.
-      }, 500);
+      app.ui.scrollAndCenter('.block-address');
     };
 
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
@@ -185,6 +188,12 @@ app = app || {};
     });
 
     $("#schoolname").autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
+
+    // DEBUG: jump right to the map
+    // $(".btn.primary").click();
+    // $(".block-support .search").click();
+    // $('#address').val("Newtown, NSW");
+    // $("#button-search-address").click();
 
   });
 
