@@ -263,9 +263,6 @@ select#soflow, .styled-select {
 }
 
 
-.nearby-schools-control-toggle {
-	float: right;
-}
 .nearby-schools-control-toggle label {
 	margin-right: 3.75em;
 	padding-left: 0.25em;
