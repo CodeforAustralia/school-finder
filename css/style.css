@@ -462,10 +462,11 @@ input#nearby-girls {
 	}
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  select:focus,
-  textarea:focus,
-  input:focus {
-    font-size: 16px;
-  }
+/* prevent iphone from autozooming on form fields */
+/* http://stackoverflow.com/a/9039885/1024811
+   http://stackoverflow.com/a/16255670/1024811 */
+.ios select:focus,
+.ios textarea:focus,
+.ios input:focus {
+	font-size: 16px;
 }

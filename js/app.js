@@ -1,4 +1,4 @@
-var app, L, cartodb, google, Handlebars;
+var app, L, cartodb, google, Handlebars, navigator;
 app = app || {};
 
 (function () {
@@ -126,6 +126,11 @@ app = app || {};
 
 
   $(document).ready(function () {
+
+    var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+    if (iOS) {
+      $('html').addClass('ios');
+    }
 
     app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
 
