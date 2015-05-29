@@ -28,7 +28,7 @@ app = app || {};
     pickedIcons: {
       ssp: L.MakiMarkers.icon({icon: "school", color: "#279644", size: "l"}),
       // TODO: that green looks like the active primary color for color blind people.
-      primary: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "l"}),
+      primary: L.MakiMarkers.icon({icon: "school", color: "#e65c5c", size: "l"}),
       secondary: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "l"}),
       central: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "l"}),
       infants: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
@@ -39,7 +39,7 @@ app = app || {};
     resultIcons: {
       ssp: L.MakiMarkers.icon({icon: "school", color: "#279644", size: "m"}),
       // TODO: that green looks like the active primary color for color blind people.
-      primary: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"}),
+      primary: L.MakiMarkers.icon({icon: "school", color: "#e65c5c", size: "m"}),
       secondary: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "m"}),
       central: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "m"}),
       infants: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
@@ -50,8 +50,8 @@ app = app || {};
     nearbyIcons: {
       ssp: L.MakiMarkers.icon({icon: "school", color: "#6ba87b", size: "m", opacity: 0.5}),
       // TODO: that green looks like the active primary color for color blind people.
-      primary: L.MakiMarkers.icon({icon: "school", color: "#F5B4CC", size: "m", opacity: 0.5}),
-      secondary: L.MakiMarkers.icon({icon: "school", color: "#DA99E3", size: "m", opacity: 0.5}),
+      primary: L.MakiMarkers.icon({icon: "school", color: "#ff9191", size: "m", opacity: 0.5}),
+      secondary: L.MakiMarkers.icon({icon: "school", color: "#da99e3", size: "m", opacity: 0.5}),
       central: L.MakiMarkers.icon({icon: "school", color: "#DA99E3", size: "m", opacity: 0.5}),
       infants: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
       environmental: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
@@ -81,4 +81,3 @@ app = app || {};
   ];
 
 }());
-
