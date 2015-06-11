@@ -5,7 +5,7 @@ A tool for locating public (government) schools in New South Wales, Australia.
 <p><b>Demo</b></p>
 Codeforaustralia.github.io/school-finder/
 
-![1stscreen] (10790927/8099666/bdca8dc8-1043-11e5-8707-de8d1f8f3253.PNG)
+![1stscreen] (https://cloud.githubusercontent.com/assets/10790927/8099666/bdca8dc8-1043-11e5-8707-de8d1f8f3253.PNG)
 
 <p><b>The Premise</b></p>
 There are currently multiple government provided, online search tools for finding schools. The school finder project sets about taking the best of each existing service, and combining them with a focus on heightened user experience. The school finder looks fresh and inviting, it has a smooth work flow and the results section provides vital information in two sections- an overview area, which is boxed out in grey; and a longer, narrative style school description which has been provided by the schools themselves and is intended to give users insight in the schools overall vibe and style.
