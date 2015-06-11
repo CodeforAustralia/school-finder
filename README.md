@@ -5,9 +5,9 @@ A tool for locating public (government) schools in New South Wales, Australia.
 <p><b>Demo</b></p>
 Codeforaustralia.github.io/school-finder/
 
-<p><b>Screen shot </p></b>
+<p><b>Screen shots </p></b>
 
-![1stscreen] (https://cloud.githubusercontent.com/assets/10790927/8099666/bdca8dc8-1043-11e5-8707-de8d1f8f3253.PNG)
+![1stscreen] (https://cloud.gitusercontent.com/assets/10790927/8099666/bdca8dc8-1043-11e5-8707-de8d1f8f3253.PNG)
 
 
 
