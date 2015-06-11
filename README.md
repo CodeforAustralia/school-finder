@@ -8,9 +8,7 @@ Codeforaustralia.github.io/school-finder/
 <p><b>Screen shot </p></b>
 
 ![1stscreen] (https://cloud.githubusercontent.com/assets/10790927/8099666/bdca8dc8-1043-11e5-8707-de8d1f8f3253.PNG)
-![2_specialneeds] (https://cloud.githubusercontent.com/assets/10790927/8099669/c2256e4c-1043-11e5-892a-03692a03dcda.png)
-![3_address] (https://cloud.githubusercontent.com/assets/10790927/8099670/c60abd6e-1043-11e5-81cd-11d387caa2bf.PNG)
-![5_schooldetails] (https://cloud.githubusercontent.com/assets/10790927/8099673/cf92daba-1043-11e5-98f0-79f882a06f81.PNG)
+
 
 
 <p><b>The Premise</b></p>
