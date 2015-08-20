@@ -281,9 +281,9 @@
               <li class="school-specialty"><span class="field-label">Specialty: </span><span class="field-data">{{school_specialty_type}}</span></li>
               {{/if}}
 
-              {{#if is_intensive_english_possible}}
+              {{#if is_intensive_english_possible}} {{#if intensive_english_centre}}
               <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{yesNo intensive_english_centre}}</span></li>
-              {{/if}}
+              {{/if}} {{/if}}
               {{#if is_opportunity_class_possible}} {{#if opportunity_class}}
               <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{yesNo opportunity_class}}</span></li>
               {{/if}} {{/if}}
