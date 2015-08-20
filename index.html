@@ -284,12 +284,12 @@
               {{#if is_intensive_english_possible}}
               <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{yesNo intensive_english_centre}}</span></li>
               {{/if}}
-              {{#if is_opportunity_class_possible}}
+              {{#if is_opportunity_class_possible}} {{#if opportunity_class}}
               <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{yesNo opportunity_class}}</span></li>
-              {{/if}}
-              {{#if is_selective_possible}}
+              {{/if}} {{/if}}
+              {{#if is_selective_possible}} {{#if is_somewhat_selective}}
               <li class="school-selective"><span class="field-label">Selective: </span><span class="field-data">{{selective_school}}</span></li>
-              {{/if}}
+              {{/if}} {{/if}}
               {{#if support_offered}}
               <li class="school-support">
                 <span class="field-label">Support for:</span>
@@ -316,9 +316,11 @@
               <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{yesNo preschool}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
               {{/if}}
 
+              {{#if oshc}}
               <li class="school-oshc"><span class="field-label">Outside school hours care: </span>{{#if oshc}} <br> {{/if}}
                 <span class="field-data">{{yesNo oshc}}{{#if oshc}}- {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) -->
               </li>
+              {{/if}}
 
               <li class="school-more-info"><span class="field-label">Need more info?</span> <span class="field-data"><a href="https://www.google.com.au/search?q={{school_name}}+nsw" target="_blank">Try Google</a></li>
           </ul>
