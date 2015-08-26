@@ -32,6 +32,11 @@ app = app || {};
     return type === 'secondary' || type === 'central';
   };
 
+  // SELECT distinct(type) FROM dec_schools  WHERE intensive_english_centre = true
+  var is_intensive_english_possible = function (type) {
+    return type === 'secondary';
+  };
+
 
   // return approx distance (km rounded to nearest tenths) from this school to the user,
   // or nothing if user location is unset
@@ -72,6 +77,8 @@ app = app || {};
         is_opportunity_class_possible: is_opportunity_class_possible(this.type),
         is_selective_possible: is_selective_possible(this.type),
         is_specialty_possible: is_specialty_possible(this.type),
+        is_somewhat_selective: this.selective_school !== "Not Selective",
+        is_intensive_english_possible: is_intensive_english_possible(this.type),
         support_offered: this.support_ids ? _.map(this.support_ids, function (id) {
           return app.supports[id];
         }) : false,
