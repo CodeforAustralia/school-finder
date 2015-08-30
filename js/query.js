@@ -136,7 +136,7 @@ app = app || {};
   // accepts either a single type e.g. "primary" or multiple, e.g. ['primary', 'community']
   Query.prototype.setSchoolType = function (typeOrTypes, exact_type_search) {
 
-    var exact = exact_type_search || true;
+    var exact = (exact_type_search === undefined ? false : exact_type_search);
 
     var type, otherTypes, otherTypesExpression = '';
 
