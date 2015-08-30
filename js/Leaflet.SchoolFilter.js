@@ -60,11 +60,11 @@ var L, app;
         // sql: "s.distance_education != 'false'",
         type: "distance",
       },
-      environmental: {
-        label: "Environmental Centre",
-        category: "Specific",
-        type: "environmental",
-      },
+      // environmental: {
+      //   label: "Environmental Centre",
+      //   category: "Specific",
+      //   type: "environmental",
+      // },
       k12: {
         label: "Central / Community (K-12)",
         category: "Specific",
@@ -104,7 +104,7 @@ var L, app;
         '  </optgroup>' +
         '  <optgroup label="Specific:">' +
         '    <option value="distance">Distance / Online</option>' +
-        '    <option value="environmental">Environmental Centre</option>' +
+        // '    <option value="environmental">Environmental Centre</option>' +
         '    <option value="central">Central / Community (K-12)</option>' +
         '    <option value="infants">Infant (K-2)</option>' +
         '    <option value="other">Other</option>' +
