@@ -36,7 +36,7 @@ var L, app;
           {label: "Any", name: "any"},
           {label: "Boys", name: "boys", sql: "s.gender = 'boys'", matchLabel: "This is a boys school.", mismatchLabel: "Not a boys school.", matchTest: function (s) { return s.gender === 'boys'; }},
           {label: "Girls", name: "girls", sql: "s.gender = 'girls'", matchLabel: "This is a girls school.", mismatchLabel: "Not a girls school.", matchTest: function (s) { return s.gender === 'girls'; }},
-          {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: "This school offers a selective option.", mismatchLabel: "Not offered: selective option.", matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
+          {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: "This school offers an academically selective option.", mismatchLabel: "Not offered: academically selective option.", matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
           {label: "Specialty option", name: "specialty", sql: "school_specialty_type NOT IN ('Comprehensive')", matchLabel: "This school offers specialized classes", mismatchLabel: "Not offered: specialized classes.", matchTest: function (s) { return s.school_specialty_type !== 'Comprehensive'; }},
           {label: "Distance Classes", name: "distance", sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school.", mismatchLabel: "Not a distance schoool", matchTest: function (s) { return s.distance_education !== false; }},
         ],
@@ -145,7 +145,7 @@ var L, app;
         '     </div>' +
         '     <div class="feature">' +
         '      <input type="radio" id="nearby-selective" name="feature" value="selective">' +
-        '      <label for="nearby-selective">Selective option</label>' +
+        '      <label for="nearby-selective">Academically selective option</label>' +
         '     </div>' +
         '     <div class="feature">' +
         '      <input type="radio" id="nearby-specialty" name="feature" value="specialty">' +
