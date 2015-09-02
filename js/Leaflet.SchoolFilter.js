@@ -126,10 +126,10 @@ var L, app;
         '      <input type="radio" id="nearby-oc" name="feature-primary" value="oc">' +
         '      <label for="nearby-oc">Opportunity Classes</label>' +
         '     </div>' +
-        '     <div class="feature">' +
-        '      <input type="radio" id="nearby-distance" name="feature-primary" value="distance">' +
-        '      <label for="nearby-distance">Distance Classes</label>' +
-        '     </div>' +
+        // '     <div class="feature">' +
+        // '      <input type="radio" id="nearby-distance" name="feature-primary" value="distance">' +
+        // '      <label for="nearby-distance">Distance Classes</label>' +
+        // '     </div>' +
         '   </fieldset>' +
         '   <fieldset class="secondary">' +
         '     <legend>With feature:</legend>' +
@@ -151,10 +151,10 @@ var L, app;
         '      <input type="radio" id="nearby-specialty" name="feature" value="specialty">' +
         '      <label for="nearby-specialty">Specialty option</label>' +
         '     </div>' +
-        '     <div class="feature">' +
-        '      <input type="radio" id="nearby-distance" name="feature" value="distance">' +
-        '      <label for="nearby-distance">Distance Classes</label>' +
-        '     </div>' +
+        // '     <div class="feature">' +
+        // '      <input type="radio" id="nearby-distance" name="feature" value="distance">' +
+        // '      <label for="nearby-distance">Distance Classes</label>' +
+        // '     </div>' +
         '   </fieldset>' +
         ' </div>' +
         ' <div class="nearby-schools-options">' +
