@@ -11,7 +11,7 @@
 
 /*
  * Filters could be like:
- * Selective
+ * Academically selective
  * Opportunity classes
  * Outside School Hours Care
  * School level
