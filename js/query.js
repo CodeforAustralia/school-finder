@@ -180,6 +180,16 @@ app = app || {};
     return this;
   };
 
+  // find all results, ordered by distance (nearest first).
+  // Use setLimit(1) if you want to restrict to just the one nearest result.
+  Query.prototype.byClosest = function (lat, lng) {
+    this.queryBy = 'closest';
+    this.lat = lat;
+    this.lng = lng;
+    this.where("(1=1)");
+    return this;
+  };
+
   Query.prototype.byDistance = function (lat, lng, distanceInMeters) {
     this.queryBy = 'distance';
     this.radius = distanceInMeters;
@@ -222,6 +232,13 @@ app = app || {};
       joinSubtype = "LEFT OUTER";
       otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
       whereCondition = "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) < " + this.radius;
+      orderBy = "ORDER BY dist ASC";
+
+    } else if (this.queryBy === 'closest') {
+
+      joinSubtype = "LEFT OUTER";
+      otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
+      whereCondition = "(1 = 1)";
       orderBy = "ORDER BY dist ASC";
 
     } else if (this.queryBy === 'bounds') {
