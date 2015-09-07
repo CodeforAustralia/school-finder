@@ -11,7 +11,7 @@
 
 /*
  * Filters could be like:
- * Selective
+ * Academically selective
  * Opportunity classes
  * Outside School Hours Care
  * School level
@@ -136,7 +136,7 @@ app = app || {};
   // accepts either a single type e.g. "primary" or multiple, e.g. ['primary', 'community']
   Query.prototype.setSchoolType = function (typeOrTypes, exact_type_search) {
 
-    var exact = exact_type_search || true;
+    var exact = (exact_type_search === undefined ? false : exact_type_search);
 
     var type, otherTypes, otherTypesExpression = '';
 
@@ -177,6 +177,16 @@ app = app || {};
     this.queryBy = 'catchment';
     this.lat = lat;
     this.lng = lng;
+    return this;
+  };
+
+  // find all results, ordered by distance (nearest first).
+  // Use setLimit(1) if you want to restrict to just the one nearest result.
+  Query.prototype.byClosest = function (lat, lng) {
+    this.queryBy = 'closest';
+    this.lat = lat;
+    this.lng = lng;
+    this.where("(1=1)");
     return this;
   };
 
@@ -222,6 +232,13 @@ app = app || {};
       joinSubtype = "LEFT OUTER";
       otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
       whereCondition = "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) < " + this.radius;
+      orderBy = "ORDER BY dist ASC";
+
+    } else if (this.queryBy === 'closest') {
+
+      joinSubtype = "LEFT OUTER";
+      otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
+      whereCondition = "(1 = 1)";
       orderBy = "ORDER BY dist ASC";
 
     } else if (this.queryBy === 'bounds') {

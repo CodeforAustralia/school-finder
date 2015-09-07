@@ -36,7 +36,7 @@ var L, app;
           {label: "Any", name: "any"},
           {label: "Boys", name: "boys", sql: "s.gender = 'boys'", matchLabel: "This is a boys school.", mismatchLabel: "Not a boys school.", matchTest: function (s) { return s.gender === 'boys'; }},
           {label: "Girls", name: "girls", sql: "s.gender = 'girls'", matchLabel: "This is a girls school.", mismatchLabel: "Not a girls school.", matchTest: function (s) { return s.gender === 'girls'; }},
-          {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: "This school offers a selective option.", mismatchLabel: "Not offered: selective option.", matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
+          {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: "This school offers an academically selective option.", mismatchLabel: "Not offered: academically selective option.", matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
           {label: "Specialty option", name: "specialty", sql: "school_specialty_type NOT IN ('Comprehensive')", matchLabel: "This school offers specialized classes", mismatchLabel: "Not offered: specialized classes.", matchTest: function (s) { return s.school_specialty_type !== 'Comprehensive'; }},
           {label: "Distance Classes", name: "distance", sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school.", mismatchLabel: "Not a distance schoool", matchTest: function (s) { return s.distance_education !== false; }},
         ],
@@ -60,11 +60,11 @@ var L, app;
         // sql: "s.distance_education != 'false'",
         type: "distance",
       },
-      environmental: {
-        label: "Environmental Centre",
-        category: "Specific",
-        type: "environmental",
-      },
+      // environmental: {
+      //   label: "Environmental Centre",
+      //   category: "Specific",
+      //   type: "environmental",
+      // },
       k12: {
         label: "Central / Community (K-12)",
         category: "Specific",
@@ -104,7 +104,7 @@ var L, app;
         '  </optgroup>' +
         '  <optgroup label="Specific:">' +
         '    <option value="distance">Distance / Online</option>' +
-        '    <option value="environmental">Environmental Centre</option>' +
+        // '    <option value="environmental">Environmental Centre</option>' +
         '    <option value="central">Central / Community (K-12)</option>' +
         '    <option value="infants">Infant (K-2)</option>' +
         '    <option value="other">Other</option>' +
@@ -126,10 +126,10 @@ var L, app;
         '      <input type="radio" id="nearby-oc" name="feature-primary" value="oc">' +
         '      <label for="nearby-oc">Opportunity Classes</label>' +
         '     </div>' +
-        '     <div class="feature">' +
-        '      <input type="radio" id="nearby-distance" name="feature-primary" value="distance">' +
-        '      <label for="nearby-distance">Distance Classes</label>' +
-        '     </div>' +
+        // '     <div class="feature">' +
+        // '      <input type="radio" id="nearby-distance" name="feature-primary" value="distance">' +
+        // '      <label for="nearby-distance">Distance Classes</label>' +
+        // '     </div>' +
         '   </fieldset>' +
         '   <fieldset class="secondary">' +
         '     <legend>With feature:</legend>' +
@@ -145,16 +145,16 @@ var L, app;
         '     </div>' +
         '     <div class="feature">' +
         '      <input type="radio" id="nearby-selective" name="feature" value="selective">' +
-        '      <label for="nearby-selective">Selective option</label>' +
+        '      <label for="nearby-selective">Academically selective option</label>' +
         '     </div>' +
         '     <div class="feature">' +
         '      <input type="radio" id="nearby-specialty" name="feature" value="specialty">' +
         '      <label for="nearby-specialty">Specialty option</label>' +
         '     </div>' +
-        '     <div class="feature">' +
-        '      <input type="radio" id="nearby-distance" name="feature" value="distance">' +
-        '      <label for="nearby-distance">Distance Classes</label>' +
-        '     </div>' +
+        // '     <div class="feature">' +
+        // '      <input type="radio" id="nearby-distance" name="feature" value="distance">' +
+        // '      <label for="nearby-distance">Distance Classes</label>' +
+        // '     </div>' +
         '   </fieldset>' +
         ' </div>' +
         ' <div class="nearby-schools-options">' +

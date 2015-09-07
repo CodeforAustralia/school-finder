@@ -138,6 +138,32 @@ app = app || {};
     return popup;
   };
 
+
+  var addMarkers = function (mapview, data) {
+    var that = mapview;
+    var markers = [];
+    data.rows.forEach(function (row) {
+      var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcons[row.type]})
+        // note we're using a bigger offset on the popup to reduce flickering;
+        // since we hide the popup on mouseout, if the popup is too close to the marker,
+        // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
+        // moves near the edge between the marker and popup, making the popup flicker on and off.
+        // .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
+        .bindPopup(getPopupForFilter(row, false), {offset: [0, -28]})
+        .on('click', that.clickSchool(row))
+        .on('mouseover', MapView.onMouseOverOut, that)
+        .on('mouseout', MapView.onMouseOverOut, that);
+      markers.push(marker);
+    });
+
+    if (that.nearbyMarkersGroup) {
+      that.map.removeLayer(that.nearbyMarkersGroup);
+    }
+    that.nearbyMarkersGroup = new L.featureGroup(markers);
+    that.map.addLayer(that.nearbyMarkersGroup);
+    return markers;
+  };
+
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
     if (!app.state.showNearby) {
@@ -181,26 +207,37 @@ app = app || {};
     q.run(function (data) {
       // add schools (except this one, already added) to map
       console.log(data);
-      var markers = [];
-      data.rows.forEach(function (row) {
-        var marker = L.marker([row.latitude, row.longitude], {icon: app.geo.nearbyIcons[row.type]})
-          // note we're using a bigger offset on the popup to reduce flickering;
-          // since we hide the popup on mouseout, if the popup is too close to the marker,
-          // then the popup can actually sit on top of the marker and 'steals' the mouse as the cursor
-          // moves near the edge between the marker and popup, making the popup flicker on and off.
-          // .bindPopup(getPopupForFilter(row, that.whereFilter), {offset: [0, -28]})
-          .bindPopup(getPopupForFilter(row, false), {offset: [0, -28]})
-          .on('click', that.clickSchool(row))
-          .on('mouseover', MapView.onMouseOverOut, that)
-          .on('mouseout', MapView.onMouseOverOut, that);
-        markers.push(marker);
-      });
-      if (that.nearbyMarkersGroup) {
-        that.map.removeLayer(that.nearbyMarkersGroup);
-      }
-      that.nearbyMarkersGroup = new L.featureGroup(markers);
-      that.map.addLayer(that.nearbyMarkersGroup);
+      if (data.rows.length < 1) {
+        console.log("No results visible; re-doing search and zooming...");
+        var q2 = new app.Query();
+        q2.setSchoolType(type, true).setSupport(app.support_needed)
+          .where("s.school_code NOT IN (" +  _.pluck(that.schools.schools, 'school_code') + ")")
+          .setLimit(1)
+          .byClosest(app.lat, app.lng); // assumption: we have lat/lng, TODO: test w/o user address
+        if (app.state.nearby.filterFeatureForType[app.state.nearby.type] && app.state.nearby.filterFeatureForType[app.state.nearby.type].sql) { // add custom filter if it has been set
+          q2.where(app.state.nearby.filterFeatureForType[app.state.nearby.type].sql);
+        }
 
+        q2.run(function (data) {
+          // the code above should result in sql like this:
+          // SELECT s.*, b.shape_area,
+          //  ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(151.18939,-33.892638),4326)::geography) AS dist
+          //  FROM dec_schools AS s LEFT OUTER JOIN catchments AS b ON s.school_code = b.school_code
+          //  WHERE ((s.type = 'secondary' OR s.type = 'central') AND s.school_code NOT IN (1735) AND s.gender = 'boys')
+          //  ORDER BY dist LIMIT 1
+
+          var markers = addMarkers(that, data);
+
+          // fit view of map to user location + results
+          var homeMarker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon});
+          markers.push(homeMarker);
+          var allMapMarkers = new L.featureGroup(markers);
+          that.map.fitBounds(allMapMarkers.getBounds());
+
+        });
+      } else {
+        addMarkers(that, data);
+      }
     });
   };
 
