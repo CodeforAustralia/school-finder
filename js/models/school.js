@@ -60,7 +60,7 @@ app = app || {};
       {
         resultNumber: i,
         website: this.website.replace("http://", ""),
-        grades: this.subtype,
+        grades: this.school_subtype,
         established: function () {
           // try to return something human friendly if we can parse date.
           var d = new Date(this.date_1st_teacher);
