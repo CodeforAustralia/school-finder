@@ -23,6 +23,16 @@ app = app || {};
     app.mapView.update(app.schools);
     app.schoolView.update(app.schools);
 
+    $('.new-search-btn-container').show();
+
+    $('a.new-search').click(function (e) {
+      e.preventDefault();
+      var top = $('#search-start').offset().top;
+      // jump just above the start but not past the top of the page
+      top = (top - 30 > 0) ? top - 30 : top;
+      $('body').animate({scrollTop: top}, 1000);
+    });
+
     // usually (with just one result) we'll want to skip right to the map
     if (app.schools.schools.length === 1) {
       app.ui.scrollTo('.cartodb-map');

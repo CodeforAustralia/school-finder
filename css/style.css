@@ -81,7 +81,7 @@ a:hover .fa-stack-1x {
 
 /* Results */
 #results-container {
-	margin-bottom: 100px;
+	margin-bottom: 50px;
 }
 
 #list-container {
@@ -381,7 +381,29 @@ input#nearby-girls {
 }
 
 
+.new-search-btn-container {
+	display: none; /* hidden until we have results */
+	width: 20em;
+    margin: 50px auto;
 
+	background-color: rgba(215, 45, 108, 0.21);
+	padding: 0;
+	color: #D72D6C;
+}
+
+.new-search.btn {
+	display: block;
+    font-weight: bold;
+    /*background-color: #5A91B5;*/
+	padding: 2em;
+	background-color: rgba(215, 45, 108, 0.17);
+}
+
+a.btn.secondary.new-search:hover {
+    background-color: rgba(215, 45, 108, 0.51);
+    text-decoration: underline;
+
+}
 
 .jumbotron #or {
 	text-transform: uppercase;
