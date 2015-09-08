@@ -6,12 +6,13 @@ body { background-color: #39acc9; color: #3e3e3e;
 .header h3 {color: #f7f6f6;
 	margin-top: 0.5em;
 	padding-bottom: 0px;
+	font-size: 34px;
 }
 .header .sitename {
 	text-shadow: 0px 0px 1px rgb(55, 90, 99);
 }
 .org-logo img {
-	height: 28px;
+	height: 48px;
 	vertical-align: baseline;
 }
 .block-intro input, .block-address input, .block-support select {
