@@ -54,6 +54,13 @@ app = app || {};
       app.ui.scrollTo('.cartodb-map');
     });
 
+    this.$el.find('a.jump-to-start').click(function (e) {
+      e.preventDefault();
+      var top = $('#search-start').offset().top;
+      // jump just above the start but not past the top of the page
+      top = (top - 30 > 0) ? top - 30 : top;
+      $('html,body').animate({scrollTop: top}, 500);
+    });
   };
 
 }());
