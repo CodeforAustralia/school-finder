@@ -384,26 +384,30 @@ input#nearby-girls {
 
 .new-search-btn-container {
 	display: none; /* hidden until we have results */
-	width: 20em;
-    margin: 50px auto;
+	margin: 50px auto;
+	max-width: 730px;
+	margin-top: 25px;
+}
 
-	background-color: rgba(215, 45, 108, 0.21);
-	padding: 0;
-	color: #D72D6C;
+.new-search-btn-container .fa-search {
+	margin-right: 1em;
+}
+
+.new-search-btn-column {
+	padding-right: 0;
 }
 
 .new-search.btn {
 	display: block;
-    font-weight: bold;
-    /*background-color: #5A91B5;*/
 	padding: 2em;
-	background-color: rgba(215, 45, 108, 0.17);
+	border: 1px solid rgba(255, 255, 255, 0.19);
+	background-color: transparent;
 }
 
-a.btn.secondary.new-search:hover {
-    background-color: rgba(215, 45, 108, 0.51);
-    text-decoration: underline;
-
+.new-search.btn:hover {
+    border: 1px solid white;
+    background-color: transparent;
+ 	text-decoration: none;
 }
 
 .jumbotron #or {
