@@ -61,7 +61,7 @@ a:hover .fa-circle {
 }
 a:hover .fa-stack-1x {
 	color: #39ACC9;
-	font-size: 1.1em; // make the icons pop out a bit
+	font-size: 1.1em; /* make the icons pop out a bit */
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
