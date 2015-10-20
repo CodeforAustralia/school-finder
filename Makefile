@@ -17,6 +17,18 @@ prebuild:
 	cp index.html public/
 	cp -R css/images public/css/
 
+gh-pages:
+	git branch gh-pages
+
+publish: uglify gh-pages
+	git checkout gh-pages
+	git rm -r Makefile README.md css doc index.html js #first time only
+	rm -rf css js
+	git commit -m 'removing unnecessary files' #first time only
+	mv public/* .
+	git add css index.html js
+	git commit -m 'publishing compiled site'
+
 clean:
 	rm -rf public/
 
@@ -24,7 +36,7 @@ deps:
 	npm install uglifycss uglifyjs -g
 
 help:
-	@echo Try "'make uglify'". 
+	@echo Try "'make uglify'".
 	@echo ""
 	@echo Make targets:
 	@echo ---------------------------------------------------
