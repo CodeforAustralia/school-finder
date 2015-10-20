@@ -5,7 +5,7 @@ default: help
 uglify: prebuild
 	uglifyjs js/vendor/* > public/js/vendor.js
 	uglifyjs js/1-*.js js/2/*.js js/2/*/*.js js/3-*.js --verbose --lint > public/js/main.js
-	cd css && uglifycss $(CSSFILES) > ../public/css/style.css
+	cd css && cat $(CSSFILES) | csso | uglifycss > ../public/css/style.css
 
 cat: prebuild
 	cat js/vendor/* > public/js/vendor.js
@@ -33,7 +33,7 @@ clean:
 	rm -rf public/
 
 deps:
-	npm install uglifycss uglifyjs -g
+	npm install uglifycss uglifyjs csso -g
 
 help:
 	@echo Try "'make uglify'".
