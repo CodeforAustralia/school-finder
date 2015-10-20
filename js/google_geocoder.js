@@ -1,11 +1,11 @@
-var app, geocoder, google;
+var app, google;
 app = app || {};
 
 
 // Geocode the address in the text field, then run the callback function
 app.geocodeAddress = function (callback) {
   app.address = document.getElementById('address').value;
-  geocoder.geocode({ 'address': app.address}, function (results, status) {
+  app.geocoder.geocode({ 'address': app.address}, function (results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
 
       app.lat = results[0].geometry.location.lat();
@@ -25,7 +25,7 @@ app.reverseGeocode = function (callback) {
   var lat = app.lat;
   var lng = app.lng;
   var latlng = new google.maps.LatLng(lat, lng);
-  geocoder.geocode({'latLng': latlng}, function (results, status) {
+  app.geocoder.geocode({'latLng': latlng}, function (results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       if (results[0]) {
         app.address = results[0].formatted_address;
@@ -103,6 +103,6 @@ app.calculateRouteDistanceToUser = function (lat, lng, elSelector) {
 
 
 $(function () {
-  geocoder = new google.maps.Geocoder();
+  app.geocoder = new google.maps.Geocoder();
   return googlePlacesInitialize();
 });
