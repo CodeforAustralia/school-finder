@@ -38,12 +38,12 @@
         <h3 class="row">
           <div class="col-xs-8 sitename">NSW Public School Finder</div>
           <div class="col-xs-4 org-logo">
-            <a class="pull-right" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
+            <a class="pull-right hidden-print" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
           </div>
         </h3>
       </div>
 
-      <div class="jumbotron block-intro" id="search-start">
+      <div class="jumbotron block-intro hidden-print" id="search-start">
         <h1>I&rsquo;m looking for:</h1>
         <p class="lead">Select your school type below.</p>
         <p>
@@ -66,7 +66,7 @@
         <p class="disclaimer">Information subject to change; by using this, you agree to our <a href="">terms of service</a>.</p>
       </div>
 
-      <div class="jumbotron block-support">
+      <div class="jumbotron block-support hidden-print">
         <h2>Do you require special learning needs support?</h2>
         <p>A wide range of specialist programs and provisions are provided to support students with disability, or those who experience difficulties in learning and behaviour</p>
         <p>
@@ -89,7 +89,7 @@
 
       </div>
 
-      <div class="jumbotron block-address">
+      <div class="jumbotron block-address hidden-print">
         <h1>I live at:</h1>
         <p class="lead">Please provide your home location<sup>*</sup> to see nearby schools:</p>
         <p>
@@ -111,7 +111,7 @@
         </div>
       </div>
 
-      <footer class="footer">
+      <footer class="footer hidden-print">
         <p>
           A project by <a href="http://codeforaustralia.org">Code for Australia</a>. We're friendly. Say <a href="mailto:nsw-schoolfinder@codeforaustralia.org?subject=Hello!" title="Questions? Comments? Email us!">hello</a>!
           <a class="icon" href="http://github.com/codeforaustralia/school-finder" title="Our Open Source project code on GitHub">
@@ -197,7 +197,7 @@
 
 
     <script id="result-list-template" type="text/x-handlebars-template">
-      <div class="jumbotron results-list">
+      <div class="jumbotron results-list hidden-print">
         <h1>Results</h1>
         <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
         <ul>
