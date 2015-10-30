@@ -5,7 +5,7 @@
 	}
 
 	#map-container {
-		margin-top: 1em;
+		margin-top: 1em !important;
 	}
 	#results-container {
 		margin-bottom: 1em;
@@ -25,7 +25,7 @@
 	}
 	.school-name {margin-bottom: 0;}
 	.school-email a:after, .school-website a:after {
-		content:none;
+		content:none !important;
 	}
 	.school-info {border-bottom: none;}
 
