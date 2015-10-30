@@ -1,4 +1,5 @@
-CSSFILES = jquery-ui.min.css cartodb.css jumbotron-narrow.css style.css print.css
+CSSFILES = jumbotron-narrow.css style.css
+CSSASYNC = jquery-ui.min.css cartodb.css print.css
 
 # A function that generates the source map options we need.
 # Call it like $(call srcmap,vendor)
@@ -14,11 +15,13 @@ uglify: prebuild
 	uglifyjs js/vendor/* $(call srcmap,vendor) -m -c > public/js/vendor.js
 	uglifyjs js/1-*.js js/2/*.js js/2/*/*.js js/3-*.js $(call srcmap,main) -m -c --verbose --lint > public/js/main.js
 	cd css && cat $(CSSFILES) | csso | uglifycss > ../public/css/style.css
+	cd css && cat $(CSSASYNC) | csso | uglifycss > ../public/css/async.css
 
 cat: prebuild
 	cat js/vendor/* > public/js/vendor.js
 	cat js/1-*.js js/2/*.js js/2/*/*.js js/3-*.js > public/js/main.js
 	cd css && cat $(CSSFILES) > ../public/css/style.css
+	cd css && cat $(CSSASYNC) > ../public/css/async.css
 
 prebuild:
 	rm -rf public/js
