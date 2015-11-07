@@ -197,7 +197,57 @@ app = app || {};
       }
     });
 
-    $("#schoolname").autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
+    var autocompleteOptions = {
+      minChars: 3,
+      keyboardDelay: 300,
+      onSelect: function (_ignoredElement, val) {
+        $("#schoolname").val(val.title);
+      }
+    };
+
+    var requestSchoolMatches = function (val) {
+      this.field.trigger('beforerequest', [this, val]);
+
+      // ask cartodb for all school names starting with the request
+      // SELECT * FROM dec_schools WHERE school_name ILIKE '%sydney%'
+      var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '" + val + "%'";
+      app.sql.execute(query).done($.proxy(this.beforeReceiveData, this));
+    };
+
+
+    // monkey patch TinyAutocomplete so we can use CartoDB's SQL API
+    // to fetch the remote data
+    $.tinyAutocomplete.prototype.remoteRequest =
+      $.tinyAutocomplete.prototype.debounce(requestSchoolMatches, autocompleteOptions.keyboardDelay);
+
+    /**
+     * Override TinyAutocomplete's wrap function to work with bootstrap
+     * @return {null}
+     */
+    $.tinyAutocomplete.prototype.setupMarkup = function() {
+      this.field.addClass('autocomplete-field');
+      this.field.attr('autocomplete', 'off');
+      this.el = this.field.parent();
+      this.el.addClass('autocomplete')
+    };
+
+    var autocompleteProcessData = function (_ignoredEvent, tinyAutocomplete, json) {
+      // tinyAutocomplete.json is the variable that Tiny Autocomplete uses
+      // for displaying the options later on
+      var autocompleteResponses = [];
+      var rowTransform = function (row, index) {
+        autocompleteResponses.push(
+          {title: row.school_name,
+            "id": index+1
+          });
+      };
+      json.rows.forEach(rowTransform);
+      tinyAutocomplete.json = autocompleteResponses;
+    };
+
+    $("#schoolname").tinyAutocomplete(autocompleteOptions)
+      .on('receivedata', autocompleteProcessData);
+
 
     // DEBUG: jump right to the map
     // $(".btn.primary").click();
