@@ -32,6 +32,21 @@ body { background-color: #39acc9; color: #3e3e3e;
 .btn.working {
 	background-color: grey;
 }
+
+.autocomplete {
+	max-width: 100%;
+}
+.autocomplete-list {
+    border: 1px solid #aaa;
+    border-top: none;
+    border-radius: 3px;
+    font-size: 1.2em; /* should be close to input font size */
+}
+
+.autocomplete-item {
+	text-align: left;
+}
+
 .footer { margin-bottom: 1.5em; }
 .footer p {color: #f7f6f6;}
 .footer a {color: #f7f6f6; font-weight: bold;}
