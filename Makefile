@@ -1,4 +1,4 @@
-CSSFILES = bootstrap.min.css jumbotron-narrow.css style.css
+CSSFILES = bootstrap.min.css jumbotron-narrow.css tiny-autocomplete.css style.css
 CSSASYNC = jquery-ui.min.css cartodb.css print.css
 
 # A function that generates the source map options we need.
