@@ -1,11 +1,11 @@
-var app, Handlebars;
+var app, Mustache;
 app = app || {};
 
 (function () {
 
   var ListView = function () {
     this.$el = $('#list-container');
-    this.template = Handlebars.compile($("#result-list-template").html());
+    this.template = Mustache.parse($("#result-list-template").html());
   };
 
   app.ListView = ListView;

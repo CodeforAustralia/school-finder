@@ -1,4 +1,4 @@
-var app, L, cartodb, google, Handlebars, navigator;
+var app, L, cartodb, google, Mustache, navigator;
 app = app || {};
 
 (function () {
@@ -142,7 +142,7 @@ app = app || {};
       $('html').addClass('ios');
     }
 
-    app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
+    app.modalNoResultsTemplate = Mustache.parse($("#modal-no-result-template").html());
 
     var clickSchoolType = function (e) {
       e.preventDefault();
