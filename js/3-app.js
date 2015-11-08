@@ -112,7 +112,11 @@ app = app || {};
             app.ui.resetSearchBtns();
 
             // populate modal, then show it
-            var html = app.modalNoResultsTemplate({support_needed: app.support_needed});
+            var html = app.modalNoResultsTemplate({
+              support_needed: app.support_needed,
+              support_description: app.util.support_description(),
+              search_radius: app.config.searchRadius / 1000 + " km"
+            });
             var $el = $('#modal-container');
             $el.empty();
             $el.append(html);
