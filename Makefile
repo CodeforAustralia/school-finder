@@ -14,6 +14,7 @@ server:
 uglify: prebuild
 	uglifyjs js/vendor/* $(call srcmap,vendor) -m -c > public/js/vendor.js
 	uglifyjs js/1-*.js js/2/*.js js/2/*/*.js js/3-*.js $(call srcmap,main) -m -c --verbose --lint > public/js/main.js
+	uglifyjs js/vendor/* js/1-*.js js/2/*.js js/2/*/*.js js/3-*.js $(call srcmap,all) -m -c --verbose --lint > public/js/all.js
 	cd css && cat $(CSSFILES) | csso | uglifycss > ../public/css/style.css
 	cd css && cat $(CSSASYNC) | csso | uglifycss > ../public/css/async.css
 
