@@ -5,7 +5,8 @@ app = app || {};
 
   var ListView = function () {
     this.$el = $('#list-container');
-    this.template = Mustache.parse($("#result-list-template").html());
+    this.template = $("#result-list-template").html();
+    Mustache.parse(this.template);
   };
 
   app.ListView = ListView;
@@ -30,7 +31,7 @@ app = app || {};
 
   ListView.prototype.render = function () {
 
-    var html = this.template(this.schools.toTemplateContext());
+    var html = Mustache.render(this.template, this.schools.toTemplateContext());
 
     // clean up any previous result & re-add
     this.$el.empty();

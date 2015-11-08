@@ -6,7 +6,8 @@ app = app || {};
   var SchoolView = function (school) {
     this.school = school || null;
     this.$el = $('#school-info-container');
-    this.template = Mustache.parse($("#school-info-template").html());
+    this.template = $("#school-info-template").html();
+    Mustache.parse(this.template);
   };
 
   app.SchoolView = SchoolView;
@@ -25,7 +26,7 @@ app = app || {};
 
     var context = this.school.toTemplateContext(this.i);
     context.body = SchoolView.summarize(SchoolView.blobToParagraphs(this.school.description));
-    var html = this.template(context);
+    var html = Mustache.render(this.template, context);
 
     // clean up any previous result & re-add
     this.$el.empty();

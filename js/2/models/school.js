@@ -1,11 +1,7 @@
-var app, L, Handlebars;
+var app, L;
 app = app || {};
 
 (function () {
-
-  Handlebars.registerHelper('yesNo', function (field) {
-    return field ? "Yes" : "No";
-  });
 
   /* create a new School. */
   app.School = function (fields) {
@@ -82,7 +78,11 @@ app = app || {};
         support_offered: this.support_ids ? _.map(this.support_ids, function (id) {
           return app.supports[id];
         }) : false,
-
+        yesNo: function () {
+          return function (text, render) { // Mustache function
+            return render(text) ? "Yes" : "No";
+          };
+        },
       });
 
     return context;

@@ -176,13 +176,14 @@
             <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
           </div>
           <div class="modal-body">
-            {{#if support_needed}}
+            {{#support_needed}}
               <p class="more-info">Sorry, it seems there is no school within {{search_radius}} of your location that currently has support for  {{support_description}}.</p>
               <p><strong>Your local school may be able to arrange services; let's try looking for nearby schools that don't (yet) support {{support_description}}.</strong></p>
               <p>You can always contact Disabilities Support at (02) 9244 5085 or <a target="_blank" href="http://www.schools.nsw.edu.au/studentsupport/programs/disability.php">learn more online</a>.</p>
-            {{else}}
+            {{/support_needed}}
+            {{^support_needed}}
             <p>Sorry, I don't know of any schools within {{search_radius}} of your location. Feel free to try another search though!</p>
-            {{/if}}
+            {{/support_needed}}
             <p class="more-info">You might also be interested in <a href="http://www.schools.nsw.edu.au/rde/ruraledu/index.php" target="_blank">rural and distance education</a> options.</p>
           </div>
           <div class="modal-footer">
@@ -198,23 +199,23 @@
     <script id="result-list-template" type="text/x-handlebars-template">
       <div class="jumbotron results-list hidden-print">
         <h1>Results</h1>
-        <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
+        <p class="lead">We found the following {{#search_by_distance}}nearest{{/search_by_distance}} results{{#support_needed}} for {{support_description}}{{/support_needed}}; select one to view.</p>
         <ul>
-          {{#each schools}}
-            <li {{#if selected}} class="selected" {{/if}}>
+          {{#schools}}
+            <li {{#selected}} class="selected" {{/selected}}>
               <a class="btn" type="button" data-school-code="{{school_code}}">
                 <div>
                   {{school_name}}
-                  {{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}
+                  {{#distance}}<span class="school-distance">{{distance}} km</span>{{/distance}}
                 </div>
-                {{#if support_needed}}
+                {{#support_needed}}
                 <div class="school-type">
                   {{level_of_schooling}}
                 </div>
-                {{/if}}
+                {{/support_needed}}
               </a>
             </li>
-          {{/each}}
+          {{/schools}}
         </ul>
         <p>Or, try a <a class="jump-to-start" href="#search-start">new search</a>.</p>
       </div>
@@ -244,10 +245,10 @@
 
           <ul class="school-details col-md-6">
 
-              {{#if distance}}
+              {{#distance}}
                 <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data">About {{distance}} km as the crow flies</span><span class="route-distance"></span></p></li>
 
-              {{/if}}
+              {{/distance}}
 
               <li class="school-address">
                 <span class="field-label">Contact: </span><br><span class="field-data"><abbr title="{{street}}, {{town_suburb}} NSW {{postcode}}">{{street}}, {{town_suburb}}</abbr></span>
@@ -258,7 +259,7 @@
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                 <i class="fa fa-map-marker fa-stack-1x"></i>
                 </span>
-                <span class="field-data"><a class="get-directions" href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
+                <span class="field-data"><a class="get-directions" href="https://www.google.com/maps/dir/{{#homeLat}}{{homeLat}},{{homeLng}}{{/homeLat}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
               </li>
 
               <li class="school-phone">
@@ -284,26 +285,26 @@
               </li>
               <li class="school-level"><span class="field-label">Level: </span><span class="field-data">{{level_of_schooling}}, {{grades}}</span>
               <li class="naplan-results"><span class="field-label">NAPLAN: </span><span class="field-data"</span> Use <a href=http://www.myschool.edu.au/ target="_blank" title="My School site, from the federal government">My School</a> website</li>
-              {{#if is_specialty_possible}}
+              {{#is_specialty_possible}}
               <li class="school-specialty"><span class="field-label">Specialty: </span><span class="field-data">{{school_specialty_type}}</span></li>
-              {{/if}}
+              {{/is_specialty_possible}}
 
-              {{#if is_intensive_english_possible}} {{#if intensive_english_centre}}
-              <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{yesNo intensive_english_centre}}</span></li>
-              {{/if}} {{/if}}
-              {{#if is_opportunity_class_possible}} {{#if opportunity_class}}
-              <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{yesNo opportunity_class}}</span></li>
-              {{/if}} {{/if}}
-              {{#if is_selective_possible}} {{#if is_somewhat_selective}}
+              {{#is_intensive_english_possible}} {{#intensive_english_centre}}
+              <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{#yesNo}}{{intensive_english_centre}}{{/yesNo}}</span></li>
+              {{/intensive_english_centre}} {{/is_intensive_english_possible}}
+              {{#is_opportunity_class_possible}} {{#opportunity_class}}
+              <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{#yesNo}}{{opportunity_class}}{{/yesNo}}</span></li>
+              {{/opportunity_class}} {{/is_opportunity_class_possible}}
+              {{#is_selective_possible}} {{#is_somewhat_selective}}
               <li class="school-selective"><span class="field-label">Academically selective: </span><span class="field-data">{{selective_school}}</span></li>
-              {{/if}} {{/if}}
-              {{#if support_offered}}
+              {{/is_somewhat_selective}} {{/is_selective_possible}}
+              {{#support_offered.length}}
               <li class="school-support">
                 <span class="field-label">Support for:</span>
                 <ul>
-                {{#each support_offered}}
+                {{#support_offered}}
                   <li>{{long_description}}</li>
-                {{/each}}
+                {{/support_offered}}
                 </ul>
                 <p class="overview">Support info:
                   <ul>
@@ -312,28 +313,28 @@
                   </ul>
                 </p>
               </li>
-              {{/if}}
+              {{/support_offered.length}}
               <li class="school-enrollment"><span class="field-label">Enrolment: </span><span class="field-data">{{student_number}}</span></li>
 
               <div style="display:none">
               <li class="school-established"><span class="field-label">Established: </span><span class="field-data">{{established}}</span></li></div>
 
-              {{#if is_preschool_possible}}
-              <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{yesNo preschool}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
-              {{/if}}
+              {{#is_preschool_possible}}
+              <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{#yesNo}}{{preschool}}{{/yesNo}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
+              {{/is_preschool_possible}}
 
-              {{#if oshc}}
-              <li class="school-oshc"><span class="field-label">Outside school hours care: </span>{{#if oshc}} <br> {{/if}}
-                <span class="field-data">{{yesNo oshc}}{{#if oshc}}- {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) -->
+              {{#oshc}}
+              <li class="school-oshc"><span class="field-label">Outside school hours care: </span>{{#oshc}} <br> {{/oshc}}
+                <span class="field-data">{{#yesNo}}{{oshc}}{{/yesNo}}{{#oshc}}- {{oshc_provider}} {{/oshc}}</span> <!-- (Contact the school to register.) -->
               </li>
-              {{/if}}
+              {{/oshc}}
 
               <li class="school-more-info"><span class="field-label">Need more info?</span> <span class="field-data"><a href="https://www.google.com.au/search?q={{school_name}}+nsw" target="_blank">Try Google</a></li>
           </ul>
         </div>
-        {{#if homeAddress}}
+        {{#homeAddress}}
           <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
-        {{/if}}
+        {{/homeAddress}}
       </div>
 
     </script>
