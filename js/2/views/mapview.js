@@ -1,11 +1,12 @@
-var app, cartodb, Handlebars, L;
+var app, cartodb, Mustache, L;
 app = app || {};
 
 (function () {
 
   var MapView = function () {
     this.$el = $('#map-container');
-    this.template = Handlebars.compile($("#map-template").html());
+    this.template = $("#map-template").html();
+    Mustache.parse(this.template);
   };
 
   app.MapView = MapView;
@@ -23,7 +24,7 @@ app = app || {};
     if (!this.rendered) {
 
       var context = {};
-      var html = this.template(context);
+      var html = Mustache.render(this.template, context);
 
       // clean up any previous result & re-add
       // this.$el.empty();

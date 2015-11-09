@@ -8,16 +8,14 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/style.css" />
+    <!--
     <link href="css/jquery-ui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/cartodb.css" />
     <link rel="stylesheet" href="css/jumbotron-narrow.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/print.css" media="print" />
-	<!--font-awesome icons  -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    -->
     <!--[if lte IE 8]>
       <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
     <![endif]-->
@@ -36,24 +34,15 @@
     <div class="container">
 
       <div class="header">
-        <!--
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-        -->
         <h3 class="row">
           <div class="col-xs-8 sitename">NSW Public School Finder</div>
           <div class="col-xs-4 org-logo">
-            <a class="pull-right" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
+            <a class="pull-right hidden-print" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
           </div>
         </h3>
       </div>
 
-      <div class="jumbotron block-intro" id="search-start">
+      <div class="jumbotron block-intro hidden-print" id="search-start">
         <h1>I&rsquo;m looking for:</h1>
         <p class="lead">Select your school type below.</p>
         <p>
@@ -76,7 +65,7 @@
         <p class="disclaimer">Information subject to change; by using this, you agree to our <a href="">terms of service</a>.</p>
       </div>
 
-      <div class="jumbotron block-support">
+      <div class="jumbotron block-support hidden-print">
         <h2>Do you require special learning needs support?</h2>
         <p>A wide range of specialist programs and provisions are provided to support students with disability, or those who experience difficulties in learning and behaviour</p>
         <p>
@@ -89,7 +78,6 @@
             <option value="ED">Emotional disturbance</option>
             <option value="H">Hearing impairment</option>
             <option value="ID">Intellectual disability</option>
-<!--            <option value="Multicategorical">Multicategorical</option> -->
             <option value="P">Physical disability</option>
             <option value="Tut">Tutorial Centre</option>
             <option value="V">Vision impairment</option>
@@ -100,7 +88,7 @@
 
       </div>
 
-      <div class="jumbotron block-address">
+      <div class="jumbotron block-address hidden-print">
         <h1>I live at:</h1>
         <p class="lead">Please provide your home location<sup>*</sup> to see nearby schools:</p>
         <p>
@@ -114,7 +102,7 @@
         <div id="list-container"></div>
         <div id="map-container"></div>
         <div id="school-info-container"></div>
-        <div class="new-search-btn-container row">
+        <div class="new-search-btn-container row hidden-print">
           <div class="col-sm-8"></div>
           <div class="col-sm-4 new-search-btn-column">
             <a href="#search-start" class="btn secondary new-search" role="button"><i class="fa fa-search"></i>Start a new search</a>
@@ -122,7 +110,7 @@
         </div>
       </div>
 
-      <footer class="footer">
+      <footer class="footer hidden-print">
         <p>
           A project by <a href="http://codeforaustralia.org">Code for Australia</a>. We're friendly. Say <a href="mailto:nsw-schoolfinder@codeforaustralia.org?subject=Hello!" title="Questions? Comments? Email us!">hello</a>!
           <a class="icon" href="http://github.com/codeforaustralia/school-finder" title="Our Open Source project code on GitHub">
@@ -188,13 +176,14 @@
             <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
           </div>
           <div class="modal-body">
-            {{#if support_needed}}
+            {{#support_needed}}
               <p class="more-info">Sorry, it seems there is no school within {{search_radius}} of your location that currently has support for  {{support_description}}.</p>
               <p><strong>Your local school may be able to arrange services; let's try looking for nearby schools that don't (yet) support {{support_description}}.</strong></p>
               <p>You can always contact Disabilities Support at (02) 9244 5085 or <a target="_blank" href="http://www.schools.nsw.edu.au/studentsupport/programs/disability.php">learn more online</a>.</p>
-            {{else}}
+            {{/support_needed}}
+            {{^support_needed}}
             <p>Sorry, I don't know of any schools within {{search_radius}} of your location. Feel free to try another search though!</p>
-            {{/if}}
+            {{/support_needed}}
             <p class="more-info">You might also be interested in <a href="http://www.schools.nsw.edu.au/rde/ruraledu/index.php" target="_blank">rural and distance education</a> options.</p>
           </div>
           <div class="modal-footer">
@@ -208,25 +197,25 @@
 
 
     <script id="result-list-template" type="text/x-handlebars-template">
-      <div class="jumbotron results-list">
+      <div class="jumbotron results-list hidden-print">
         <h1>Results</h1>
-        <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
+        <p class="lead">We found the following {{#search_by_distance}}nearest{{/search_by_distance}} results{{#support_needed}} for {{support_description}}{{/support_needed}}; select one to view.</p>
         <ul>
-          {{#each schools}}
-            <li {{#if selected}} class="selected" {{/if}}>
+          {{#schools}}
+            <li {{#selected}} class="selected" {{/selected}}>
               <a class="btn" type="button" data-school-code="{{school_code}}">
                 <div>
                   {{school_name}}
-                  {{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}
+                  {{#distance}}<span class="school-distance">{{distance}} km</span>{{/distance}}
                 </div>
-                {{#if support_needed}}
+                {{#support_needed}}
                 <div class="school-type">
                   {{level_of_schooling}}
                 </div>
-                {{/if}}
+                {{/support_needed}}
               </a>
             </li>
-          {{/each}}
+          {{/schools}}
         </ul>
         <p>Or, try a <a class="jump-to-start" href="#search-start">new search</a>.</p>
       </div>
@@ -256,21 +245,21 @@
 
           <ul class="school-details col-md-6">
 
-              {{#if distance}}
+              {{#distance}}
                 <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data">About {{distance}} km as the crow flies</span><span class="route-distance"></span></p></li>
 
-              {{/if}}
+              {{/distance}}
 
               <li class="school-address">
                 <span class="field-label">Contact: </span><br><span class="field-data"><abbr title="{{street}}, {{town_suburb}} NSW {{postcode}}">{{street}}, {{town_suburb}}</abbr></span>
               </li>
 
-              <li class="school-directions">
+              <li class="school-directions hidden-print">
                 <span class="fa-stack">
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                 <i class="fa fa-map-marker fa-stack-1x"></i>
                 </span>
-                <span class="field-data"><a class="get-directions" href="https://www.google.com/maps/dir/{{#if homeLat}}{{homeLat}},{{homeLng}}{{/if}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
+                <span class="field-data"><a class="get-directions" href="https://www.google.com/maps/dir/{{#homeLat}}{{homeLat}},{{homeLng}}{{/homeLat}}/{{school_name}},+{{street}},+{{town_suburb}},+NSW+{{postcode}},+AU/@{{latitude}},{{longitude}},17z/" target="_blank">Get&nbsp;directions</a></span>
               </li>
 
               <li class="school-phone">
@@ -296,26 +285,26 @@
               </li>
               <li class="school-level"><span class="field-label">Level: </span><span class="field-data">{{level_of_schooling}}, {{grades}}</span>
               <li class="naplan-results"><span class="field-label">NAPLAN: </span><span class="field-data"</span> Use <a href=http://www.myschool.edu.au/ target="_blank" title="My School site, from the federal government">My School</a> website</li>
-              {{#if is_specialty_possible}}
+              {{#is_specialty_possible}}
               <li class="school-specialty"><span class="field-label">Specialty: </span><span class="field-data">{{school_specialty_type}}</span></li>
-              {{/if}}
+              {{/is_specialty_possible}}
 
-              {{#if is_intensive_english_possible}} {{#if intensive_english_centre}}
-              <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{yesNo intensive_english_centre}}</span></li>
-              {{/if}} {{/if}}
-              {{#if is_opportunity_class_possible}} {{#if opportunity_class}}
-              <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{yesNo opportunity_class}}</span></li>
-              {{/if}} {{/if}}
-              {{#if is_selective_possible}} {{#if is_somewhat_selective}}
+              {{#is_intensive_english_possible}} {{#intensive_english_centre}}
+              <li class="school-intensive-english"><span class="field-label">Intensive English Centre: </span><span class="field-data">{{#yesNo}}{{intensive_english_centre}}{{/yesNo}}</span></li>
+              {{/intensive_english_centre}} {{/is_intensive_english_possible}}
+              {{#is_opportunity_class_possible}} {{#opportunity_class}}
+              <li class="school-opportunity-classes"><span class="field-label">Opportunity Class: </span><span class="field-data">{{#yesNo}}{{opportunity_class}}{{/yesNo}}</span></li>
+              {{/opportunity_class}} {{/is_opportunity_class_possible}}
+              {{#is_selective_possible}} {{#is_somewhat_selective}}
               <li class="school-selective"><span class="field-label">Academically selective: </span><span class="field-data">{{selective_school}}</span></li>
-              {{/if}} {{/if}}
-              {{#if support_offered}}
+              {{/is_somewhat_selective}} {{/is_selective_possible}}
+              {{#support_offered.length}}
               <li class="school-support">
                 <span class="field-label">Support for:</span>
                 <ul>
-                {{#each support_offered}}
+                {{#support_offered}}
                   <li>{{long_description}}</li>
-                {{/each}}
+                {{/support_offered}}
                 </ul>
                 <p class="overview">Support info:
                   <ul>
@@ -324,56 +313,80 @@
                   </ul>
                 </p>
               </li>
-              {{/if}}
+              {{/support_offered.length}}
               <li class="school-enrollment"><span class="field-label">Enrolment: </span><span class="field-data">{{student_number}}</span></li>
 
               <div style="display:none">
               <li class="school-established"><span class="field-label">Established: </span><span class="field-data">{{established}}</span></li></div>
 
-              {{#if is_preschool_possible}}
-              <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{yesNo preschool}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
-              {{/if}}
+              {{#is_preschool_possible}}
+              <li class="school-preschool"><span class="field-label">Preschool: </span><span class="field-data">{{#yesNo}}{{preschool}}{{/yesNo}}</span>. Use <a href="http://www.mychild.gov.au/sites/mychild" target="_blank" title="My Child site, from the federal government">this tool</a> to find more options</li>
+              {{/is_preschool_possible}}
 
-              {{#if oshc}}
-              <li class="school-oshc"><span class="field-label">Outside school hours care: </span>{{#if oshc}} <br> {{/if}}
-                <span class="field-data">{{yesNo oshc}}{{#if oshc}}- {{oshc_provider}} {{/if}}</span> <!-- (Contact the school to register.) -->
+              {{#oshc}}
+              <li class="school-oshc"><span class="field-label">Outside school hours care: </span>{{#oshc}} <br> {{/oshc}}
+                <span class="field-data">{{#yesNo}}{{oshc}}{{/yesNo}}{{#oshc}}- {{oshc_provider}} {{/oshc}}</span> <!-- (Contact the school to register.) -->
               </li>
-              {{/if}}
+              {{/oshc}}
 
               <li class="school-more-info"><span class="field-label">Need more info?</span> <span class="field-data"><a href="https://www.google.com.au/search?q={{school_name}}+nsw" target="_blank">Try Google</a></li>
           </ul>
         </div>
-        {{#if homeAddress}}
+        {{#homeAddress}}
           <p class='school-info-intro'>This school serves your location (<span class="address">{{homeAddress}}</span>).</p>
-        {{/if}}
+        {{/homeAddress}}
       </div>
 
     </script>
 
-    <!-- Latest compiled and minified JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArZNZZBVUo35_M6KS7eiE35fIWTmutLpc&libraries=places">
     </script>
-    <script src="js/vendor/jquery-ui/jquery-ui.js"></script> <!-- for autocomplete -->
-    <!-- script src="js/vendor/cartodb.js"></script-->
     <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.12/cartodb.js"></script>
-    <script src="js/vendor/handlebars-v3.0.0.js"></script>
+    <script src="js/all.js"></script>
+
+
+ <!--
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/tiny-autocomplete.js"></script>
     <script src="js/vendor/Leaflet.MakiMarkers.js"></script>
-    <script src="js/google_geocoder.js"></script>
-    <script src="js/models/school.js"></script>
-    <script src="js/collections/schools.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/query.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/Leaflet.SchoolFilter.js"></script>
-    <script src="js/views/mapview.js"></script>
-    <script src="js/views/listview.js"></script>
-    <script src="js/views/schoolview.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/2/google_geocoder.js"></script>
+    <script src="js/2/models/school.js"></script>
+    <script src="js/2/collections/schools.js"></script>
+    <script src="js/1-config.js"></script>
+    <script src="js/2/query.js"></script>
+    <script src="js/2/util.js"></script>
+    <script src="js/2/Leaflet.SchoolFilter.js"></script>
+    <script src="js/2/views/mapview.js"></script>
+    <script src="js/2/views/listview.js"></script>
+    <script src="js/2/views/schoolview.js"></script>
+    <script src="js/2/ui.js"></script>
+    <script src="js/3-app.js"></script>
+ -->
     <script>
+  // For CSS unessential to initial page render, use non render-blocking loading.
+  // from https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery
+  // See also: https://css-tricks.com/authoring-critical-fold-css and
+  // https://developers.google.com/web/fundamentals/performance/critical-rendering-path and
+  // https://github.com/filamentgroup/loadCSS/
+  var loadStyle = function (href) {
+    var cb = function() {
+      var l = document.createElement('link'); l.rel = 'stylesheet';
+      l.href = href;
+      var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+      webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(cb);
+    else window.addEventListener('load', cb);
+    window.addEventListener('load', cb);
+
+  };
+  loadStyle('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700');
+  loadStyle('https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+  loadStyle('css/async.css');
+
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

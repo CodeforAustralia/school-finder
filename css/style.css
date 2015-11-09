@@ -32,6 +32,21 @@ body { background-color: #39acc9; color: #3e3e3e;
 .btn.working {
 	background-color: grey;
 }
+
+.autocomplete {
+	max-width: 100%;
+}
+.autocomplete-list {
+    border: 1px solid #aaa;
+    border-top: none;
+    border-radius: 3px;
+    font-size: 1.2em; /* should be close to input font size */
+}
+
+.autocomplete-item {
+	text-align: left;
+}
+
 .footer { margin-bottom: 1.5em; }
 .footer p {color: #f7f6f6;}
 .footer a {color: #f7f6f6; font-weight: bold;}
@@ -61,7 +76,7 @@ a:hover .fa-circle {
 }
 a:hover .fa-stack-1x {
 	color: #39ACC9;
-	font-size: 1.1em; // make the icons pop out a bit
+	font-size: 1.1em; /* make the icons pop out a bit */
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -249,7 +264,7 @@ select#soflow, .styled-select {
    -webkit-padding-end: 20px;
    -webkit-padding-start: 2px;
    -webkit-user-select: none;
-    background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+    background-image: url(images/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
    background-position: 97% center;
    background-repeat: no-repeat;
    border: 1px solid #AAA;
