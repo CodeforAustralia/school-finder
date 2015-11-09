@@ -39,7 +39,7 @@ publish: uglify gh-pages
 	rm -rf css js
 	git commit -m 'removing unnecessary files' #first time only
 	mv public/* .
-	git add css index.html js
+	git add css index.html js *.map
 	git commit -m 'publishing compiled site'
 
 clean:
