@@ -35,7 +35,7 @@ gh-pages:
 
 publish: uglify gh-pages
 	git checkout gh-pages
-	git rm -r Makefile README.md css doc index.html js #first time only
+	git rm -r GzipSimpleHTTPServer.py Makefile README.md css doc index.html js #first time only
 	rm -rf css js
 	git commit -m 'removing unnecessary files' #first time only
 	mv public/* .
