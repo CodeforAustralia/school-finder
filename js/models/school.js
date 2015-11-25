@@ -1,4 +1,3 @@
-var app, L, Handlebars;
 app = app || {};
 
 (function () {

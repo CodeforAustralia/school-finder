@@ -1,4 +1,3 @@
-var app, cartodb, Handlebars, L;
 app = app || {};
 
 (function () {

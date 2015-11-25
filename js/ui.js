@@ -1,4 +1,3 @@
-var app, window;
 app = app || {};
 app.ui = app.ui || {};
 
