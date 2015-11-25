@@ -60,7 +60,6 @@
  *  q.run(function(data) { data.rows.forEach(function(row) { console.log(row); })});
  */
 
-var app;
 app = app || {};
 
 (function () {

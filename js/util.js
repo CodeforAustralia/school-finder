@@ -1,4 +1,3 @@
-var app, Handlebars;
 app = app || {};
 app.util = app.util || {};
 

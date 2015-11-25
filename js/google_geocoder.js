@@ -1,4 +1,4 @@
-var app, geocoder, google;
+var geocoder;
 app = app || {};
 
 
