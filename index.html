@@ -54,14 +54,14 @@
       </div>
 
       <div class="jumbotron block-intro" id="search-start">
-        <h1>I&rsquo;m looking for:</h1>
-        <p class="lead">Select your school type below.</p>
+        <h1>Find a school</h1>  
+        <p class="lead">for a</p>
         <p>
-          <a class="btn primary school-level" href="#" role="button">Primary school<br/><span class="school-level-definition">Kindergarten to Year 6</span></a>
-          <a class="btn secondary school-level" href="#" role="button">Secondary school<br/><span class="school-level-definition">Year 7 to Year 12</span></a>
+          <a class="btn primary school-level" href="#" role="button">Primary aged student<br/><span class="school-level-definition">Kindergarten to Year 6</span></a>
+          <a class="btn secondary school-level" href="#" role="button">Secondary aged student<br/><span class="school-level-definition">Year 7 to Year 12</span></a>
         </p>
         <p id="or">or</p>
-        <p>Find a school by name:</p>
+        <p>Find a school by name</p>
         <div class="row school-name-search">
           <div class="col-lg-12">
             <div class="input-group input-group-lg">
@@ -74,30 +74,6 @@
         </div><!-- /.row -->
 
         <p class="disclaimer">Information subject to change; by using this, you agree to our <a href="">terms of service</a>.</p>
-      </div>
-
-      <div class="jumbotron block-support">
-        <h2>Do you require special learning needs support?</h2>
-        <p>A wide range of specialist programs and provisions are provided to support students with disability, or those who experience difficulties in learning and behaviour</p>
-        <p>
-          <select id="soflow" class="selectpicker">
-            <option value="no">No, none needed</option>
-            <option value="AU">Autism</option>
-            <option value="BD">Behaviour disorder</option>
-            <option value="DB">Deaf or blind</option>
-            <option value="EI">Early intervention</option>
-            <option value="ED">Emotional disturbance</option>
-            <option value="H">Hearing impairment</option>
-            <option value="ID">Intellectual disability</option>
-<!--            <option value="Multicategorical">Multicategorical</option> -->
-            <option value="P">Physical disability</option>
-            <option value="Tut">Tutorial Centre</option>
-            <option value="V">Vision impairment</option>
-          </select>
-        </p>
-        <p>
-        <a class="btn search" href="#" role="button">Next</a>
-
       </div>
 
       <div class="jumbotron block-address">
@@ -150,7 +126,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="noResultsForNameModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
+            <h4 class="modal-title" id="noResultsForNameModalLabel">Nothing found. &nbsp; à¹Ì¯Ìƒà¹</h4>
           </div>
           <div class="modal-body">
             <p>Sorry, I don't know of any schools like that. Feel free to try another search though!</p>
@@ -167,7 +143,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="tooManyResultsModalLabel">Yikes! There are too many results. &nbsp; ¯(°_o)/¯</h4> <!-- other emoji: ⊙﹏⊙ or ⊙▂⊙ -->
+            <h4 class="modal-title" id="tooManyResultsModalLabel">Yikes! There are too many results. &nbsp; Â¯(Â°_o)/Â¯</h4> <!-- other emoji: âŠ™ï¹âŠ™ or âŠ™â–‚âŠ™ -->
           </div>
           <div class="modal-body">
             <p>I found <span class="results-count">way too many</span> results and can't display them all. Feel free to try another search though!</p>
@@ -185,7 +161,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; ๏̯̃๏</h4>
+            <h4 class="modal-title" id="noResultsForAddressModalLabel">Nothing found. &nbsp; à¹Ì¯Ìƒà¹</h4>
           </div>
           <div class="modal-body">
             {{#if support_needed}}
@@ -257,7 +233,7 @@
           <ul class="school-details col-md-6">
 
               {{#if distance}}
-                <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data">About {{distance}} km as the crow flies</span><span class="route-distance"></span></p></li>
+                <li class="school-distance"><span class="field-label">Distance: </span><p><span class="field-data"><span class="route-distance"></span></p></li>
 
               {{/if}}
 

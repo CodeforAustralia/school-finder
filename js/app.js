@@ -30,6 +30,7 @@ app = app || {};
       // jump just above the start but not past the top of the page
       top = (top - 30 > 0) ? top - 30 : top;
       $('body').animate({scrollTop: top}, 1000);
+      location.reload();
     });
 
     // usually (with just one result) we'll want to skip right to the map
@@ -147,7 +148,7 @@ app = app || {};
       e.preventDefault();
       app.level = e.data.level;
       // jump to the address search
-      $(".block-support").show();
+      $(".block-address").show();
 
       if (!app.support_needed && app.support_needed_previously) {
         app.support = app.support_previously;
@@ -155,12 +156,26 @@ app = app || {};
         $('.block-support select').val(app.support);
       }
 
-      app.ui.scrollAndCenter('.block-support');
+      app.ui.scrollAndCenter('.block-address');
     };
+
+    var clickShowSupport = function (e) {
+        e.preventDefault();
+
+        $(".block-show-support").show();
+        app.ui.scrollAndCenter('.block-show-support');
+      };
+
+    var clickShowAddress = function (e) {
+          e.preventDefault();
+
+          $(".block-address").show();
+          app.ui.scrollAndCenter('.block-address');
+        };
 
     var clickSupport = function (e) {
       e.preventDefault();
-      var support_option = $(this).closest('.block-support').find('option:selected').val();
+      var support_option = $("#soflow").find('option:selected').val();
 
       app.support_needed = app.support_needed_previously = !(support_option === 'no');
       if (app.support_needed) {
@@ -174,8 +189,11 @@ app = app || {};
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
+    $(".btn.show-support").click(clickShowSupport);
+    $(".btn.no-support").click(clickShowAddress);
 
-    $(".block-support .search").click(clickSupport);
+    $(".block-show-support .search").click(clickSupport);
+    $(".btn.search").click(clickShowAddress);
 
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
@@ -203,7 +221,7 @@ app = app || {};
     // $(".block-support .search").click();
     // $('#address').val("Newtown, NSW");
     // $("#button-search-address").click();
-
+    app.ui.scrollAndCenter('.block-intro');
   });
 
 }());
