@@ -70,9 +70,14 @@ function callBacker(selector) {
       // outputDiv.innerHTML = '';
        // origins[i] + ' to ' + destinations[j]
       var results = response.rows[0].elements;
-      outputDiv.html(', or via roads: '
-        + results[0].distance.text.split(' ').join('&nbsp;') + ' in '
-        + results[0].duration.text.split(' ').join('&nbsp;') + ' cycling');
+      if (results[0].status === "ZERO_RESULTS"){
+    	  // zip
+      }
+      else{
+	      outputDiv.html('Via roads: '
+	        + results[0].distance.text.split(' ').join('&nbsp;') + ' in '
+	        + results[0].duration.text.split(' ').join('&nbsp;') + ' cycling');
+      }
     }
   };
 
