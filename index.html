@@ -285,22 +285,13 @@
               {{#if is_selective_possible}} {{#if is_somewhat_selective}}
               <li class="school-selective"><span class="field-label">Academically selective: </span><span class="field-data">{{selective_school}}</span></li>
               {{/if}} {{/if}}
-              {{#if support_offered}}
               <li class="school-support">
-                <span class="field-label">Support for:</span>
+                <span class="field-label">Special learning needs support:</span>
                 <ul>
-                {{#each support_offered}}
-                  <li>{{long_description}}</li>
-                {{/each}}
-                </ul>
-                <p class="overview">Support info:
-                  <ul>
                   <li>contact this school</li>
                   <li><a href="http://www.schools.nsw.edu.au/studentsupport/programs/disability.php">see general support overview</a></li>
-                  </ul>
-                </p>
+                </ul>
               </li>
-              {{/if}}
               <li class="school-enrollment"><span class="field-label">Enrolment: </span><span class="field-data">{{student_number}}</span></li>
 
               <div style="display:none">
