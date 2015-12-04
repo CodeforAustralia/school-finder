@@ -147,7 +147,7 @@ app = app || {};
       e.preventDefault();
       app.level = e.data.level;
       // jump to the address search
-      $(".block-support").show();
+      $(".block-address").show();
 
       if (!app.support_needed && app.support_needed_previously) {
         app.support = app.support_previously;
@@ -155,7 +155,7 @@ app = app || {};
         $('.block-support select').val(app.support);
       }
 
-      app.ui.scrollAndCenter('.block-support');
+      app.ui.scrollAndCenter('.block-address');
     };
 
     var clickSupport = function (e) {
