@@ -203,12 +203,32 @@ app = app || {};
     return this;
   };
 
+  Query.prototype.bySchoolCode = function (schoolCode) {
+    this.queryBy = 'school_code';
+    this.school_code = schoolCode;
+    return this;
+  };
+
+
   // bounds should be an object with left, right, top, bottom properties as
   // required by http://postgis.net/docs/ST_MakeEnvelope.html
   Query.prototype.byBounds = function (bounds) {
     this.queryBy = 'bounds';
     this.bounds = bounds;
     return this;
+  };
+  
+  Query.prototype.logCatchmentHit = function (catchment_id) {
+	  ga('send', 'pageview', {
+		  'dimension1': catchment_id
+		});
+	  //if (app.analytics.url != null)
+	//	  $.get(app.analytics.url + "/catchment?schoolCode=" + catchment_id);
+  };
+
+  Query.prototype.logQuery = function (whereStr) {
+	  //if (app.analytics.url != null)
+		//  $.get(app.analytics.url + "/query/whereStr=" + whereStr);
   };
 
   Query.prototype.run = function (callback) {
@@ -219,6 +239,12 @@ app = app || {};
 
       joinSubtype = "LEFT OUTER";
       whereCondition = "s.school_name ILIKE '%" + this.name + "%'";
+      orderBy = "ORDER BY s.school_name ASC";
+
+    } else if (this.queryBy === 'school_code') {
+
+      joinSubtype = "LEFT OUTER";
+      whereCondition = "s.school_code = " + this.school_code;
 
     } else if (this.queryBy === 'catchment') {
 
@@ -279,6 +305,8 @@ app = app || {};
     // add on the LIMIT if that's been specified
     query += this.limit ? " LIMIT " + this.limit : "";
 
+    this.logQuery(whereCondition);
+    
     console.log('running query:');
     console.log(query);
 

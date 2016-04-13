@@ -50,7 +50,7 @@ app = app || {};
       app.mapView.update(app.schools);
       app.schoolView.update(app.schools);
 
-      app.ui.scrollTo('.cartodb-map');
+      app.ui.viewSchool(school_code, '.cartodb-map');
     });
 
     this.$el.find('a.jump-to-start').click(function (e) {

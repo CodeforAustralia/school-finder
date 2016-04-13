@@ -103,7 +103,7 @@ app = app || {};
 
       app.mapView.update(app.schools);
 
-      app.ui.scrollTo('.cartodb-map');
+      app.ui.viewSchool(school.school_code, '.cartodb-map');
     };
   };
 
@@ -207,6 +207,7 @@ app = app || {};
       // add schools (except this one, already added) to map
       console.log(data);
       if (data.rows.length < 1) {
+		  
         console.log("No results visible; re-doing search and zooming...");
         var q2 = new app.Query();
         q2.setSchoolType(type, true).setSupport(app.support_needed)
@@ -234,6 +235,7 @@ app = app || {};
           that.map.fitBounds(allMapMarkers.getBounds());
 
         });
+		
       } else {
         addMarkers(that, data);
       }
@@ -312,7 +314,11 @@ app = app || {};
     }
 
     this.catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";  // still useful for getting bounds 
+    this.catchmentsSQL1ary = "SELECT * FROM " + app.db.polygons + " " +
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'primary'";
+    this.catchmentsSQL2ary = "SELECT * FROM " + app.db.polygons + " " +
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'secondary'";
     this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code != '" + school.school_code + "'";
 
@@ -339,6 +345,7 @@ app = app || {};
       this.map = map;
 
       this.schoolsNearby = L.schoolsNearby(map); // add nearby schools control
+      this.legend = L.legend(map); // add nearby schools control
 
       map.on('viewreset moveend', function () {
         that.loadNearby();
@@ -361,16 +368,20 @@ app = app || {};
               cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
             },
             { // selected boundary
-              sql: this.catchmentsSQL,
-              cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
+              sql: this.catchmentsSQL1ary,
+              cartocss: "#" + app.db.polygons + app.geo.catchmentCSS1ary,
             },
-          ]
+            { // selected boundary
+              sql: this.catchmentsSQL2ary,
+              cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
+            },          ]
       }).addTo(map)
         .done(function (layer) {
           that.layer = layer;
           that.sublayers = {
             otherCatchments: layer.getSubLayer(0),
-            selectedCatchment: layer.getSubLayer(1),
+            selectedCatchment1: layer.getSubLayer(1),
+            selectedCatchment2: layer.getSubLayer(2),			
           };
 
           // Let a user shift-click the map to find school districts.
@@ -392,7 +403,8 @@ app = app || {};
 
     } else {
       map = this.map;
-      that.sublayers.selectedCatchment.setSQL(this.catchmentsSQL);
+      that.sublayers.selectedCatchment1.setSQL(this.catchmentsSQL1ary);
+      that.sublayers.selectedCatchment2.setSQL(this.catchmentsSQL2ary);
       this.schoolsNearby.update();
     }
 
@@ -423,6 +435,7 @@ app = app || {};
       }
 
       markers.push(marker);
+	    
     });
 
     if (this.resultMarkersGroup) {

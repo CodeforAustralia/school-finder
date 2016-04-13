@@ -13,7 +13,8 @@ app = app || {};
     // store the new rows
     this.schools = [];
     if (rows && rows.length > 0) {
-      this.schools = _.map(rows, function (row) { return new app.School(row); });
+      this.schools = _.uniq(rows, false, function (row) { return row.school_code; });
+      this.schools = _.map(this.schools, function (row) { return new app.School(row); });
       this.select(this.schools[0].school_code);
     }
   };

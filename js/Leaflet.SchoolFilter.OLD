@@ -89,12 +89,9 @@
 
       container.innerHTML = ' ' +
         '<div class="nearby-schools-control-toggle">' +
-        '  <label for="nearby-schools-show">Nearby schools</label>' +
-        '<button type="button" class="toggle-filters" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
-        '</div>' +
-        '<div class="school-filters">' +
         '  <input type="checkbox" id="nearby-schools-show" value="all">' +
-        ' Show nearby schools' +
+        '  <label for="nearby-schools-show">Show nearby schools</label>' +
+        '<button type="button" class="toggle-filters" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
         '</div>' +
         '<div class="school-filters">' +
         ' <label for="nearby-schools-type">Type:</label>' +
@@ -182,12 +179,11 @@
       // set defaults
       app.state.nearby.showFilters = false;
       app.state.nearby.filterFeatureForType = {};
-	  app.state.showNearby = null;
       app.state.nearby.othersForType = {
         primary: ['infants', 'central'],
         secondary: ['central'],
       };
-	  
+
       this._setEventHandlers();
       this.update();
 
@@ -202,13 +198,13 @@
       var that = this;
 
       $('#nearby-schools-show', container).click(function () { // clicked 'Show nearby schools'
-//        var filters_is_hidden = !app.state.nearby.showFilters;
+        var filters_is_hidden = !app.state.nearby.showFilters;
         var userWantsNearbyShown = $(this).is(':checked'); //is checked now, meaning it was unchecked before click.
 
-//        if ((filters_is_hidden && userWantsNearbyShown) ||
-//            (!filters_is_hidden && !userWantsNearbyShown)) {
-//          that._toggleFilterVisibility();
-//        }
+        if ((filters_is_hidden && userWantsNearbyShown) ||
+            (!filters_is_hidden && !userWantsNearbyShown)) {
+          that._toggleFilterVisibility();
+        }
 
         app.state.showNearby = userWantsNearbyShown;
         app.mapView.loadNearby();
@@ -260,11 +256,6 @@
 
     _toggleFilterVisibility: function () {
       app.state.nearby.showFilters = !app.state.nearby.showFilters;
-	  if (app.state.showNearby == null)
-		  app.state.showNearby = true;
-	  if (app.state.showNearby)
-		app.mapView.loadNearby();
-	  $("#nearby-schools-show").prop("checked", app.state.showNearby);
       this.update();
     },
 
@@ -343,29 +334,4 @@
     return newControl;
   };
 
-  
-	L.Control.Legend = L.Control.extend({  
-	  options: {
-		position: 'bottomright'
-	  },
-
-	  onAdd: function (map) {
-		var legend = L.DomUtil.create('div', 'map-legend', L.DomUtil.get('map'));
-		legend.innerHTML = '<div style="border:solid; border-width: 1px; border-color: grey; background-color: #FFFFFF; padding:5px; border-radius: 5px;">' +
-        '  <span style="background: rgba(254, 154, 46, 0.25); border:solid; border-width: 2px; padding:1px; width:30px; border-color: #FE9A2E;">&nbsp;&nbsp;&nbsp;</span>' +
-        '  <span style="padding:1px; width:100%;">Primary Catchment</span></p>' +
-        '  <span style="background: rgba(11, 97, 56, 0.25); border:solid; border-width: 2px; padding:1px; width:30px; border-color: #0B6138;">&nbsp;&nbsp;&nbsp;</span>' +
-        '  <span style="padding:1px; width:100%;">Secondary Catchment</span>' +
-        '</div>';
-
-		return legend;
-	  }
-	});
-
-  L.legend = function (btnMap) {
-    var newControl = new L.Control.Legend();
-    btnMap.addControl(newControl);
-    return newControl;
-  };
-	
 }());

@@ -65,7 +65,6 @@ a:hover .fa-stack-1x {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-
 #map-container {
  margin-top: 25em;
 }
@@ -191,6 +190,9 @@ ul.school-details {
 .school-details .school-support li {
 	margin-left: 2em;
 }
+.school-support p.overview {
+	margin: 1em 0 0 1em;
+}
 
 .school-details li {
 	line-height: 1.75em;
@@ -264,6 +266,7 @@ select#soflow, .styled-select {
 .nearby-schools-control-toggle label {
 	margin-right: 3.75em;
 	padding-left: 0.25em;
+	width: 142px;
 }
 .nearby-schools-control {
 	background-color: rgba(255, 255, 255, 0.85);

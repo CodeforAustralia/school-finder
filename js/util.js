@@ -7,8 +7,12 @@ app.util = app.util || {};
     return app.config.searchRadius / 1000 + " km";
   });
 
-  Handlebars.registerHelper('support_description', function () {
-    return app.util.support_description();
+  Handlebars.registerHelper('search_radius', function () {
+    return app.config.searchRadius / 1000 + " km";
+  });
+
+  Handlebars.registerHelper('round', function (num) {
+    return Math.round(num);
   });
 
   app.util.support_description = function () {
@@ -47,7 +51,7 @@ app.util = app.util || {};
 
     // ask cartodb for all school names starting with the request
     // SELECT * FROM dec_schools WHERE school_name ILIKE '%sydney%'
-    var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '" + request.term + "%'";
+    var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '" + request.term + "%' ORDER BY school_name";
     app.sql.execute(query).done(processResults);
   };
 

@@ -18,7 +18,8 @@ app = app || {};
     attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>',
     // CartoCSS for various map layers
     backgroundCSS: '{polygon-fill: #F0F0F0; polygon-opacity: 0; line-color: #7E599D; line-width: 0.3; line-opacity: 1; line-dasharray: 10,4;}',
-    catchmentCSS: '{polygon-fill: #d72d6c; polygon-opacity: 0.15; line-color: #3e3e3e; line-width: 1; line-opacity: 1;}',
+    catchmentCSS: '{polygon-fill: #0B6138; polygon-opacity: 0.15; line-color: #0B6138; line-width: 2; line-opacity: 1; }',
+    catchmentCSS1ary: '{polygon-fill: #FE9A2E; polygon-opacity: 0.15; line-color: #FE9A2E; line-width: 2; line-opacity: 1; line-offset:2; }',
 
     // Specify a Maki icon name, hex color, and size (s, m, or l).
     // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
@@ -63,6 +64,10 @@ app = app || {};
   app.config = {
     searchRadius: 105 * 1000, // maximum distance (meters) someone would be expected to travel to any school before we suggest distance schools
     nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
+  };
+
+  app.analytics = {
+		    url: "http://localhost:8080"
   };
 
   app.supports = [

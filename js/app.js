@@ -30,11 +30,12 @@ app = app || {};
       // jump just above the start but not past the top of the page
       top = (top - 30 > 0) ? top - 30 : top;
       $('body').animate({scrollTop: top}, 1000);
+      location.reload();
     });
 
     // usually (with just one result) we'll want to skip right to the map
     if (app.schools.schools.length === 1) {
-      app.ui.scrollTo('.cartodb-map');
+      app.ui.viewSchool(app.schools.schools[0].school_code, '.cartodb-map');
     } else {
       // but sometimes we'll need to let the user pick from multiple results
       app.ui.scrollAndCenter('.results-list');
@@ -43,6 +44,25 @@ app = app || {};
 
   };
 
+  app.findBySchoolCode = function (schoolCode) {
+
+    // Find schools by name
+    var q = new app.Query();
+    app.activeQuery = q;
+    q.bySchoolCode(schoolCode).run(function (data) {
+      app.ui.resetSearchBtns();
+      if (data.rows.length < 1) {
+        console.log("No luck; go fish!");
+        $('#noResultsForNameModal').modal();
+      } else {
+        updateUI(data.rows);
+      }
+    }).error(function (errors) {
+      app.ui.resetSearchBtns();
+      // errors contains a list of errors
+      console.log("errors:" + errors);
+    });
+  };
 
   app.findByName = function (name) {
 
@@ -158,9 +178,23 @@ app = app || {};
       app.ui.scrollAndCenter('.block-address');
     };
 
+    var clickShowSupport = function (e) {
+        e.preventDefault();
+
+        $(".block-show-support").show();
+        app.ui.scrollAndCenter('.block-show-support');
+      };
+
+    var clickShowAddress = function (e) {
+          e.preventDefault();
+
+          $(".block-address").show();
+          app.ui.scrollAndCenter('.block-address');
+        };
+
     var clickSupport = function (e) {
       e.preventDefault();
-      var support_option = $(this).closest('.block-support').find('option:selected').val();
+      var support_option = $("#soflow").find('option:selected').val();
 
       app.support_needed = app.support_needed_previously = !(support_option === 'no');
       if (app.support_needed) {
@@ -174,8 +208,11 @@ app = app || {};
     $(".btn.primary").click({level: 'primary'}, clickSchoolType);
     $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
 
+    $(".btn.show-support").click(clickShowSupport);
+    $(".btn.no-support").click(clickShowAddress);
 
-    $(".block-support .search").click(clickSupport);
+    $(".block-show-support .search").click(clickSupport);
+    $(".btn.search").click(clickShowAddress);
 
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
@@ -204,6 +241,22 @@ app = app || {};
     // $('#address').val("Newtown, NSW");
     // $("#button-search-address").click();
 
+	var school_code = getUrlVars()["school_code"];
+	if (school_code){
+		app.findBySchoolCode(school_code);
+	}
+	else{
+		app.ui.scrollAndCenter('.block-intro');
+	}
   });
 
 }());
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+    function(m,key,value) {
+      vars[key] = value;
+    });
+    return vars;
+}

@@ -35,6 +35,12 @@ app.ui = app.ui || {};
     $('html, body').animate({scrollTop: scrollTop}, 500);
   };
 
+  app.ui.viewSchool = function(school_code, selector){
+	  var q = new app.Query();
+	  q.logCatchmentHit(school_code);	  
+	  app.ui.scrollTo(selector);
+  }
+
   // animated scroll to element with specified selector
   app.ui.scrollTo = function (selector) {
     $('html, body').animate({

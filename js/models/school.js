@@ -6,6 +6,24 @@ app = app || {};
     return field ? "Yes" : "No";
   });
 
+  Handlebars.registerHelper('careOptions', function(before, after, vacation) {
+	var ret = "";
+    if (before == "true")
+		ret = "Before school";
+    if (after == "true"){
+		if (ret != "")
+			ret += ", ";
+		ret += "After school";
+	}
+	
+    if (vacation == "true"){
+		if (ret != "")
+			ret += ", ";
+		ret += "Vacation care";
+	}
+	return ret;
+  });
+  
   /* create a new School. */
   app.School = function (fields) {
     _.extend(this, fields);
