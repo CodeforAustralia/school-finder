@@ -353,9 +353,9 @@
 		var legend = L.DomUtil.create('div', 'map-legend', L.DomUtil.get('map'));
 		legend.innerHTML = '<div style="border:solid; border-width: 1px; border-color: grey; background-color: #FFFFFF; padding:5px; border-radius: 5px;">' +
         '  <span style="background: rgba(254, 154, 46, 0.25); border:solid; border-width: 2px; padding:1px; width:30px; border-color: #FE9A2E;">&nbsp;&nbsp;&nbsp;</span>' +
-        '  <span style="padding:1px; width:100%;">Primary Catchment</span></p>' +
+        '  <span style="padding:1px; width:100%;">Primary</span></p>' +
         '  <span style="background: rgba(11, 97, 56, 0.25); border:solid; border-width: 2px; padding:1px; width:30px; border-color: #0B6138;">&nbsp;&nbsp;&nbsp;</span>' +
-        '  <span style="padding:1px; width:100%;">Secondary Catchment</span>' +
+        '  <span style="padding:1px; width:100%;">Secondary</span>' +
         '</div>';
 
 		return legend;
