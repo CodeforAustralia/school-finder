@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style type="text/css">
+body {margin-left:20px; font-family:"Calibri";}
+hr {color:grey;}
+h2 {font-size:18px; color:#ee2375; }
+h3 {font-size:14px; color:#ee2375; }
+p {text-align: center; font-size:14px;}
+p.small {font-size:12px;}
+p.pink {font-size:14px; color:#ee2375; }
+img.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto }
+.button {
+    background-color: #D9407A; /* Pink */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+</style>
+<script type="text/javascript">
+function checkCheckBox(f) {
+  if (f.agree.checked == false) {
+    alert('Please check the box and accept the Terms of Use to open the School Finder.');
+    return false;
+  } else
+    return true;
+}
+
+openFinder = function(){
+	if (document.getElementById("agree").checked){
+		var h = screen.height; 
+		var w = screen.width; 
+		var mypopup = window.open('http://localhost/school-finder', '_blank');
+	}
+	else
+		document.getElementById("mustAgree").style.visibility = "visible";	
+}
+
+resetMustAgree = function(){
+	document.getElementById("mustAgree").style.visibility = "hidden";
+}
+</script>
+</head>
+
+<body style='text-align: center'>
+
+<img class="displayed" src="sfimage.png" alt="School Finder launch image" ><br />
+<form action="http://localhost/school-finder" method="POST" onsubmit="return checkCheckBox(this)">
+<p>I accept the Terms of Use: <input type="checkbox" value="0" name="agree" id="agree" onclick="javascript:resetMustAgree();">&nbsp;&nbsp;
+<input type="button" class="button" value="Open School Finder" onclick="javascript:openFinder();"></p>
+<div id='mustAgree' style='visibility:hidden; color:red; '>You must accept our terms of use before proceeding</div>
+<!--<input type="button" value="Exit" onclick="document.location.href='/index.html';"></p>-->
+</form>
+
+</body>
+
+</html>
