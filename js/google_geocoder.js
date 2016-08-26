@@ -47,12 +47,30 @@ var googlePlacesInitialize = function () {
   var inputs;
   inputs = $('input[data-google-places]');
   return $.each(inputs, function () {
-    return new google.maps.places.Autocomplete(this, {
+    var autocomplete = new google.maps.places.Autocomplete(this, {
       types: ['geocode'],
       componentRestrictions: {
         country: 'au' // Australia
       }
     });
+	var geolocation = { // Middle of Sydney
+		lat: -33.848217,
+        lng: 150.931963
+    };
+	/*
+	var geolocation = { // Merbn
+		lat: -37.815249, 
+        lng: 144.940926
+    };
+	*/
+	
+    var circle = new google.maps.Circle({
+        center: geolocation,
+        radius: 50000
+    });
+    autocomplete.setBounds(circle.getBounds());	
+
+	return autocomplete;
   });
 };
 
