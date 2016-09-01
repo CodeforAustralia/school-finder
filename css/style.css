@@ -1,7 +1,11 @@
 html, body {width:100%; height:100%; padding: 0; margin: 0;}
-body { background-color: #39acc9; color: #3e3e3e;
+body { background-color: #3193AB; color: #3e3e3e;
 	font-family: 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
 	font-weight: normal;
+}
+a{
+	color:#355472;
+	text-decoration:none
 }
 .header h3 {color: #f7f6f6;
 	margin-top: 0.5em;
@@ -18,26 +22,33 @@ body { background-color: #39acc9; color: #3e3e3e;
 .block-intro input, .block-address input, .block-support select {
 	font-weight: normal;
 }
-.container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
+.container .jumbotron { background-color: #fbfcfb; border-radius: 0px; margin-bottom: 25em;}
 .btn {
 	border: none;
 	border-radius: 0px;
 	background-color: #d72d6c;
 	color: white;
 }
-.btn:active, .btn:focus, .btn:hover {
-	background-color: #39acc9;
+.btn:active, .btn:focus{
+	background-color: #3193AB;
 	color: white;
 }
+
+.btn:hover {
+	background-color: #3193AB;
+	color: white;
+    border: 1px white dotted;
+}
+
 .btn.working {
 	background-color: grey;
 }
 .footer { margin-bottom: 1.5em; }
-.footer p {color: #f7f6f6;}
-.footer a {color: #f7f6f6; font-weight: bold;}
+.footer p {color: #202020;}
+.footer a {color: #202020; font-weight: bold;}
 .footer a:hover {  text-decoration: none; border-bottom: 1px solid; }
 .footer .fa-inverse {color:  #76BFD1;}
-.footer .fa-stack {color: #f7f6f6;}
+.footer .fa-stack {color: #202020;}
 .footer .icon {
 	position: relative;
 	float: right;
@@ -72,7 +83,7 @@ a:hover .fa-stack-1x {
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
 .leaflet-control .active-filter {
-	 background-color: rgb(57, 172, 201);
+	 background-color: #3193AB;
 }
 
 .leaflet-control .active-filter:hover {
@@ -91,7 +102,7 @@ a:hover .fa-stack-1x {
 }
 .results-list li.selected .btn {
     font-weight: bold;
-    background-color: rgb(57, 172, 201);
+    background-color: #3193AB;
 }
 
 .results-list .btn {
@@ -125,6 +136,22 @@ a:hover .fa-stack-1x {
 	}
 }
 
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+    color:    #666;
+    opacity:  1;
+}
+input:-moz-placeholder, textarea:-moz-placeholder { 
+    color:    #666;
+    opacity:  1;
+}
+input::-moz-placeholder, textarea::-moz-placeholder { 
+    color:    #666;
+    opacity:  1;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+    color:    #666;
+    opacity:  1;
+}
 
 #school-info-container {
     margin-top: -1em; padding-top: 1em; /* hack so that jumping here keeps part of the map in view */
@@ -136,7 +163,7 @@ a:hover .fa-stack-1x {
 	border-bottom: 6px solid rgb(62, 62, 62);
 	padding-right: 1.5em;
 	padding-left: 1.5em;
-	background: rgb(247, 246, 246);
+	background: #fbfcfb;
 }
 
 .school-info-intro {
@@ -156,7 +183,7 @@ a:hover .fa-stack-1x {
 
 ul.school-details {
 	list-style: none;
-	background: #7e7d7d;
+	background: #5F5E5E;
 	color: white;
 	margin-top: 35px;
 	padding: 1em;
@@ -200,7 +227,7 @@ ul.school-details {
 
 .school-details .fa {
 	margin-right: 0.5em;
-	color: #7e7d7d;
+	color: #3e3e3e;
 }
 .school-details .fa-inverse {
 	color: white;
@@ -294,6 +321,13 @@ select#soflow, .styled-select {
     color: white;
     background: rgb(160,160,160);
 }
+button:hover a:hover{
+    border: 1px white dotted;
+}
+a:hover{
+    border: 1px white dotted;
+}
+
 .nearby-schools-control button.toggle-filters:focus {
     outline: none;
     border: 1px solid rgb(91, 157, 217);
@@ -400,12 +434,13 @@ input#nearby-girls {
 .new-search.btn {
 	display: block;
 	padding: 2em;
-	border: 1px solid rgba(255, 255, 255, 0.19);
+	border: 1px solid rgba(0, 0, 0, 0.19);
 	background-color: transparent;
+	color:black;
 }
 
 .new-search.btn:hover {
-    border: 1px solid white;
+    border: 1px dotted white;
     background-color: transparent;
  	text-decoration: none;
 }
@@ -427,7 +462,7 @@ input#nearby-girls {
 .jumbotron .disclaimer {
 	margin-top: 1em;
 	margin-bottom: 0em;
-	color: rgb(153, 153, 153);
+	color: #3e3e3e;
 }
 .school-name-search {
 	margin-right: 2em;
@@ -498,3 +533,4 @@ input#nearby-girls {
 .ios input:focus {
 	font-size: 16px;
 }
+
