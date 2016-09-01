@@ -210,10 +210,13 @@ app = app || {};
 		  
         console.log("No results visible; re-doing search and zooming...");
         var q2 = new app.Query();
+        var lat = app.lat ? app.lat : app.schoolView.school.latitude;
+        var lng = app.lng ? app.lng : app.schoolView.school.longitude;
+        
         q2.setSchoolType(type, true).setSupport(app.support_needed)
           .where("s.school_code NOT IN (" +  _.pluck(that.schools.schools, 'school_code') + ")")
           .setLimit(1)
-          .byClosest(app.lat, app.lng); // assumption: we have lat/lng, TODO: test w/o user address
+          .byClosest(lat, lng); // assumption: we have lat/lng, TODO: test w/o user address
         if (app.state.nearby.filterFeatureForType[app.state.nearby.type] && app.state.nearby.filterFeatureForType[app.state.nearby.type].sql) { // add custom filter if it has been set
           q2.where(app.state.nearby.filterFeatureForType[app.state.nearby.type].sql);
         }
@@ -229,7 +232,7 @@ app = app || {};
           var markers = addMarkers(that, data);
 
           // fit view of map to user location + results
-          var homeMarker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon});
+          var homeMarker = L.marker([lat, lng], {icon: app.geo.homeIcon});
           markers.push(homeMarker);
           var allMapMarkers = new L.featureGroup(markers);
           that.map.fitBounds(allMapMarkers.getBounds());
@@ -310,13 +313,18 @@ app = app || {};
     // allow for that
     var levelFilter = '';
     if (app.level) {
-      levelFilter = "school_type ~* '" + app.level + "' AND ";
+        if (app.level == "primary") {
+            levelFilter = "(school_type ~* '" + app.level + "' OR school_type ~* 'infants') AND ";
+        }
+        else{
+        	levelFilter = "school_type ~* '" + app.level + "' AND ";
+        }
     }
 
     this.catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";  // still useful for getting bounds 
     this.catchmentsSQL1ary = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'primary'";
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND (catchment_level = 'primary' OR catchment_level = 'infants')";
     this.catchmentsSQL2ary = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'secondary'";
     this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
@@ -399,6 +407,7 @@ app = app || {};
         .error(function (err) {
           //log the error
           console.error(err); // TODO: console.XYZ needs definition on some older browsers
+      	  $(".popup-schoolname").append("<p>School finder cannot contact the Catchments database at this time.<p>Please try again later.");
         });
 
     } else {

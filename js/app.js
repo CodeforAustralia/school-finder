@@ -78,6 +78,7 @@ app = app || {};
     var q = new app.Query();
     app.activeQuery = q;
     q.byName(name).run(function (data) {
+      app.userLocation = false;    	
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
         console.log("No luck; go fish!");
@@ -109,7 +110,13 @@ app = app || {};
     // one for primary level, one for secondary level.
     // See: SELECT * FROM dec_schools as s WHERE (SELECT count(*) from catchments WHERE school_code = s.school_code) > 1
     // So we have to check school_type on the *catchment*, not level_of_schooling on the *school*.
-    q.byCatchment(lat, lng).addFilter("catchment_level", app.level).setSupport(app.support_needed);
+    if (app.level == "secondary"){
+        q.byCatchment(lat, lng).addFilter("catchment_level", app.level).setSupport(app.support_needed);    	
+    }
+    else{
+    	// kludge warning - "primary', 'infants" have single quotes between, but not outside - they end up in an SQL IN-CLAUSE
+        q.byCatchment(lat, lng).addFilter("catchment_level", "primary', 'infants").setSupport(app.support_needed);    	
+    }
     q.run(function (data) {
       if (data.rows.length < 1) {
         // this location isn't within any catchment area
