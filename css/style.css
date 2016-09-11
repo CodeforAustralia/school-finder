@@ -149,6 +149,24 @@ a:hover .fa-stack-1x {
 }
 .expandable-text .body { display:none; }
 
+a.readmore {
+	font-weight: bold;
+	color: inherit;
+	text-decoration: none;
+}
+.readmore:before {
+	content: " \2192 "; /* &rarr; is → is \2192 */
+	margin-left: 2px;
+}
+.readmore span {
+    border-bottom: 1px dotted;
+    margin-left: 2px;
+    color: #717171;
+}
+.readmore:hover span {
+    border-bottom-style: solid;
+}
+
 .school-description .field-label {
 	font-size: 25px;
 	color: #d72d6c;
