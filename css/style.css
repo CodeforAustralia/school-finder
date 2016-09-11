@@ -409,6 +409,12 @@ input#nearby-girls {
     background-color: transparent;
  	text-decoration: none;
 }
+.new-search span {
+	border-bottom: 1px dotted;
+}
+.new-search:hover span {
+	border-bottom-style: solid;
+}
 
 .jumbotron #or {
 	text-transform: uppercase;
