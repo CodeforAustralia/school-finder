@@ -433,9 +433,22 @@ input#nearby-girls {
 	margin-top: 1em;
 }
 .jumbotron .disclaimer {
-	margin-top: 1em;
+	margin-top: 24px;
 	margin-bottom: 0em;
-	color: rgb(153, 153, 153);
+}
+
+.jumbotron .lesser-text {
+	font-size: 16px;
+	color: #717171;
+}
+.lesser-text a {
+	color: inherit;
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: 1px dotted;
+}
+.lesser-text a:hover {
+	border-bottom-style: solid;
 }
 .school-name-search {
 	margin-right: 2em;
