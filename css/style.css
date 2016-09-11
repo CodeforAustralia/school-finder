@@ -393,8 +393,10 @@ input#nearby-girls {
 	margin-right: 1em;
 }
 
-.new-search-btn-column {
-	padding-right: 0;
+@media (min-width: 768px) {
+	.new-search-btn-column {
+		padding-right: 0;
+	}
 }
 
 .new-search.btn {
