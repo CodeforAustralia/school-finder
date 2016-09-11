@@ -140,7 +140,8 @@ a:hover .fa-stack-1x {
 }
 
 .school-info-intro {
-	color: rgb(132, 132, 132);
+	color: rgb(112, 112, 112);
+	color: #707070;
 	margin-top: 0.25em;
 }
 .school-info .field-label {
