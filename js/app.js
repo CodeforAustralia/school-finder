@@ -227,11 +227,12 @@ app = app || {};
       app.findByName(inputText);
     }));
 
-    $("#address").keyup(function (event) {
-      if (event.keyCode === 13) {
-        $("#button-search-address").click();
-      }
-    });
+    // $("#address").keyup(function (event) {
+    //   if (event.keyCode === 13) {
+    //     console.log("keyup on #address, fake clicking #button-search-address");
+    //     $("#button-search-address").click();
+    //   }
+    // });
 
     $("#schoolname").autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
 
