@@ -31,7 +31,7 @@ body { background-color: #39acc9; color: #3e3e3e;
 .btn {
 	border: none;
 	border-radius: 0px;
-	background-color: #d72d6c;
+	background-color: rgb(215, 45, 108);
 	color: white;
 }
 .btn:active, .btn:focus, .btn:hover {
@@ -182,7 +182,7 @@ a.readmore {
 
 .school-description .field-label {
 	font-size: 25px;
-	color: #d72d6c;
+	color: rgb(215, 45, 108);
 	font-weight: bolder;
 }
 
@@ -242,7 +242,7 @@ ul.school-details {
 .school-name {
 	font-size: 40px;
 	font-weight: bold;
-	color: #d72d6c;
+	color: rgb(215, 45, 108);
 	text-decoration: none;
 	padding-top: 0.5em;
 	margin-bottom: 0.5em;
