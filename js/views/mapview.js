@@ -67,6 +67,17 @@ app = app || {};
       // open the school name popup
       var marker = e.target;
       marker.openPopup();
+
+      if (e.originalEvent == "KeyboardEvent") {
+        // hack for accessibility - no good way to tell popup focus to shift - see
+        // https://github.com/Leaflet/Leaflet/issues/2199
+        var popupNode = e.target._popup._contentNode;
+        // could be better -- update app.ui.setTabFocus to take an $el.
+        // $(popupNode).find([tabindex="-1"]).focus();
+        popupNode.querySelector('a').focus();
+      }
+
+
       that.selectedMarker = marker;
 
       // tell the school view to show this particular school
