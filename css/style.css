@@ -44,6 +44,23 @@ body { background-color: #39acc9; color: #3e3e3e;
 .btn.working {
 	background-color: grey;
 }
+
+/* if you want a random button to have a material box shadow effect, add the .material class */
+/*
+.btn.material {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.btn.material:hover,
+.btn.material:focus
+{
+    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+}
+*/
+
+
+
+
+
 .footer { margin-bottom: 1.5em; }
 .footer p {color: #f7f6f6;}
 .footer a {
