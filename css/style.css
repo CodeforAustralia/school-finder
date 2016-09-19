@@ -172,6 +172,68 @@ a:focus .fa-stack-1x {
         but we want these spans to look like block elements */
     }
 
+
+/* A quasi-radio button control with raised buttons inspired by Material Design. */
+/* Unlike a radio button set, you use Tab (vs left/rigth/up/down) to change focus
+   to the different buttons, and activating one of them changes view and then focus
+   will shift to selected entry on the map.
+   Hat tip to Andrea for coming up with the behavior / interaction between focused/hovered
+   buttons and the previously selected button. */
+.material-radio {
+    margin-bottom: 0.5em;
+}
+
+    .material-radio .btn {
+        /*border: 2px solid transparent;*/
+        transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        color: #333;
+        text-shadow: none;
+        background-color: inherit;
+        margin-bottom: 0;
+        /* margin: 0: buttons squished adjectly so when hover leaves one it'll enter another,
+           preventing flash of .selected button */
+    }
+
+    .material-radio .btn:hover,
+    .material-radio .btn:focus,
+    .material-radio .btn.selected
+    {
+        font-weight: bold;
+        color: white;
+
+        background: rgb(57, 172, 201); /* blue */
+    }
+    .material-radio .btn.red:hover,
+    .material-radio .btn.red:focus,
+    .material-radio .btn.red.selected
+    {
+        background: rgb(215, 45, 108); /* red */
+    }
+
+
+    .material-radio .btn:hover,
+    .material-radio .btn:focus
+    {
+        box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    }
+    .material-radio .btn:focus:not(:active) {
+        outline: 2px dashed white;
+    }
+
+    /* .dimmer added w/ a bit of help from listview.js since CSS can't select backwards */
+    /* general sibling ~ selector only goes forwards */
+    /*.material-radio .btn:not(.selected):hover ~ .btn.selected.dimmer,*/
+    .material-radio .btn.dimmer {
+    	text-shadow: 0 0 1px #3a3a3a;
+
+        background: rgb(154, 208, 213); /* ie8 non-RGBa fallback */
+        background: rgba(57, 172, 201, 0.5); /* lighter blue */
+    }
+    .material-radio .btn.dimmer.red {
+        background: rgb(233, 145, 167); /* ie8 non-RGBa fallback */
+        background: rgba(215, 45, 108, 0.5); /* lighter red */
+    }
+
 .results-list .school-distance {
 	float: right;
 	font-weight: lighter;
