@@ -16,9 +16,9 @@ app = app || {};
       // no schools arg? just make sure the currently selected thing is highlighted in the list
       var selected_code = this.schools.selected().school_code;
       var selected = this.$el.find('.selected');
-      if (selected.find('button').data('school-code') !== selected_code) { // UI/model mismatch; do update
+      if (selected.data('school-code') !== selected_code) { // UI/model mismatch; do update
         selected.removeClass('selected'); //clear all
-        this.$el.find('ul li button[data-school-code=' + selected_code + ']').closest('li').addClass('selected');
+        this.$el.find('button[data-school-code=' + selected_code + ']').addClass('selected');
       }
       return;
     }

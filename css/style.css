@@ -166,6 +166,12 @@ a:focus .fa-stack-1x {
     padding: 1em;
 }
 
+    .results-list .btn span.school-type {
+        display: block;
+        /* buttons can contain phrasing content like <span> (and not flow content like <div>),
+        but we want these spans to look like block elements */
+    }
+
 .results-list .school-distance {
 	float: right;
 	font-weight: lighter;

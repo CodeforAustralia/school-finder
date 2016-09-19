@@ -196,23 +196,22 @@
       <div class="jumbotron results-list">
         <h1>Results</h1>
         <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
-        <ul>
+        <div class="material-radio" role="group" tabindex="-1">
           {{#each schools}}
-            <li {{#if selected}} class="selected" {{/if}}>
-              <button class="btn" type="button" data-school-code="{{school_code}}">
-                <div>
-                  {{school_name}}
+              <button class="btn school-option {{#if selected}}selected{{/if}}" type="button" aria-pressed="{{selected}}"  data-school-code="{{school_code}}">
+                <span>
+                  {{#if selected}} <i class="fa fa-check" aria-hidden="true"></i> {{/if}}
+                  <span class="result-school-name">{{school_name}}</span>
                   {{#if distance}}<span class="school-distance">{{distance}} km</span>{{/if}}
-                </div>
+                </span>
                 {{#if support_needed}}
-                <div class="school-type">
+                <span class="school-type">
                   {{level_of_schooling}}
-                </div>
+                </span>
                 {{/if}}
               </button>
-            </li>
           {{/each}}
-        </ul>
+        </div>
         <p class="lesser-text">Or, try a <a class="jump-to-start" href="#search-start">new search</a>.</p>
       </div>
     </script>
