@@ -606,10 +606,18 @@ input#nearby-girls {
 	font-weight: bold;
 	text-decoration: none;
 	border-bottom: 1px dotted;
+    padding: 0.25em;
 }
 .lesser-text a:hover {
 	border-bottom-style: solid;
 }
+.lesser-text a:focus {
+    outline: 1px dashed darkblue;
+    text-decoration: underline;
+    border: none;
+}
+
+
 .school-name-search {
 	margin-right: 2em;
 	margin-left: 2em;
