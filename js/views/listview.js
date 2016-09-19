@@ -55,13 +55,12 @@ app = app || {};
       }, 400); // briefly pause so user sees list change
     });
 
-    this.$el.find('a.jump-to-start').click(function (e) {
+    function jumpToTop(e) {
       e.preventDefault();
-      var top = $('#search-start').offset().top;
-      // jump just above the start but not past the top of the page
-      top = (top - 30 > 0) ? top - 30 : top;
-      $('html,body').animate({scrollTop: top}, 500);
-    });
+      var target = this.hash;
+      app.ui.scrollAndCenter(target);
+    }
+    this.$el.find('.jump-to-start').click(jumpToTop)
   };
 
 }());
