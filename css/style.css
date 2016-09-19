@@ -38,6 +38,9 @@ body { background-color: #39acc9; color: #3e3e3e;
 	background-color: #39acc9;
 	color: white;
 }
+.btn:focus {
+    outline: 2px dashed white;
+}
 .btn.working {
 	background-color: grey;
 }
