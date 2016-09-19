@@ -211,7 +211,7 @@ app = app || {};
     $(".btn.no-support").click(clickShowAddress);
 
     $(".block-show-support .search").click(clickSupport);
-    $(".btn.search").click(clickShowAddress);
+    // $(".btn.search").click(clickShowAddress);
 
     $("#button-search-address").click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
