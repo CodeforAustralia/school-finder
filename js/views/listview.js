@@ -50,7 +50,9 @@ app = app || {};
       app.mapView.update(app.schools);
       app.schoolView.update(app.schools);
 
-      app.ui.viewSchool(school_code, '.cartodb-map');
+      setTimeout(function() {
+        app.ui.viewSchool(school_code, '.cartodb-map');
+      }, 400); // briefly pause so user sees list change
     });
 
     this.$el.find('a.jump-to-start').click(function (e) {

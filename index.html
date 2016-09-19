@@ -54,7 +54,7 @@
       </div>
 
       <div class="jumbotron block-intro" id="search-start">
-        <h1>Find a school</h1>  
+        <h1 tabindex="-1">Find a school</h1>
         <p class="lead">for a</p>
         <p>
           <button class="btn primary school-level" type="button">Primary aged student<br/><span class="school-level-definition">Kindergarten to Year 6</span></button>
@@ -83,7 +83,7 @@
         <p class="lead">Please provide your home location<sup>*</sup> to see nearby schools:</p>
         <form>
           <p>
-            <input id="address" aria-label="Enter your home street address to find nearby schools" type="text" class="form-control" placeholder="Please enter your home address..." data-google-places=true/>
+            <input tabindex="0" id="address" aria-label="Enter your home street address to find nearby schools" type="text" class="form-control" placeholder="Please enter your home address..." data-google-places=true/>
           </p>
           <button id="button-search-address" data-input="address" class="btn search" type="submit">Search</button>
         </form>

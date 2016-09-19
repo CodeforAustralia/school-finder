@@ -24,13 +24,12 @@ app = app || {};
 
     $('.new-search-btn-container').show();
 
-    $('a.new-search').click(function (e) {
-      e.preventDefault();
-      var top = $('#search-start').offset().top;
-      // jump just above the start but not past the top of the page
-      top = (top - 30 > 0) ? top - 30 : top;
-      $('body').animate({scrollTop: top}, 1000);
-      location.reload();
+    // ensure we're not adding same handler repeatedly
+    $('.btn.new-search').off('click.new-search');
+    $('.btn.new-search').on('click.new-search', function (e) {
+      console.log('clicked "new search" button');
+      var target = '#search-start';
+      app.ui.scrollAndCenter(target);
     });
 
     // usually (with just one result) we'll want to skip right to the map

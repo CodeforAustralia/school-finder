@@ -609,6 +609,21 @@ input#nearby-girls {
 	}
 }
 
+/* When we programmatically set focus on things,
+   the thing should be the container of a focusable item,
+   so we don't actually want users to know we've focused on it.
+   This is just so we can focus on newly added target containers
+   in the app -- the tabbing equivalent of scrolling to the element
+   (because when we scroll down, the next tab element naturally might
+   still be above the elements newly in view).
+
+   This should be low enough specificity that it doesn't accidently
+   disable an outline on things we really want to be outlined.
+*/
+[tabindex="-1"] {
+    outline: none;
+}
+
 /* prevent iphone from autozooming on form fields */
 /* http://stackoverflow.com/a/9039885/1024811
    http://stackoverflow.com/a/16255670/1024811 */

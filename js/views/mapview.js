@@ -134,7 +134,7 @@ app = app || {};
       }
     }
 
-    return popup;
+    return '<div class="popup-schoolname-container" tabindex="-1">' + popup + '</div>';
   };
 
 
