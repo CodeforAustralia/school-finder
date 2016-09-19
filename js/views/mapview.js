@@ -120,7 +120,8 @@ app = app || {};
 
 
   var getPopupForFilter = function (school, checkMatch) {
-    var popup = '<b><a href="#school-info-container" class="popup-schoolname" title="Jump to school info">' + school.school_name + '</a></b>';
+    var popup = '<a href="#school-info-container" class="popup-schoolname" title="Jump to school info"><span class="sr-only">Go to </span>' + school.school_name + '<span class="sr-only"> information</span></a>';
+
     if (school.type !== app.state.nearby.type) {
       var displayType = school.type;
       if (school.type === "central") {
@@ -130,18 +131,23 @@ app = app || {};
       } else { // just capitalize type
         displayType = displayType.charAt(0).toUpperCase() + displayType.substring(1);
       }
-      popup += "<br> School type: " + displayType;
+      popup += '<div class="popup-meta popup-school-type">School type: ' + displayType + '</div>';
     }
+
     var filter = app.state.nearby.filterFeatureForType[app.state.nearby.type];
     if (filter && filter.name !== "any") {
+      var matchInfo = '';
       if (!checkMatch || filter.matchTest(school)) {
         if (filter.name === 'specialty') {
-          popup += "<br>Specialty offered: " + school.school_specialty_type;
+          matchInfo += "Specialty offered: " + school.school_specialty_type;
         } else {
-          popup += "<br>" + filter.matchLabel;
+          matchInfo += filter.matchLabel;
         }
       } else {
-        popup += "<br>" + filter.mismatchLabel;
+        matchInfo += filter.mismatchLabel;
+      }
+      if (matchInfo !== '') {
+        popup += '<div class="popup-meta popup-match-info">' + matchInfo + '</div>';
       }
     }
 
