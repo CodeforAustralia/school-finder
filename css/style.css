@@ -564,6 +564,7 @@ input#nearby-girls {
 	padding: 2em;
 	border: 1px solid rgba(255, 255, 255, 0.19);
 	background-color: transparent;
+	width: 100%;
 }
 
 .new-search.btn:hover {
