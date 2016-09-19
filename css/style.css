@@ -112,19 +112,51 @@ a:focus .fa-stack-1x {
 	background-color: rgb(25, 155, 186); /* slightly darker blue */
 }
 
+.leaflet-control-zoom a:focus {
+    background: rgb(57, 172, 201);
+    border: 1px solid black;
+    color: white;
+}
+
+.leaflet-control-attribution a:focus:not(:active),
+.cartodb-logo a:focus:not(:active) img {
+    background: rgb(57, 172, 201);
+    outline: 1px dashed darkblue !important;
+    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    padding: 1em;
+    color: white;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.cartodb-logo a:focus:not(:active) img {
+    padding: 0;
+}
+
+	a.popup-schoolname {
+	    display: inline-block;
+	    font-weight: bold;
+	}
+    	a.popup-schoolname:focus {
+    	    outline: 1px dashed darkblue;
+    	    margin: -3px 0;
+    	    padding: 9px 9px;
+    	}
+
+        /* prevent funny resize (from padding change) when activated (usually by mouse press) */
+        a.popup-schoolname:focus:active {
+            outline: none;
+            padding: 0;
+        }
+
+        a.popup-schoolname:focus + .popup-meta {
+            margin-top: 6px;
+        }
+
+
 /* Results */
 #results-container {
 	margin-bottom: 50px;
-}
-
-#list-container {
-}
-.results-list li {
-    list-style: none;
-}
-.results-list li.selected .btn {
-    font-weight: bold;
-    background-color: rgb(57, 172, 201);
 }
 
 .results-list .btn {
@@ -345,15 +377,19 @@ select#soflow, .styled-select {
 	width: 2em;
 	height: 2em;
 }
-.nearby-schools-control button.toggle-filters:hover {
-    background: rgb(90, 90, 90);
+.nearby-schools-control button.toggle-filters:hover,
+.nearby-schools-control button.toggle-filters:focus
+{
+    background: rgb(57, 172, 201);
     color: white;
-    background: rgb(160,160,160);
 }
 .nearby-schools-control button.toggle-filters:focus {
     outline: none;
-    border: 1px solid rgb(91, 157, 217);
+    /* box-shadow for circular outline halo effect */
+    box-shadow: 0 0 1px 1px white, 0 0 1px 2px rgb(91, 157, 217);
+    border: 1px solid black;
 }
+
 .nearby-schools-control h1 {
 	font-size: 14px;
 	margin: 0;
