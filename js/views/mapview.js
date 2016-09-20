@@ -366,6 +366,7 @@ app = app || {};
 
       map.on('viewreset moveend', function () {
         that.loadNearby();
+        that.addEmptyAlts(); // accessbility fix needed any time map updates
       });
 
       L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
@@ -412,6 +413,8 @@ app = app || {};
               app.reverseGeocode(app.findByLocation);
             }
           });
+
+          that.addEmptyAlts(); // accessibility fix for carto layer tiles too
         })
         .error(function (err) {
           //log the error
@@ -465,5 +468,23 @@ app = app || {};
     this.fitBounds();
     this.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
   };
+
+
+  // Accessibility fix: add empty alt="" tags to map tiles
+  MapView.prototype.addEmptyAlts = function () {
+    // map tiles are meaningless to screen readers, so set alt to ""
+    // otherwise, the screen reader might read just the image file's name
+    // https://github.com/Leaflet/Leaflet/issues/3210#issue-56830926 says:
+    // "VO spoke the filename of the images in the map's base layer,
+    // speaking, "6078 dot p n g, link", "6079 dot p n g, link", and so forth."
+
+    // https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules#ax_text_02 says:
+    // <!-- Good: image used for presentation has an empty alt value -->
+    // <img src="line.png" alt="">
+
+    this.$el.find(".leaflet-tile-pane img").attr("alt", "");
+    this.$el.find(".leaflet-tile-pane img").attr("alt", "");
+
+  }
 
 }());
