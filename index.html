@@ -35,7 +35,7 @@
 
     <div class="container">
 
-      <div class="header">
+      <header class="header" role="banner">
         <!--
         <nav>
           <ul class="nav nav-pills pull-right">
@@ -51,8 +51,9 @@
             <a class="pull-right" href="http://www.dec.nsw.gov.au/" title="New South Wales Department of Education homepage"><img src="css/images/dept-logo-clear.png" alt="NSW Education and Communities"></a>
           </div>
         </h3>
-      </div>
+      </header>
 
+      <section id="search-container" role="search" controls="results-container" >
       <div class="jumbotron block-intro" id="search-start">
         <h1 tabindex="-1">Find a school</h1>
         <p class="lead">for a</p>
@@ -89,9 +90,10 @@
         </form>
         <p class="disclaimer lesser-text"> <sup>*</sup>We do not keep address information. For best results please supply your full address. </p>
       </div>
+      </section>
 
       <!-- RESULT -->
-      <div id="results-container">
+      <main id="results-container" role="main">
         <div id="list-container"></div>
         <div id="map-container"></div>
         <div id="school-info-container"></div>
@@ -104,9 +106,9 @@
             </a>
           </div>
         </div>
-      </div>
+      </main>
 
-      <footer class="footer">
+      <footer class="footer" role="contentinfo">
         <p>
           A project by the <a href="http://cese.nsw.gov.au">Centre for Education Statistics and Evaluation</a> and <a href="http://codeforaustralia.org">Code for Australia</a>.<br>
           We're friendly. Say <a href="mailto:nsw-schoolfinder@codeforaustralia.org?subject=Hello!" title="Questions? Comments? Email us!">hello</a>!
@@ -193,7 +195,7 @@
 
 
     <script id="result-list-template" type="text/x-handlebars-template">
-      <div class="jumbotron results-list">
+      <nav class="jumbotron results-list" controls="map-container" role="navigation">
         <h1>Results</h1>
         <p class="lead">We found the following {{#if search_by_distance}}nearest{{/if}} results{{#if support_needed}} for {{support_description}}{{/if}}; select one to view.</p>
         <div class="material-radio" role="group" tabindex="-1">
@@ -213,7 +215,7 @@
           {{/each}}
         </div>
         <p class="lesser-text">Or, try a <a class="jump-to-start" href="#search-start">new search</a>.</p>
-      </div>
+      </nav>
     </script>
 
     <script id="map-template" type="text/x-handlebars-template">
