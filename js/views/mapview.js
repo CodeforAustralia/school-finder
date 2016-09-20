@@ -367,6 +367,7 @@ app = app || {};
       map.on('viewreset moveend', function () {
         that.loadNearby();
         that.addEmptyAlts(); // accessbility fix needed any time map updates
+        that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
       });
 
       L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
@@ -415,6 +416,9 @@ app = app || {};
           });
 
           that.addEmptyAlts(); // accessibility fix for carto layer tiles too
+          // fix so keyboard users aren't constantly running into attribution links
+          // but then... those users actually can't access these links. Hmm.
+          that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
         })
         .error(function (err) {
           //log the error
