@@ -353,7 +353,7 @@ app = app || {};
         center = [school.latitude, school.longitude];
       }
 
-      var mapEl = this.$el.find(":first")[0];
+      var mapEl = this.$el.find("#cartodb-map")[0];
       map = new L.Map(mapEl, {
         center: center,
         zoom: 12,
