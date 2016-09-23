@@ -65,7 +65,7 @@
         <div class="row school-name-search">
           <div class="col-lg-12">
             <div class="input-group input-group-lg">
-              <input id="schoolname" type="text" class="form-control" placeholder="A school named...">
+              <input id="schoolname" aria-label="Enter a school name to search for" type="text" class="form-control" placeholder="A school named...">
               <span class="input-group-btn">
                 <button id="button-search-name" data-input="schoolname" class="btn search" type="button">Search</button>
               </span>
@@ -73,16 +73,16 @@
           </div>
         </div><!-- /.row -->
 
-        <p class="disclaimer">Information subject to change; by using this, you agree to our <a href="">terms of service</a>.</p>
+        <p class="disclaimer lesser-text">Information subject to change; by using this, you agree to our <a href="">terms of service</a>.</p>
       </div>
 
       <div class="jumbotron block-address">
         <h1>I live at:</h1>
         <p class="lead">Please provide your home location<sup>*</sup> to see nearby schools:</p>
         <p>
-          <input id="address" type="text" class="form-control" placeholder="Please enter your home address..." data-google-places=true/></p>
+          <input id="address" aria-label="Enter your home street address to find nearby schools" type="text" class="form-control" placeholder="Please enter your home address..." data-google-places=true/></p>
           <a id="button-search-address" data-input="address" class="btn search" href="#" role="button">Search</a>
-          <p class="disclaimer"> <sup>*</sup>We do not keep address information. For best results please supply your full address. </p>
+          <p class="disclaimer lesser-text"> <sup>*</sup>We do not keep address information. For best results please supply your full address. </p>
       </div>
 
       <!-- RESULT -->
@@ -93,7 +93,10 @@
         <div class="new-search-btn-container row">
           <div class="col-sm-8"></div>
           <div class="col-sm-4 new-search-btn-column">
-            <a href="#search-start" class="btn secondary new-search" role="button"><i class="fa fa-search"></i>Start a new search</a>
+            <a href="#search-start" class="btn secondary new-search" role="button">
+              <i class="fa fa-search"></i>
+              <span>Start a new search</span>
+            </a>
           </div>
         </div>
       </div>
@@ -205,7 +208,7 @@
             </li>
           {{/each}}
         </ul>
-        <p>Or, try a <a class="jump-to-start" href="#search-start">new search</a>.</p>
+        <p class="lesser-text">Or, try a <a class="jump-to-start" href="#search-start">new search</a>.</p>
       </div>
     </script>
 
@@ -221,7 +224,7 @@
       <div id="school-info-{{school_code}}" class="school-info">
 
         <div class="school-name">
-          <img class="icon" src="https://api.tiles.mapbox.com/v3/marker/pin-m-school+d72d6c@2x.png">
+          <img alt="" class="icon" src="https://api.tiles.mapbox.com/v3/marker/pin-m-school+d72d6c@2x.png">
           {{school_name}}
         </div>
 

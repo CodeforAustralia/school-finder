@@ -8,7 +8,8 @@ body { background-color: #39acc9; color: #3e3e3e;
 	padding-bottom: 0px;
 	font-size: 34px;
 }
-.header .sitename {
+.sitename, .results-list .btn, .new-search, footer {
+	text-shadow: 0px 0px 1px #375a63;
 	text-shadow: 0px 0px 1px rgb(55, 90, 99);
 }
 .org-logo img {
@@ -60,9 +61,8 @@ a:hover .fa-circle {
 	color: #f7f6f6;
 }
 a:hover .fa-stack-1x {
-	color: #39ACC9;
-	font-size: 1.1em; // make the icons pop out a bit
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+	color: #375a63; /* use same as circle's text shadow for increased contrast */
+	text-shadow: none;
 }
 
 #map-container {
@@ -140,13 +140,32 @@ a:hover .fa-stack-1x {
 }
 
 .school-info-intro {
-	color: rgb(132, 132, 132);
+	color: rgb(112, 112, 112);
+	color: #707070;
 	margin-top: 0.25em;
 }
 .school-info .field-label {
 	color: rgb(189, 239, 252); /* based on background blue but lighter for readability */
 }
 .expandable-text .body { display:none; }
+
+a.readmore {
+	font-weight: bold;
+	color: inherit;
+	text-decoration: none;
+}
+.readmore:before {
+	content: " \2192 "; /* &rarr; is → is \2192 */
+	margin-left: 2px;
+}
+.readmore span {
+    border-bottom: 1px dotted;
+    margin-left: 2px;
+    color: #717171;
+}
+.readmore:hover span {
+    border-bottom-style: solid;
+}
 
 .school-description .field-label {
 	font-size: 25px;
@@ -156,7 +175,7 @@ a:hover .fa-stack-1x {
 
 ul.school-details {
 	list-style: none;
-	background: #7e7d7d;
+	background: #696767;
 	color: white;
 	margin-top: 35px;
 	padding: 1em;
@@ -200,7 +219,7 @@ ul.school-details {
 
 .school-details .fa {
 	margin-right: 0.5em;
-	color: #7e7d7d;
+	color: #696767;
 }
 .school-details .fa-inverse {
 	color: white;
@@ -393,8 +412,10 @@ input#nearby-girls {
 	margin-right: 1em;
 }
 
-.new-search-btn-column {
-	padding-right: 0;
+@media (min-width: 768px) {
+	.new-search-btn-column {
+		padding-right: 0;
+	}
 }
 
 .new-search.btn {
@@ -408,6 +429,12 @@ input#nearby-girls {
     border: 1px solid white;
     background-color: transparent;
  	text-decoration: none;
+}
+.new-search span {
+	border-bottom: 1px dotted;
+}
+.new-search:hover span {
+	border-bottom-style: solid;
 }
 
 .jumbotron #or {
@@ -425,9 +452,22 @@ input#nearby-girls {
 	margin-top: 1em;
 }
 .jumbotron .disclaimer {
-	margin-top: 1em;
+	margin-top: 24px;
 	margin-bottom: 0em;
-	color: rgb(153, 153, 153);
+}
+
+.jumbotron .lesser-text {
+	font-size: 16px;
+	color: #717171;
+}
+.lesser-text a {
+	color: inherit;
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: 1px dotted;
+}
+.lesser-text a:hover {
+	border-bottom-style: solid;
 }
 .school-name-search {
 	margin-right: 2em;
