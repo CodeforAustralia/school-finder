@@ -67,6 +67,17 @@ app = app || {};
       // open the school name popup
       var marker = e.target;
       marker.openPopup();
+
+      if (e.originalEvent == "KeyboardEvent") {
+        // hack for accessibility - no good way to tell popup focus to shift - see
+        // https://github.com/Leaflet/Leaflet/issues/2199
+        var popupNode = e.target._popup._contentNode;
+        // could be better -- update app.ui.setTabFocus to take an $el.
+        // $(popupNode).find([tabindex="-1"]).focus();
+        popupNode.querySelector('a').focus();
+      }
+
+
       that.selectedMarker = marker;
 
       // tell the school view to show this particular school
@@ -109,7 +120,8 @@ app = app || {};
 
 
   var getPopupForFilter = function (school, checkMatch) {
-    var popup = '<b><a href="#school-info-container" class="popup-schoolname" title="Jump to school info">' + school.school_name + '</a></b>';
+    var popup = '<a href="#school-info-container" class="popup-schoolname" title="Jump to school info"><span class="sr-only">Go to </span>' + school.school_name + '<span class="sr-only"> information</span></a>';
+
     if (school.type !== app.state.nearby.type) {
       var displayType = school.type;
       if (school.type === "central") {
@@ -119,22 +131,27 @@ app = app || {};
       } else { // just capitalize type
         displayType = displayType.charAt(0).toUpperCase() + displayType.substring(1);
       }
-      popup += "<br> School type: " + displayType;
+      popup += '<div class="popup-meta popup-school-type">School type: ' + displayType + '</div>';
     }
+
     var filter = app.state.nearby.filterFeatureForType[app.state.nearby.type];
     if (filter && filter.name !== "any") {
+      var matchInfo = '';
       if (!checkMatch || filter.matchTest(school)) {
         if (filter.name === 'specialty') {
-          popup += "<br>Specialty offered: " + school.school_specialty_type;
+          matchInfo += "Specialty offered: " + school.school_specialty_type;
         } else {
-          popup += "<br>" + filter.matchLabel;
+          matchInfo += filter.matchLabel;
         }
       } else {
-        popup += "<br>" + filter.mismatchLabel;
+        matchInfo += filter.mismatchLabel;
+      }
+      if (matchInfo !== '') {
+        popup += '<div class="popup-meta popup-match-info">' + matchInfo + '</div>';
       }
     }
 
-    return popup;
+    return '<div class="popup-schoolname-container" tabindex="-1">' + popup + '</div>';
   };
 
 
@@ -336,7 +353,7 @@ app = app || {};
         center = [school.latitude, school.longitude];
       }
 
-      var mapEl = this.$el.find(":first")[0];
+      var mapEl = this.$el.find("#cartodb-map")[0];
       map = new L.Map(mapEl, {
         center: center,
         zoom: 12,
@@ -349,6 +366,8 @@ app = app || {};
 
       map.on('viewreset moveend', function () {
         that.loadNearby();
+        that.addEmptyAlts(); // accessbility fix needed any time map updates
+        that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
       });
 
       L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
@@ -395,6 +414,11 @@ app = app || {};
               app.reverseGeocode(app.findByLocation);
             }
           });
+
+          that.addEmptyAlts(); // accessibility fix for carto layer tiles too
+          // fix so keyboard users aren't constantly running into attribution links
+          // but then... those users actually can't access these links. Hmm.
+          that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
         })
         .error(function (err) {
           //log the error
@@ -448,5 +472,23 @@ app = app || {};
     this.fitBounds();
     this.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
   };
+
+
+  // Accessibility fix: add empty alt="" tags to map tiles
+  MapView.prototype.addEmptyAlts = function () {
+    // map tiles are meaningless to screen readers, so set alt to ""
+    // otherwise, the screen reader might read just the image file's name
+    // https://github.com/Leaflet/Leaflet/issues/3210#issue-56830926 says:
+    // "VO spoke the filename of the images in the map's base layer,
+    // speaking, "6078 dot p n g, link", "6079 dot p n g, link", and so forth."
+
+    // https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules#ax_text_02 says:
+    // <!-- Good: image used for presentation has an empty alt value -->
+    // <img src="line.png" alt="">
+
+    this.$el.find(".leaflet-tile-pane img").attr("alt", "");
+    this.$el.find(".leaflet-tile-pane img").attr("alt", "");
+
+  }
 
 }());

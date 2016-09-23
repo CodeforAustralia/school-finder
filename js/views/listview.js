@@ -16,9 +16,9 @@ app = app || {};
       // no schools arg? just make sure the currently selected thing is highlighted in the list
       var selected_code = this.schools.selected().school_code;
       var selected = this.$el.find('.selected');
-      if (selected.find('button').data('school-code') !== selected_code) { // UI/model mismatch; do update
+      if (selected.data('school-code') !== selected_code) { // UI/model mismatch; do update
         selected.removeClass('selected'); //clear all
-        this.$el.find('ul li button[data-school-code=' + selected_code + ']').closest('li').addClass('selected');
+        this.$el.find('button[data-school-code=' + selected_code + ']').addClass('selected');
       }
       return;
     }
@@ -50,16 +50,36 @@ app = app || {};
       app.mapView.update(app.schools);
       app.schoolView.update(app.schools);
 
-      app.ui.viewSchool(school_code, '.cartodb-map');
+      setTimeout(function() {
+        app.ui.viewSchool(school_code, '.cartodb-map');
+      }, 400); // briefly pause so user sees list change
     });
 
-    this.$el.find('a.jump-to-start').click(function (e) {
+    function jumpToTop(e) {
       e.preventDefault();
-      var top = $('#search-start').offset().top;
-      // jump just above the start but not past the top of the page
-      top = (top - 30 > 0) ? top - 30 : top;
-      $('html,body').animate({scrollTop: top}, 500);
-    });
+      var target = this.hash;
+      app.ui.scrollAndCenter(target);
+    }
+    this.$el.find('.jump-to-start').click(jumpToTop)
+
+    var that = this;
+
+    // button gets focus or hover
+    function onAttention (event) {
+      that.$el.find(".btn.selected").addClass("dimmer");
+    }
+    function offAttention (event) {
+      // if mouse .hover's offAttention() was called, ensure nothing has
+      // mouse :focus before we un-dim the .selected button.
+      if (that.$el.find(".btn:not(.selected):focus").length === 0) {
+        that.$el.find(".btn.selected").removeClass("dimmer");
+      }
+    }
+    $unselecteds = this.$el.find(".btn:not(.selected)");
+    $unselecteds.hover(onAttention, offAttention)
+      .focusin(onAttention)
+      .focusout(offAttention);
+
   };
 
 }());
