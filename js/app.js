@@ -245,9 +245,6 @@ app = app || {};
 	if (school_code){
 		app.findBySchoolCode(school_code);
 	}
-	else{
-		app.ui.scrollAndCenter('.block-intro');
-	}
   });
 
 }());
