@@ -227,10 +227,17 @@ app = app || {};
 		  
         console.log("No results visible; re-doing search and zooming...");
         var q2 = new app.Query();
+
+        // If user hasn't provided their location yet, center our search
+        // on the school they must have searched for.
+        var lat = app.lat || app.schoolView.school.latitude;
+        var lng = app.lng || app.schoolView.school.longitude;
+        if (!lat || !lng) { console.log("yikes, we've got no lat/lng to search around!") }
+
         q2.setSchoolType(type, true).setSupport(app.support_needed)
           .where("s.school_code NOT IN (" +  _.pluck(that.schools.schools, 'school_code') + ")")
           .setLimit(1)
-          .byClosest(app.lat, app.lng); // assumption: we have lat/lng, TODO: test w/o user address
+          .byClosest(lat, lng);
         if (app.state.nearby.filterFeatureForType[app.state.nearby.type] && app.state.nearby.filterFeatureForType[app.state.nearby.type].sql) { // add custom filter if it has been set
           q2.where(app.state.nearby.filterFeatureForType[app.state.nearby.type].sql);
         }
@@ -246,7 +253,7 @@ app = app || {};
           var markers = addMarkers(that, data);
 
           // fit view of map to user location + results
-          var homeMarker = L.marker([app.lat, app.lng], {icon: app.geo.homeIcon});
+          var homeMarker = L.marker([lat, lng], {icon: app.geo.homeIcon});
           markers.push(homeMarker);
           var allMapMarkers = new L.featureGroup(markers);
           that.map.fitBounds(allMapMarkers.getBounds());
