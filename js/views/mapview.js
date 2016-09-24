@@ -327,13 +327,17 @@ app = app || {};
     // allow for that
     var levelFilter = '';
     if (app.level) {
-      levelFilter = "school_type ~* '" + app.level + "' AND ";
+      var alsoInfantsIfPrimary = '';
+      if (app.level === "primary") {
+        alsoInfantsIfPrimary = " OR school_type ~* 'infants'";
+      }
+      levelFilter = "(school_type ~* '" + app.level + "'" + alsoInfantsIfPrimary + ") AND ";
     }
 
     this.catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";  // still useful for getting bounds 
     this.catchmentsSQL1ary = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'primary'";
+                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND (catchment_level IN ('primary','infants'))";
     this.catchmentsSQL2ary = "SELECT * FROM " + app.db.polygons + " " +
                  "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'secondary'";
     this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +

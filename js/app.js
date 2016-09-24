@@ -108,7 +108,15 @@ app = app || {};
     // one for primary level, one for secondary level.
     // See: SELECT * FROM dec_schools as s WHERE (SELECT count(*) from catchments WHERE school_code = s.school_code) > 1
     // So we have to check school_type on the *catchment*, not level_of_schooling on the *school*.
-    q.byCatchment(lat, lng).addFilter("catchment_level", app.level).setSupport(app.support_needed);
+
+    // generally school level equals age level (set through the big .block-intro buttons)...
+    var school_level = app.level;
+    // ... but primary aged kids (K-12) can go to either Primary (K-6) or Infant (K-2) schools
+    if (app.level === "primary") {
+      school_level = ['primary', 'infants'];
+    }
+    q.byCatchment(lat, lng).addFilter("catchment_level", school_level).setSupport(app.support_needed);
+
     q.run(function (data) {
       if (data.rows.length < 1) {
         // this location isn't within any catchment area
