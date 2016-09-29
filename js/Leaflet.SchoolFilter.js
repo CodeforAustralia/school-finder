@@ -89,12 +89,12 @@
 
       container.innerHTML = ' ' +
         '<div class="nearby-schools-control-toggle">' +
-        '  <label for="nearby-schools-show">Nearby schools</label>' +
-        '<button type="button" class="toggle-filters" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
+        '  <label for="nearby-schools-control-expand">Nearby schools</label>' +
+        '  <button type="button" class="toggle-filters" aria-label="Toggle nearby schools control" title="Expand" id="nearby-schools-control-expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
         '</div>' +
         '<div class="school-filters">' +
         '  <input type="checkbox" id="nearby-schools-show" value="all">' +
-        ' Show nearby schools' +
+        '  <label for="nearby-schools-show">Show nearby schools</label>' +
         '</div>' +
         '<div class="school-filters">' +
         ' <label for="nearby-schools-type">Type:</label>' +
