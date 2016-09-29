@@ -462,6 +462,9 @@ select#soflow, .styled-select {
 	font-size: 14px;
 	margin: 0;
 }
+.nearby-schools-control .school-filters label {
+    font-weight: normal;
+}
 .nearby-schools-control label[for=nearby-schools-type] {
 	display: none;
 }

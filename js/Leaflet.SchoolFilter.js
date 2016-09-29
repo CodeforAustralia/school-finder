@@ -94,7 +94,7 @@
         '</div>' +
         '<div class="school-filters">' +
         '  <input type="checkbox" id="nearby-schools-show" value="all">' +
-        ' Show nearby schools' +
+        '  <label for="nearby-schools-show">Show nearby schools</label>' +
         '</div>' +
         '<div class="school-filters">' +
         ' <label for="nearby-schools-type">Type:</label>' +
