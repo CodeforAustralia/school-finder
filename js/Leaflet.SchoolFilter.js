@@ -89,7 +89,7 @@
 
       container.innerHTML = ' ' +
         '<div class="nearby-schools-control-toggle">' +
-        '  <label for="nearby-schools-show">Nearby schools</label>' +
+        '  <label>Nearby schools</label>' +
         '<button type="button" class="toggle-filters" aria-label="Expand" title="Expand"><span aria-hidden="true"><i class="fa fa-caret-left"></i></span></button>' +
         '</div>' +
         '<div class="school-filters">' +
@@ -214,7 +214,8 @@
         app.mapView.loadNearby();
       });
 
-      $('button.toggle-filters', container).click($.proxy(this._toggleFilterVisibility, this));
+      $('.nearby-schools-control-toggle', container).click($.proxy(this._toggleFilterVisibility, this));
+//      $('button.toggle-filters', container).click($.proxy(this._toggleFilterVisibility, this));
 
       $('select#nearby-schools-type', container).change(function () {
         var type = $('option:selected', this)[0].value;
