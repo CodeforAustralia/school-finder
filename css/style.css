@@ -538,6 +538,11 @@ input#nearby-girls {
 	.block-intro .btn.school-level {
 		width: 42%; /* Make school level buttons equal width */
 	}
+
+    .school-name-search {
+        margin-right: 2em;
+        margin-left: 2em;
+    }
 }
 
 .school-level-definition {
@@ -621,11 +626,6 @@ input#nearby-girls {
     border: none;
 }
 
-
-.school-name-search {
-	margin-right: 2em;
-	margin-left: 2em;
-}
 
 @media only screen and (min-width: 980px) {
 	.school-name {
