@@ -127,6 +127,24 @@
     <!-- Modal -->
     <div id="modal-container"></div>
 
+    <div class="modal fade" id="geocodingErrorModal" tabindex="-1" role="dialog" aria-labelledby="geocodingErrorModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="geocodingErrorModalLabel">Geocoding failed. &nbsp; &#x1F633; &#x1F61E; </h4>
+            <!-- 😳😞 or flushed face (U+1F633) followed by disappointed face (U+1F61E). -->
+          </div>
+          <div class="modal-body">
+            <p>Sorry, Google geocoder gave an unexpected result. <span class="modal-more-info"></span> Either the address doesn't exist or the geocoder is experiencing problems. Feel free to try another search though!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="noResultsForNameModal" tabindex="-1" role="dialog" aria-labelledby="noResultsForNameModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">

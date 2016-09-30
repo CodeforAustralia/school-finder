@@ -14,7 +14,9 @@ app.geocodeAddress = function (callback) {
       callback();
 
     } else {
-      $('#results-container').html('Geocode was not successful for the following reason: ' + status);
+      $('#geocodingErrorModal').find('.modal-more-info').text('It said: "' + status + '" when given address "' + app.address + '".')
+      $('#geocodingErrorModal').modal();
+      app.ui.resetSearchBtns();
     }
   });
 };
