@@ -30,12 +30,25 @@ app = app || {};
     this.$el.empty();
     this.$el.append(html);
 
-    // lookup distance along road network and insert it into page when the results come back.
-    app.calculateRouteDistanceToUser(
-      this.school.latitude,
-      this.school.longitude,
-      '#school-info-' + this.school.school_code + ' .route-distance'
-    );
+    var selectorPrefix = '#school-info-' + this.school.school_code + ' ';
+
+    var schoolCoords = app.LatLng(this.school.latitude, this.school.longitude);
+    var userCoords = app.LatLng(app.lat,app.lng);
+
+    try {
+      app.geo.getRouteDistance(schoolCoords, userCoords, function gotRouteDist(distance) {
+        $(selectorPrefix + '.route-distance').html('Via roads: '
+            + distance.kilometers + '&nbsp;km in '
+            + distance.minutes + '&nbsp;mins cycling');
+      });
+    } catch (error) {
+      app.util.log(error);
+      // Use simple straight line distance when network path (e.g. street route) distance unavailable
+      var distance = this.school.distanceToUser();
+      if (distance) {
+        $(selectorPrefix + '.straight-distance').html('About ' + distance + ' km as the crow flies.');
+      }
+    }
 
     this.$el.find('.readmore').click(function (event) {
       // toggle visibility of the clicked teaser and body.
