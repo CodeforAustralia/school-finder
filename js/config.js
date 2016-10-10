@@ -68,6 +68,17 @@ app = app || {};
     nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
   };
 
+  app.config.geocoder = {
+    // center search on Sydney - vertically center of state + population centered around there
+    center: {
+      lat: -33.8688,
+      lng: 151.2093
+    },
+    country: 'au', // au = Australia
+    bbox: '140.6,-37.52,153.96,-27.9', // bounding box around NSW
+    mapboxToken: 'pk.eyJ1IjoidGVjaGllc2hhcmsiLCJhIjoiYzk2ZEFWTSJ9.8ZY6rG2BWXkDBmvAPvn_nw'
+  };
+
   app.analytics = {
 		    url: "http://localhost:8080"
   };
