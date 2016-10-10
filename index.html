@@ -84,7 +84,7 @@
         <p class="lead">Please provide your home location<sup>*</sup> to see your local school:</p>
         <form>
           <p>
-            <input tabindex="0" id="address" aria-label="Enter your home street address to find nearby schools" type="text" class="form-control" placeholder="Please enter your home address..." data-google-places=true/>
+            <input tabindex="0" id="address" aria-label="Enter your home street address to find nearby schools" type="text" class="form-control" placeholder="Please enter your home address..." data-geocode-autocomplete=true/>
           </p>
           <button id="button-search-address" data-input="address" class="btn search" type="submit">Search</button>
         </form>
@@ -136,7 +136,7 @@
             <!-- 😳😞 or flushed face (U+1F633) followed by disappointed face (U+1F61E). -->
           </div>
           <div class="modal-body">
-            <p>Sorry, Google geocoder gave an unexpected result. <span class="modal-more-info"></span> Either the address doesn't exist or the geocoder is experiencing problems. Feel free to try another search though!</p>
+            <p>Sorry, <span class="modal-geocoder">the</span> geocoder gave an unexpected result. <span class="modal-more-info"></span> Either the address doesn't exist or the geocoder is experiencing problems. Feel free to try another search though!</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn" data-dismiss="modal">OK</button>
@@ -365,7 +365,7 @@
     <script src="js/vendor/handlebars-v3.0.0.js"></script>
     <script src="js/vendor/Leaflet.MakiMarkers.js"></script>
     <script src="js/config.js"></script>
-    <script src="js/google_geocoder.js"></script>
+    <script src="js/geocoder.js"></script>
     <script src="js/models/school.js"></script>
     <script src="js/collections/schools.js"></script>
     <script src="js/query.js"></script>
