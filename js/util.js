@@ -55,6 +55,6 @@ app.util = app.util || {};
     app.sql.execute(query).done(processResults);
   };
 
-
+  app.util.log = app.debug ? console.log : function () {}; // don't console log in production
 
 }());

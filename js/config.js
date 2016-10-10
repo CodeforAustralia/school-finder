@@ -3,6 +3,8 @@ app = app || {};
 
 (function () {
 
+  app.debug = true; // set to false in production environment - relates to console logging in util.js
+
   // CartoDB configuration
   app.db = {
     points: 'dec_schools', //table
