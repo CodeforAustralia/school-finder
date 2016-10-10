@@ -6,7 +6,8 @@ module.exports = {
         "app": true,
         "google": true,
         "Handlebars": true,
-        "ga": true
+        "ga": true,
+        "_": true,
     },
     "env": {
         "browser": true
