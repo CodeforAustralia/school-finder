@@ -19,6 +19,31 @@ app = app || {};
     this.render();
   };
 
+
+  SchoolView.prototype.insertDistanceToUser = function () {
+
+    var selectorPrefix = '#school-info-' + this.school.school_code + ' ';
+    var that = this;
+
+    this.school.getRouteDistanceToUser (
+      function onSuccess(routeDistance) {
+        $(selectorPrefix + '.route-distance').html('Via roads: '
+            + routeDistance.kilometers + '&nbsp;km in '
+            + routeDistance.minutes + '&nbsp;mins cycling');
+      },
+      function onFailure(error) {
+        app.util.log('Error: ' + error + '; using straight line distance instead');
+        // Use simple straight line distance when network path (e.g. street route) distance unavailable
+        var distance = that.school.distanceToUser();
+        if (distance) {
+          $(selectorPrefix + '.straight-distance').html('About ' + distance + ' km as the crow flies.');
+        }
+      }
+    );
+
+  };
+
+
   SchoolView.prototype.render = function () {
     if (!this.school) { return; } // no use rendering if the school hasn't been set
 
@@ -30,24 +55,8 @@ app = app || {};
     this.$el.empty();
     this.$el.append(html);
 
-    var selectorPrefix = '#school-info-' + this.school.school_code + ' ';
-
-    var schoolCoords = app.LatLng(this.school.latitude, this.school.longitude);
-    var userCoords = app.LatLng(app.lat,app.lng);
-
-    try {
-      app.geo.getRouteDistance(schoolCoords, userCoords, function gotRouteDist(distance) {
-        $(selectorPrefix + '.route-distance').html('Via roads: '
-            + distance.kilometers + '&nbsp;km in '
-            + distance.minutes + '&nbsp;mins cycling');
-      });
-    } catch (error) {
-      app.util.log(error);
-      // Use simple straight line distance when network path (e.g. street route) distance unavailable
-      var distance = this.school.distanceToUser();
-      if (distance) {
-        $(selectorPrefix + '.straight-distance').html('About ' + distance + ' km as the crow flies.');
-      }
+    if (app.haveUserLocation()) {
+      this.insertDistanceToUser();
     }
 
     this.$el.find('.readmore').click(function (event) {
