@@ -71,6 +71,65 @@ app = app || {};
     return app.util.roundToOne(meters / 1000);
   };
 
+  // return the cached distance between this school's lat,lng
+  // and the user's current location, or falsy if none cached.
+  app.School.prototype._getCachedDistance = function () {
+    if (app.haveUserLocation()) {
+      var cachedDistance = false,
+          key1 = '' + app.lat,
+          key2 = '' + app.lng;
+      if (this.distanceCache && this.distanceCache[key1]) {
+        cachedDistance = this.distanceCache[key1][key2];
+      }
+      return cachedDistance;
+    }
+  };
+
+  // cache the distance between this school's lat,lng
+  // and the user's current location
+  app.School.prototype._setCachedDistance = function (distance) {
+    this.distanceCache = this.distanceCache || {};
+    if (app.haveUserLocation()) { // otherwise, skip it
+      var key1 = '' + app.lat,
+          key2 = '' + app.lng;
+      this.distanceCache[key1] = this.distanceCache[key1] || {};
+      this.distanceCache[key1][key2] = distance;
+    }
+  };
+
+  // lookup network distance and call either success or failure callback
+  // we'll cache distance so we don't hit APIs again unless user location changes
+  // (we assume school location is fixed but user may change their location)
+  //
+  // success: function (routeDistance), where routeDistance has properties 'kilomet'
+  // failure: function (error)
+  app.School.prototype.getRouteDistanceToUser = function (success, failure) {
+
+    if (!app.haveUserLocation()) {
+      failure(app.error.NO_USER_LOCATION);
+    } else {
+
+      var routeDistance = this._getCachedDistance();
+      if (routeDistance) { // use cache when possible
+        success(routeDistance);
+        return;
+      } else { // bummer, no cache. go to network.
+        var schoolCoords = app.LatLng(this.latitude, this.longitude);
+        var userCoords = app.LatLng(app.lat,app.lng);
+        try {
+          app.geo.getRouteDistance(schoolCoords, userCoords, function (routeDistance) {
+            this._setCachedDistance(routeDistance);
+            success(routeDistance);
+          });
+        } catch (error) {
+          failure(error);
+        }
+      }
+
+    }
+
+  };
+
   app.School.prototype.toTemplateContext = function (i) {
 
     var context = _.extend(this,
