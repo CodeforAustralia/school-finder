@@ -35,6 +35,11 @@ app.LatLng = function (lat,lng) {
 };
 
 
+// If the user has searched by address, this should return true.
+app.haveUserLocation = function () {
+  return app.lat && app.lng;
+};
+
 
 
 // Geocode the address in the text field, then run the callback function
