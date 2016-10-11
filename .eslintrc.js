@@ -8,6 +8,8 @@ module.exports = {
         "Handlebars": true,
         "ga": true,
         "_": true,
+        "L": true,
+        "cartodb": true,
     },
     "env": {
         "browser": true
@@ -16,7 +18,8 @@ module.exports = {
     "rules": {
         "indent": [
             "error",
-            2
+            2,
+            { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } }
         ],
         "linebreak-style": [
             "error",
