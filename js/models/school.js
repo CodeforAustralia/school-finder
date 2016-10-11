@@ -105,6 +105,8 @@ app = app || {};
   // failure: function (error)
   app.School.prototype.getRouteDistanceToUser = function (success, failure) {
 
+    var that = this;
+
     if (!app.haveUserLocation()) {
       failure(app.error.NO_USER_LOCATION);
     } else {
@@ -118,7 +120,7 @@ app = app || {};
         var userCoords = app.LatLng(app.lat,app.lng);
         try {
           app.geo.getRouteDistance(schoolCoords, userCoords, function (routeDistance) {
-            this._setCachedDistance(routeDistance);
+            that._setCachedDistance(routeDistance);
             success(routeDistance);
           });
         } catch (error) {
