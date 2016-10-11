@@ -1,6 +1,10 @@
 var geocoder;
 app = app || {};
 
+// some queries (distance to user, etc) aren't possible if no user location known
+app.error = app.error || {};
+app.error.NO_USER_LOCATION = 'NO_USER_LOCATION';
+
 // Set up a Geocoder service and attach it to the address input field.
 
 // Geo service(s) should provide the following:
