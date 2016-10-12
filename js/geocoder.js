@@ -496,7 +496,7 @@ $(function () {
 
 
   geocoder = mapboxGeocoder;
-  // app.geo.getRouteDistance = mapboxDistanceService.getRouteDistance;
-  app.geo.getRouteDistance = googleDistanceService.getRouteDistance;
+  app.geo.getRouteDistance = mapboxDistanceService.getRouteDistance;
+  // app.geo.getRouteDistance = googleDistanceService.getRouteDistance;
 
 });
