@@ -137,6 +137,51 @@ app.reverseGeocode = function (callback) {
   // });
 };
 
+// Distance cache stores distances between any two points A and B
+// where each of those are geographic coordinates with latitude and longitude.
+// Note that because distances can differ depending on the direction (think: one way streets),
+// the cache will store distance from A -> B separately from distance from B -> A.
+// There should only be one distance cache for the application (otherwise, what's the point?)
+app.DistanceCache = function () {
+
+  // if user accidentally omits the new keyword, this will
+  // silently correct the problem...
+  if ( !(this instanceof app.DistanceCache) )
+    return new app.DistanceCache();
+
+  this.cache = {};
+};
+
+
+// retrieve the distance from origin to destination
+// origin might usually be, like, the user's location and destination might be, say, a school.
+// origin & destination are of type app.LatLng
+// returns falsy if cache doesn't contain the distance
+app.DistanceCache.prototype.get = function (originCoords, destinationCoords) {
+  var cachedValue = false,
+      key1 = originCoords.lngLatString(),
+      key2 = destinationCoords.lngLatString();
+
+  if (this.cache[key1]) {
+    cachedValue = this.cache[key1][key2];
+  }
+
+  return cachedValue;
+};
+
+
+// save the distance from origin to destination
+app.DistanceCache.prototype.set = function (originCoords, destinationCoords, distance) {
+  var key1 = originCoords.lngLatString(),
+      key2 = destinationCoords.lngLatString();
+
+  if (!this.cache[key1]) {
+    this.cache[key1] = {};
+  }
+  this.cache[key1][key2] = distance;
+};
+
+
 
 $(function () {
 
@@ -165,21 +210,20 @@ $(function () {
       },
 
       // getRouteDistance : app.LatLng origin, app.LatLng destination, function callback
-      getRouteDistance: function (originCoords, destinationCoords, callback) {
+      getRouteDistance: function (originCoords, destinationCoords, success, failure) {
 
         if (typeof google === 'undefined') {
-          throw new Error('Google library not loaded; cannot perform distance lookup.');
+          failure('Google library not loaded; cannot perform distance lookup.');
+          return;
         } else if (typeof googleDistanceService.service === 'undefined') {
           googleDistanceService._newService();
         }
         if (Date.now() < googleDistanceService.pauseUntil) { // still throttled
-          throw new Error('Distance Matrix limit reached; pausing requests for a while.');
+          failure('Distance Matrix limit reached; pausing requests for a while.');
+          return;
         }
 
-        app.util.log('Looking up distance between following points:');
-        app.util.log(originCoords);
-        app.util.log(destinationCoords);
-
+        app.util.log('API call to Google Distance Matrix.');
         googleDistanceService.service.getDistanceMatrix(
           {
             origins: [new google.maps.LatLng(originCoords)],
@@ -197,13 +241,13 @@ $(function () {
               googleDistanceService.pauseUntil = Date.now() + 12 * hour;
             }
             if (status !== google.maps.DistanceMatrixStatus.OK) {
-              throw new Error('Failed to fetch route distance; error was: ' + status);
+              failure('Failed to fetch route distance; error was: ' + status);
             } else {
 
               var results = response.rows[0].elements;
 
               if (results[0].status === 'ZERO_RESULTS') {
-                throw new Error('No results; Google Data Matrix service says: ' + results[0].status);
+                failure('No results; Google Data Matrix service says: ' + results[0].status);
               } else {
 
                 // construct generic results
@@ -215,7 +259,7 @@ $(function () {
                 };
 
                 // send to callback
-                callback(distance);
+                success(distance);
               }
             }
           }
@@ -246,8 +290,12 @@ $(function () {
       // _newService: function () {
       // },
 
-      // getRouteDistance : app.LatLng origin, app.LatLng destination, function callback
-      getRouteDistance: function (originCoords, destinationCoords, callback) {
+      // getRouteDistance : find distance between origin and destination, calling success or failure afterwards
+      // origin: app.LatLng
+      // destination: app.LatLng
+      // success: function (distance : {kilometers, meters, minutes, seconds})
+      // failure: function (error message : string)
+      getRouteDistance: function (originCoords, destinationCoords, success, failure) {
 
         // if (typeof google === 'undefined') {
           // throw new Error('Google library not loaded; cannot perform distance lookup.');
@@ -255,12 +303,9 @@ $(function () {
         //   googleDistanceService._newService();
         // }
         if (Date.now() < distanceService.pauseUntil) { // still throttled
-          throw new Error('Distance Matrix limit reached; pausing requests for a while.');
+          failure('Distance Matrix limit reached; pausing requests for a while.');
+          return;
         }
-
-        app.util.log('Looking up distance between following points:');
-        app.util.log(originCoords);
-        app.util.log(destinationCoords);
 
         // problem: distance API only gives durations (seconds), not distances
         // Distance API docs: https://www.mapbox.com/api-documentation/#distance
@@ -276,6 +321,7 @@ $(function () {
 
         var start = Date.now();
 
+        app.util.log('API call: ' + url);
         $.ajax({
           dataType: 'json',
           url: url,
@@ -315,7 +361,8 @@ $(function () {
           // console.log('TODO: cache Mapbox distance/directions results');
           // construct generic results
           if (!json.routes) {
-            throw new Error('No Mapbox distance/directions results; Response said ' + json.code + ': ' + json.message);
+            failure('No Mapbox distance/directions results; Response said ' + json.code + ': ' + json.message);
+            return;
           }
 
           var result = json.routes[0];
@@ -325,12 +372,11 @@ $(function () {
             minutes:    Math.ceil(result.duration / 60), // 3 minutes rather than 2.4
             seconds:    result.duration
           };
-          callback(distance);
+          success(distance);
         })
         .fail(function( jqxhr, textStatus, error ) {
           var err = textStatus + ', ' + error;
-          app.util.log('Request Failed: ' + err );
-          // TODO modal popup ?
+          failure('Distance Matrix request Failed: ' + err );
         });
       },
     };
@@ -481,8 +527,46 @@ $(function () {
   }());
 
 
+
+  // getCachedRouteDistance: A caching layer on top of getRouteDistance.
+  // Returns cached distance if availalbe, otherwise calls getRouteDistance and saves result before calling success callback.
+  //
+  // cache: the cache to use (should have .get and .set functions)
+  // getRouteDistance: the function to get the route distance from a network API
+  // origin: app.LatLng
+  // destination: app.LatLng
+  // success: callback function when we've got a result
+  // failure: callback function when something goes wrong with request
+  var getCachedRouteDistance = function (cache, getRouteDistance, originCoords, destinationCoords, success, failure) {
+    app.util.log('Looking up distance between following points:');
+    app.util.log(originCoords);
+    app.util.log(destinationCoords);
+
+    var routeDistance = cache.get(originCoords, destinationCoords);
+
+    if (routeDistance) { // great, we can used a cached result.
+      app.util.log('Cache returned distance: ');
+      app.util.log(routeDistance);
+      success(routeDistance);
+      return;
+    } else { // bummer, no cache. go to network.
+      getRouteDistance(originCoords, destinationCoords, function (routeDistance) {
+        cache.set(originCoords, destinationCoords, routeDistance);
+        success(routeDistance);
+        return;
+      }, failure);
+    }
+  };
+
+
   geocoder = mapboxGeocoder;
-  app.geo.getRouteDistance = mapboxDistanceService.getRouteDistance;
-  // app.geo.getRouteDistance = googleDistanceService.getRouteDistance;
+
+  var distanceCache = new app.DistanceCache();
+  // build a function that takes the same parameters as the other (mapbox/google) route distance functions by
+  // pre-filling the parameters that are unique to getCachedRouteDistance()
+  var cachingRouteDistanceFn = _.partial(getCachedRouteDistance, distanceCache, mapboxDistanceService.getRouteDistance);
+  // var cachingRouteDistanceFn = _.partial(getCachedRouteDistance, distanceCache, googleDistanceService.getRouteDistance);
+
+  app.geo.getRouteDistance = cachingRouteDistanceFn;
 
 });
