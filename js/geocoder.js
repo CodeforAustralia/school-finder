@@ -34,6 +34,11 @@ app.LatLng = function (lat,lng) {
   this.lng = +lng;
 };
 
+// return string in format: {longitude},{latitude}
+app.LatLng.prototype.lngLatString = function () {
+  return '' + this.lng + ',' + this.lat;
+};
+
 
 // If the user has searched by address, this should return true.
 app.haveUserLocation = function () {
@@ -46,38 +51,28 @@ app.haveUserLocation = function () {
 app.geocodeAddress = function (callback) {
   var addressField = document.getElementById('address');
   app.address = addressField.value;
-  if ($(addressField).data('coords')) {
 
-    // TODO why isn't this always working?
+  // Mapbox
+  geocoder.geocode({ 'address': app.address}, function saveGeocoderResults(data) {
 
-    // use coordinates from previous geocoder autocomplete
-    var coords = $(addressField).data('coords');
-    app.lng = coords[0];
-    app.lat = coords[1];
-    callback();
-  } else {
-
-    // Mapbox
-    geocoder.geocode({ 'address': app.address}, function saveGeocoderResults(data) {
-
-      app.util.log('Processing geocoder results:');
-      var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
-      data.features.forEach(function (feature) {
-        app.util.log(feature);
-      });
-      if (haveResponses) {
-        app.lng = data.features[0].center[0]; // longitude = x
-        app.lat = data.features[0].center[1]; // latitude = y
-
-        callback();
-      } else {
-        app.util.log('geocoder returned no results');
-        $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
-        $('#geocodingErrorModal').find('.modal-more-info').text('It gave no results when given address "' + app.address + '".');
-        $('#geocodingErrorModal').modal();
-        app.ui.resetSearchBtns();
-      }
+    app.util.log('Processing geocoder results:');
+    var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
+    data.features.forEach(function (feature) {
+      app.util.log(feature);
     });
+    if (haveResponses) {
+      app.lng = data.features[0].center[0]; // longitude = x
+      app.lat = data.features[0].center[1]; // latitude = y
+
+      callback();
+    } else {
+      app.util.log('geocoder returned no results');
+      $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
+      $('#geocodingErrorModal').find('.modal-more-info').text('It gave no results when given address "' + app.address + '".');
+      $('#geocodingErrorModal').modal();
+      app.ui.resetSearchBtns();
+    }
+  });
 
     // Google
     // geocoder.geocode({ 'address': app.address}, function (results, status) {
@@ -100,7 +95,6 @@ app.geocodeAddress = function (callback) {
     // });
   // }
 
-  }
 };
 
 
@@ -170,6 +164,7 @@ $(function () {
         googleDistanceService.service = new google.maps.DistanceMatrixService();
       },
 
+      // getRouteDistance : app.LatLng origin, app.LatLng destination, function callback
       getRouteDistance: function (originCoords, destinationCoords, callback) {
 
         if (typeof google === 'undefined') {
@@ -180,6 +175,10 @@ $(function () {
         if (Date.now() < googleDistanceService.pauseUntil) { // still throttled
           throw new Error('Distance Matrix limit reached; pausing requests for a while.');
         }
+
+        app.util.log('Looking up distance between following points:');
+        app.util.log(originCoords);
+        app.util.log(destinationCoords);
 
         googleDistanceService.service.getDistanceMatrix(
           {
@@ -228,6 +227,119 @@ $(function () {
 
     return googleDistanceService;
   }());
+
+  var mapboxDistanceService = (function() {
+
+    var distanceService = {
+      // provider: 'Mapbox',
+      pauseUntil: 0, // not yet throttled
+
+      // initialize: function() {
+        // if (typeof google === 'undefined') {
+          // app.util.log('Warning: Google library not loaded; distance lookups may fail.');
+        // } else {
+          // googleDistanceService._newService();
+        // distanceService.pauseUntil = 0; // not yet throttled
+        // }
+      // },
+
+      // _newService: function () {
+      // },
+
+      // getRouteDistance : app.LatLng origin, app.LatLng destination, function callback
+      getRouteDistance: function (originCoords, destinationCoords, callback) {
+
+        // if (typeof google === 'undefined') {
+          // throw new Error('Google library not loaded; cannot perform distance lookup.');
+        // } else if (typeof googleDistanceService.service === 'undefined') {
+        //   googleDistanceService._newService();
+        // }
+        if (Date.now() < distanceService.pauseUntil) { // still throttled
+          throw new Error('Distance Matrix limit reached; pausing requests for a while.');
+        }
+
+        app.util.log('Looking up distance between following points:');
+        app.util.log(originCoords);
+        app.util.log(destinationCoords);
+
+        // problem: distance API only gives durations (seconds), not distances
+        // Distance API docs: https://www.mapbox.com/api-documentation/#distance
+        // Directions API docs: https://www.mapbox.com/api-documentation/?language=cURL#directions
+        // Directions API response has time in seconds and distance in meters
+
+        // Semicolon-separated list of  {longitude},{latitude} coordinate pairs to visit in order;
+        var coordinates = originCoords.lngLatString() + ';' + destinationCoords.lngLatString();
+        var url = 'https://api.mapbox.com' +
+                  '/directions/v5/mapbox/cycling/' +
+                  encodeURIComponent(coordinates) +
+                  '.json?access_token=' + app.config.geocoder.mapboxToken;
+
+        var start = Date.now();
+
+        $.ajax({
+          dataType: 'json',
+          url: url,
+          statusCode: {
+            429 : function(jqxhr /*,textStatus, error*/) {
+              // Mapbox APIs have rate limits that cap the number of requests that can be made
+              // against an endpoint. If you exceed a rate limit, your request will be throttled
+              // and you will receive HTTP 429 Too Many Requests responses from the API.
+              // Header  Description
+              // x-rate-limit-interval Length of rate-limiting interval in seconds.
+              // x-rate-limit-limit  Maximum number of requests you may make in the current interval before reaching the limit.
+              // x-rate-limit-reset  Unix timestamp of when the current interval will end and the ratelimit counter is reset.
+              // https://www.mapbox.com/api-documentation/#rate-limits
+
+
+              // var limitInterval = jqxhr.getResponseHeader('x-rate-limit-interval');
+              var remaining = jqxhr.getResponseHeader('x-rate-limit-limit');
+              var resetTimestamp = jqxhr.getResponseHeader('x-rate-limit-reset');
+
+              app.util.log('Looks like we have ' + remaining + ' requests allowed until ' +
+                Date(resetTimestamp) + '.');
+
+              if (remaining <= 0) {
+                distanceService.pauseUntil = resetTimestamp;
+                // when under massive load, prevent sending more requests for a while.
+                app.util.log('Hit query limit; throttling down requests.');
+                // var hour = 1000 /*millisec*/ * 60 /*sec*/ * 60 /*min*/;
+                // distanceService.pauseUntil = Date.now() + 0.15 * hour; //15 min pause
+              }
+            }
+          }
+        }).done(function( json ) {
+          var time = Date.now() - start;
+          app.util.log('Fetched Mapbox distance/directions results in ' + time + ' milleseconds:');
+          app.util.log(json);
+          // that.cache[query] = json;
+          // console.log('TODO: cache Mapbox distance/directions results');
+          // construct generic results
+          if (!json.routes) {
+            throw new Error('No Mapbox distance/directions results; Response said ' + json.code + ': ' + json.message);
+          }
+
+          var result = json.routes[0];
+          var distance = {
+            kilometers: (result.distance / 1000).toFixed(1), // "0.1" km rather than 0.123
+            meters:     result.distance,
+            minutes:    Math.ceil(result.duration / 60), // 3 minutes rather than 2.4
+            seconds:    result.duration
+          };
+          callback(distance);
+        })
+        .fail(function( jqxhr, textStatus, error ) {
+          var err = textStatus + ', ' + error;
+          app.util.log('Request Failed: ' + err );
+          // TODO modal popup ?
+        });
+      },
+    };
+
+    // distanceService.initialize();
+
+    return distanceService;
+  }());
+
 
   var mapboxGeocoder = (function() {
 
@@ -346,13 +458,10 @@ $(function () {
           minLength: 4,
           delay: 200, // pause after typing, in millesecond, before searching
           source: this.autocompleter,
-          change: function( event, ui ) {
-            console.log('autocomplete change');
-            console.log(event);
-            console.log(ui);
-            var coords = (ui.item && ui.item.feature) ? ui.item.feature.center : false;
-            $(event.target).data('coords', coords);
-          }
+          // change: function( event, ui ) {
+          //   console.log('autocomplete change');
+          //   console.log(ui);
+          // }
         });
 
         // for development, show keystroke timing
@@ -373,6 +482,7 @@ $(function () {
 
 
   geocoder = mapboxGeocoder;
-  app.geo.getRouteDistance = googleDistanceService.getRouteDistance;
+  app.geo.getRouteDistance = mapboxDistanceService.getRouteDistance;
+  // app.geo.getRouteDistance = googleDistanceService.getRouteDistance;
 
 });
