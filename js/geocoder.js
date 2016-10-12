@@ -51,38 +51,28 @@ app.haveUserLocation = function () {
 app.geocodeAddress = function (callback) {
   var addressField = document.getElementById('address');
   app.address = addressField.value;
-  if ($(addressField).data('coords')) {
 
-    // TODO why isn't this always working?
+  // Mapbox
+  geocoder.geocode({ 'address': app.address}, function saveGeocoderResults(data) {
 
-    // use coordinates from previous geocoder autocomplete
-    var coords = $(addressField).data('coords');
-    app.lng = coords[0];
-    app.lat = coords[1];
-    callback();
-  } else {
-
-    // Mapbox
-    geocoder.geocode({ 'address': app.address}, function saveGeocoderResults(data) {
-
-      app.util.log('Processing geocoder results:');
-      var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
-      data.features.forEach(function (feature) {
-        app.util.log(feature);
-      });
-      if (haveResponses) {
-        app.lng = data.features[0].center[0]; // longitude = x
-        app.lat = data.features[0].center[1]; // latitude = y
-
-        callback();
-      } else {
-        app.util.log('geocoder returned no results');
-        $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
-        $('#geocodingErrorModal').find('.modal-more-info').text('It gave no results when given address "' + app.address + '".');
-        $('#geocodingErrorModal').modal();
-        app.ui.resetSearchBtns();
-      }
+    app.util.log('Processing geocoder results:');
+    var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
+    data.features.forEach(function (feature) {
+      app.util.log(feature);
     });
+    if (haveResponses) {
+      app.lng = data.features[0].center[0]; // longitude = x
+      app.lat = data.features[0].center[1]; // latitude = y
+
+      callback();
+    } else {
+      app.util.log('geocoder returned no results');
+      $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
+      $('#geocodingErrorModal').find('.modal-more-info').text('It gave no results when given address "' + app.address + '".');
+      $('#geocodingErrorModal').modal();
+      app.ui.resetSearchBtns();
+    }
+  });
 
     // Google
     // geocoder.geocode({ 'address': app.address}, function (results, status) {
@@ -105,7 +95,6 @@ app.geocodeAddress = function (callback) {
     // });
   // }
 
-  }
 };
 
 
@@ -469,13 +458,10 @@ $(function () {
           minLength: 4,
           delay: 200, // pause after typing, in millesecond, before searching
           source: this.autocompleter,
-          change: function( event, ui ) {
-            console.log('autocomplete change');
-            console.log(event);
-            console.log(ui);
-            var coords = (ui.item && ui.item.feature) ? ui.item.feature.center : false;
-            $(event.target).data('coords', coords);
-          }
+          // change: function( event, ui ) {
+          //   console.log('autocomplete change');
+          //   console.log(ui);
+          // }
         });
 
         // for development, show keystroke timing
