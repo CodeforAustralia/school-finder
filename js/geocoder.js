@@ -460,23 +460,16 @@ $(function () {
         // a source function suitable for jQuery UI's autocompleter
         var $input = $(this.element);
 
-        // update search input with any results we received
-        var processResults = function (data) {
-          var autocompleteResponses = [];
-          var haveResponses = false;
-          data.results.forEach(function (result) {
-            autocompleteResponses.push({value: result.address});
-            haveResponses = true;
-          });
-          if (haveResponses) {
-            // show suggestions
-            response(autocompleteResponses);
-          } else {
+        geocoder.geocode( // note we call app's geocoder so to use caching if possible
+          {address: request.term},
+          function success(data) {
+            response(_.map(data.results, function transform(result) {
+              return {value: result.address};
+            }));
+          },
+          function failure () {
             $input.autocomplete('close');
-          }
-        };
-
-        geocoder.geocode({address: request.term}, processResults);
+          });
       },
 
       initialize: function () {
