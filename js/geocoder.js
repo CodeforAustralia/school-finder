@@ -596,8 +596,8 @@ $(function () {
   };
 
 
-  app.geocoder = cachingGeocoder(googleGeocoder.initialize()).initialize();
-  // app.geocoder = cachingGeocoder(mapboxGeocoder.initialize()).initialize();
+  // app.geocoder = cachingGeocoder(googleGeocoder.initialize()).initialize();
+  app.geocoder = cachingGeocoder(mapboxGeocoder.initialize()).initialize();
 
   var distanceCache = new app.DistanceCache();
   // build a function that takes the same parameters as the other (mapbox/google) route distance functions by
