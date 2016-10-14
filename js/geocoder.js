@@ -1,4 +1,3 @@
-var geocoder;
 app = app || {};
 
 // some queries (distance to user, etc) aren't possible if no user location known
@@ -52,7 +51,7 @@ app.geocodeAddress = function (callback) {
   var addressField = document.getElementById('address');
   app.address = addressField.value;
 
-  geocoder.geocode(
+  app.geocoder.geocode(
     {'address': app.address},
     function success(data) {
 
@@ -67,7 +66,7 @@ app.geocodeAddress = function (callback) {
     },
     function failure (error) {
       app.util.log('geocoder failed: ' + error);
-      $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
+      $('#geocodingErrorModal').find('.modal-geocoder').text(app.geocoder.provider);
       $('#geocodingErrorModal').find('.modal-more-info').text('It said: "' + status + '" when given address "' + app.address + '".');
       $('#geocodingErrorModal').modal();
       app.ui.resetSearchBtns();
@@ -79,7 +78,7 @@ app.geocodeAddress = function (callback) {
 // Reverse geocode to get address from lat/lng
 // Given: lat and lng as floats.
 app.reverseGeocode = function (callback) {
-  geocoder.geocode(
+  app.geocoder.geocode(
     {'latLng': {lat:app.lat, lng:app.lng}},
     function success(data) {
       app.address = data.address;
@@ -462,7 +461,7 @@ $(function () {
         // a source function suitable for jQuery UI's autocompleter
         var $input = $(this.element);
 
-        geocoder.geocode( // note we call app's geocoder so to use caching if possible
+        app.geocoder.geocode( // note we call app's geocoder so to use caching if possible
           {address: request.term},
           function success(data) {
             response(_.map(data.results, function transform(result) {
@@ -594,7 +593,8 @@ $(function () {
 
   // geocoder = mapboxGeocoder;
   // geocoder = googleGeocoder;
-  geocoder = cachingGeocoder(googleGeocoder);
+  // geocoder = cachingGeocoder(googleGeocoder);
+  app.geocoder = cachingGeocoder(mapboxGeocoder);
 
   var distanceCache = new app.DistanceCache();
   // build a function that takes the same parameters as the other (mapbox/google) route distance functions by
