@@ -75,7 +75,7 @@ app = app || {};
       lng: 151.2093
     },
     country: 'au', // au = Australia
-    bbox: '140.6,-37.52,153.96,-27.9', // bounding box around NSW
+    // bbox: '140.6,-37.52,153.96,-27.9', // bounding box around NSW
     mapboxToken: 'pk.eyJ1IjoidGVjaGllc2hhcmsiLCJhIjoiYzk2ZEFWTSJ9.8ZY6rG2BWXkDBmvAPvn_nw'
   };
 

@@ -399,7 +399,7 @@ $(function () {
         paramCountry +
         paramCenter +
         paramBBox +
-        '&types=address' +
+        // '&types=address' +
         '&autocomplete=true',
 
       geocode: function (options, success, failure) {
