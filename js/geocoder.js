@@ -337,7 +337,14 @@ $(function () {
                 address: results[0].formatted_address,
                 lat: results[0].geometry.location.lat(),
                 lng: results[0].geometry.location.lng(),
-                results: results
+                results: _.map(results,
+                  function (result) {
+                    return {
+                      address: result.formatted_address,
+                      lat: result.geometry.location.lat(),
+                      lng: result.geometry.location.lng(),
+                    };
+                  })
               });
               return;
             } else {
@@ -393,8 +400,6 @@ $(function () {
         '&types=address' +
         '&autocomplete=true',
 
-      cache: {},
-
       geocode: function (options, success, failure) {
         console.log(mapboxGeocoder.provider + ' geocoding: ');
         console.log(options);
@@ -412,51 +417,43 @@ $(function () {
           return;
         }
 
-        var json = this.cache[query];
-        if (json) { // skip duplicated geocoder queries
+        var queryFragment = encodeURIComponent(query);
+        var url = this.urlBase + queryFragment + this.urlEnd;
 
-          console.log('Using cached geocoder results for query "' + query + '".');
-          success(json);
+        var start = Date.now();
 
-        } else {
+        app.util.log('Sending geocoder request for "' + query + '"');
 
-          var queryFragment = encodeURIComponent(query);
-          var url = this.urlBase + queryFragment + this.urlEnd;
+        $.getJSON(url)
+          .done(function( data ) {
+            var time = Date.now() - start;
+            console.log('geocoder gives these results in ' + time + ' milleseconds:');
+            console.log(data);
 
-          var that = this;
-
-          var start = Date.now();
-
-          app.util.log('Sending geocoder request for "' + query + '"');
-
-          // TODO: how to handle rate limit http 429 response?
-          $.getJSON(url)
-            .done(function( data ) {
-              var time = Date.now() - start;
-              console.log('geocoder gives these results in ' + time + ' milleseconds:');
-              console.log(data);
-              that.cache[query] = data;
-              success(data);
-
-              var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
-              if (haveResponses) {
-                success({
-                  lng: data.features[0].center[0], // longitude = x
-                  lat: data.features[0].center[1], // latitude = y
-                  address: data.features[0].place_name, // address or place name
-                  results: data
-                });
-                return;
-              }
-            })
-            .fail(function( jqxhr, textStatus, error ) {
-              var err = textStatus + ', ' + error;
-              app.util.log('Geocode request Failed: ' + err );
-              failure(err);
-            });
-
-        }
-
+            var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
+            if (haveResponses) {
+              success({
+                lng: data.features[0].center[0], // longitude = x
+                lat: data.features[0].center[1], // latitude = y
+                address: data.features[0].place_name, // address or place name
+                results: _.map(
+                  data.features,
+                  function (f) {
+                    return {
+                      lng: f.center[0],
+                      lat: f.center[1],
+                      address: f.place_name
+                    };
+                  })
+              });
+              return;
+            }
+          })
+          .fail(function( jqxhr, textStatus, error ) {
+            var err = textStatus + ', ' + error;
+            app.util.log('Geocode request Failed: ' + err );
+            failure(err);
+          });
       },
 
       autocompleter: function (request, response) {
@@ -467,8 +464,8 @@ $(function () {
         var processResults = function (data) {
           var autocompleteResponses = [];
           var haveResponses = false;
-          data.features.forEach(function (feature) {
-            autocompleteResponses.push({value: feature.place_name, feature: feature});
+          data.results.forEach(function (result) {
+            autocompleteResponses.push({value: result.address});
             haveResponses = true;
           });
           if (haveResponses) {
@@ -479,7 +476,7 @@ $(function () {
           }
         };
 
-        mapboxGeocoder.geocode({address: request.term}, processResults);
+        geocoder.geocode({address: request.term}, processResults);
       },
 
       initialize: function () {
@@ -527,6 +524,46 @@ $(function () {
     return mapboxGeocoder;
   }());
 
+  var cachingGeocoder = function (geocoder) {
+
+    var cache = {};
+
+    var cachingGeocoder = {
+
+      geocode: function (options, success, failure) {
+
+        var key;
+        if (options.address) {
+          key = options.address;
+        } else if (options.latLng) {
+          key = options.latLng.lng + ',' + options.latLng.lat;
+        } else {
+          app.util.log('unexpected geocode attempt with options: ');
+          app.util.log(options);
+          failure('invalid parameters');
+          return;
+        }
+
+        var data = cache[key];
+        if (data) { // use cached geocoder response
+          console.log('Using cached geocoder results for query "' + key + '".');
+          success(data);
+        } else {
+          return geocoder.geocode(
+            options,
+            function cacheOnSuccess(data) {
+              cache[key] = data;
+              success(data);
+            },
+            failure);
+        }
+      }
+
+    };
+
+    return cachingGeocoder;
+
+  };
 
 
   // getCachedRouteDistance: A caching layer on top of getRouteDistance.
@@ -561,7 +598,8 @@ $(function () {
 
 
   // geocoder = mapboxGeocoder;
-  geocoder = googleGeocoder;
+  // geocoder = googleGeocoder;
+  geocoder = cachingGeocoder(googleGeocoder);
 
   var distanceCache = new app.DistanceCache();
   // build a function that takes the same parameters as the other (mapbox/google) route distance functions by
