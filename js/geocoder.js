@@ -233,18 +233,6 @@ $(function () {
       // provider: 'Mapbox',
       pauseUntil: 0, // not yet throttled
 
-      // initialize: function() {
-        // if (typeof google === 'undefined') {
-          // app.util.log('Warning: Google library not loaded; distance lookups may fail.');
-        // } else {
-          // googleDistanceService._newService();
-        // distanceService.pauseUntil = 0; // not yet throttled
-        // }
-      // },
-
-      // _newService: function () {
-      // },
-
       // getRouteDistance : find distance between origin and destination, calling success or failure afterwards
       // origin: app.LatLng
       // destination: app.LatLng
@@ -252,11 +240,6 @@ $(function () {
       // failure: function (error message : string)
       getRouteDistance: function (originCoords, destinationCoords, success, failure) {
 
-        // if (typeof google === 'undefined') {
-          // throw new Error('Google library not loaded; cannot perform distance lookup.');
-        // } else if (typeof googleDistanceService.service === 'undefined') {
-        //   googleDistanceService._newService();
-        // }
         if (Date.now() < distanceService.pauseUntil) { // still throttled
           failure('Distance Matrix limit reached; pausing requests for a while.');
           return;
@@ -303,8 +286,6 @@ $(function () {
                 distanceService.pauseUntil = resetTimestamp;
                 // when under massive load, prevent sending more requests for a while.
                 app.util.log('Hit query limit; throttling down requests.');
-                // var hour = 1000 /*millisec*/ * 60 /*sec*/ * 60 /*min*/;
-                // distanceService.pauseUntil = Date.now() + 0.15 * hour; //15 min pause
               }
             }
           }
@@ -312,14 +293,12 @@ $(function () {
           var time = Date.now() - start;
           app.util.log('Fetched Mapbox distance/directions results in ' + time + ' milleseconds:');
           app.util.log(json);
-          // that.cache[query] = json;
-          // console.log('TODO: cache Mapbox distance/directions results');
-          // construct generic results
           if (!json.routes) {
             failure('No Mapbox distance/directions results; Response said ' + json.code + ': ' + json.message);
             return;
           }
 
+          // construct generic results
           var result = json.routes[0];
           var distance = {
             kilometers: (result.distance / 1000).toFixed(1), // "0.1" km rather than 0.123
@@ -335,8 +314,6 @@ $(function () {
         });
       },
     };
-
-    // distanceService.initialize();
 
     return distanceService;
   }());
