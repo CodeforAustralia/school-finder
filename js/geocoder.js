@@ -52,49 +52,26 @@ app.geocodeAddress = function (callback) {
   var addressField = document.getElementById('address');
   app.address = addressField.value;
 
-  // Mapbox
-  geocoder.geocode({ 'address': app.address}, function saveGeocoderResults(data) {
+  geocoder.geocode(
+    {'address': app.address},
+    function success(data) {
 
-    app.util.log('Processing geocoder results:');
-    var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
-    data.features.forEach(function (feature) {
-      app.util.log(feature);
-    });
-    if (haveResponses) {
-      app.lng = data.features[0].center[0]; // longitude = x
-      app.lat = data.features[0].center[1]; // latitude = y
+      app.util.log('Processing geocoder results:');
+      app.util.log(data.results);
+
+      app.lng = data.lng;
+      app.lat = data.lat;
+      app.address = data.address;
 
       callback();
-    } else {
-      app.util.log('geocoder returned no results');
+    },
+    function failure (error) {
+      app.util.log('geocoder failed: ' + error);
       $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
-      $('#geocodingErrorModal').find('.modal-more-info').text('It gave no results when given address "' + app.address + '".');
+      $('#geocodingErrorModal').find('.modal-more-info').text('It said: "' + status + '" when given address "' + app.address + '".');
       $('#geocodingErrorModal').modal();
       app.ui.resetSearchBtns();
-    }
-  });
-
-    // Google
-    // geocoder.geocode({ 'address': app.address}, function (results, status) {
-    //   if (status === google.maps.GeocoderStatus.OK) {
-
-    //     // TODO update for mapbox
-
-    //     app.lat = results[0].geometry.location.lat();
-    //     app.lng = results[0].geometry.location.lng();
-
-    //     callback();
-
-    //   } else {
-    //     app.util.log('geocoder returned status not OK');
-    //     $('#geocodingErrorModal').find('.modal-geocoder').text(geocoder.provider);
-    //     $('#geocodingErrorModal').find('.modal-more-info').text('It said: "' + status + '" when given address "' + app.address + '".');
-    //     $('#geocodingErrorModal').modal();
-    //     app.ui.resetSearchBtns();
-    //   }
-    // });
-  // }
-
+    });
 };
 
 
@@ -102,39 +79,17 @@ app.geocodeAddress = function (callback) {
 // Reverse geocode to get address from lat/lng
 // Given: lat and lng as floats.
 app.reverseGeocode = function (callback) {
-  // var lat = app.lat;
-  // var lng = app.lng;
-
-  // mapbox
-  geocoder.geocode({'latLng': {lat:app.lat, lng:app.lng}}, function (data) {
-    if (data.features && data.features.length) {
-      app.address = data.features[0].place_name;
+  geocoder.geocode(
+    {'latLng': {lat:app.lat, lng:app.lng}},
+    function success(data) {
+      app.address = data.address;
       document.getElementById('address').value = app.address;
-      console.log('Found address: ' + app.address);
-    } else {
-      console.error('No results found');
-    }
-
-    callback();
-  });
-
-  // google
-  // var latlng = new google.maps.LatLng(lat, lng);
-  // geocoder.geocode({'latLng': latlng}, function (results, status) {
-  //   if (status === google.maps.GeocoderStatus.OK) {
-  //     if (results[0]) {
-  //       app.address = results[0].formatted_address;
-  //       document.getElementById('address').value = app.address;
-  //       console.log('Found address: ' + app.address);
-  //     } else {
-  //       console.error('No results found');
-  //     }
-  //   } else {
-  //     console.error('Geocoder failed due to: ' + status);
-  //   }
-
-  //   callback();
-  // });
+      app.util.log('Found address: ' + app.address);
+      callback();
+    },
+    function failure(error) {
+      app.util.log('Reverse geocode lat,lng (' + app.lat + ',' + app.lng +') failed: ' + error);
+    });
 };
 
 // Distance cache stores distances between any two points A and B
@@ -387,6 +342,62 @@ $(function () {
   }());
 
 
+  var googleGeocoder = (function() {
+
+    var geocoder = {
+      provider: 'Google',
+
+      // run geocoder for a given address (or reverse geocode on a coordinate pair),
+      // and call success({address,lat,lng,results}) or failure(error_message) callback after
+      geocode: function (options, success, failure) {
+        console.log(geocoder.provider + ' geocoding: ');
+        console.log(options);
+
+        geocoder.service.geocode(options, function (results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+              success({
+                address: results[0].formatted_address,
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng(),
+                results: results
+              });
+              return;
+            } else {
+              failure('no results');
+              return;
+            }
+          } else {
+            failure(status);
+            return;
+          }
+        });
+      },
+
+      initialize: function() {
+        geocoder.service = new google.maps.Geocoder();
+
+        var inputs = $('input[data-geocode-autocomplete]');
+        $.each(inputs, function () {
+          var autocomplete = new google.maps.places.Autocomplete(this, {
+            types: ['geocode'],
+            componentRestrictions: {
+              country: app.config.geocoder.country
+            }
+          });
+          var circle = new google.maps.Circle({
+            center: app.config.geocoder.center,
+            radius: 50000
+          });
+          autocomplete.setBounds(circle.getBounds());
+        });
+      }
+    };
+
+    geocoder.initialize();
+    return geocoder;
+  }());
+
   var mapboxGeocoder = (function() {
 
     var config = app.config.geocoder;
@@ -396,7 +407,7 @@ $(function () {
     var paramBBox = config.bbox ? '&bbox=' + encodeURIComponent(config.bbox) : '';
 
     var mapboxGeocoder = {
-      provider: 'Mapbox-x',
+      provider: 'Mapbox',
       urlBase: 'https://api.mapbox.com/geocoding/v5/mapbox.places/',
       urlEnd: '.json?' + paramToken +
         paramCountry +
@@ -407,8 +418,8 @@ $(function () {
 
       cache: {},
 
-      geocode: function (options, callback) {
-        console.log('mapbox geocoding: ');
+      geocode: function (options, success, failure) {
+        console.log(geocoder.provider + ' geocoding: ');
         console.log(options);
 
         var query;
@@ -420,6 +431,7 @@ $(function () {
         } else {
           app.util.log('unexpected geocode attempt with options: ');
           app.util.log(options);
+          failure('invalid parameters');
           return;
         }
 
@@ -427,7 +439,7 @@ $(function () {
         if (json) { // skip duplicated geocoder queries
 
           console.log('Using cached geocoder results for query "' + query + '".');
-          callback(json);
+          success(json);
 
         } else {
 
@@ -440,18 +452,30 @@ $(function () {
 
           app.util.log('Sending geocoder request for "' + query + '"');
 
+          // TODO: how to handle rate limit http 429 response?
           $.getJSON(url)
-            .done(function( json ) {
+            .done(function( data ) {
               var time = Date.now() - start;
               console.log('geocoder gives these results in ' + time + ' milleseconds:');
-              console.log(json);
-              that.cache[query] = json;
-              callback(json);
+              console.log(data);
+              that.cache[query] = data;
+              success(data);
+
+              var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
+              if (haveResponses) {
+                success({
+                  lng: data.features[0].center[0], // longitude = x
+                  lat: data.features[0].center[1], // latitude = y
+                  address: data.features[0].place_name, // address or place name
+                  results: data
+                });
+                return;
+              }
             })
             .fail(function( jqxhr, textStatus, error ) {
               var err = textStatus + ', ' + error;
-              app.util.log('Request Failed: ' + err );
-              // TODO modal popup
+              app.util.log('Geocode request Failed: ' + err );
+              failure(err);
             });
 
         }
@@ -559,7 +583,8 @@ $(function () {
   };
 
 
-  geocoder = mapboxGeocoder;
+  // geocoder = mapboxGeocoder;
+  geocoder = googleGeocoder;
 
   var distanceCache = new app.DistanceCache();
   // build a function that takes the same parameters as the other (mapbox/google) route distance functions by
