@@ -320,16 +320,16 @@ $(function () {
 
   var googleGeocoder = (function() {
 
-    var geocoder = {
+    var googleGeocoder = {
       provider: 'Google',
 
       // run geocoder for a given address (or reverse geocode on a coordinate pair),
       // and call success({address,lat,lng,results}) or failure(error_message) callback after
       geocode: function (options, success, failure) {
-        console.log(geocoder.provider + ' geocoding: ');
+        console.log(googleGeocoder.provider + ' geocoding: ');
         console.log(options);
 
-        geocoder.service.geocode(options, function (results, status) {
+        googleGeocoder.service.geocode(options, function (results, status) {
           if (status === google.maps.GeocoderStatus.OK) {
             if (results[0]) {
               success({
@@ -358,7 +358,7 @@ $(function () {
       },
 
       initialize: function() {
-        geocoder.service = new google.maps.Geocoder();
+        googleGeocoder.service = new google.maps.Geocoder();
 
         var inputs = $('input[data-geocode-autocomplete]');
         $.each(inputs, function () {
@@ -377,8 +377,8 @@ $(function () {
       }
     };
 
-    geocoder.initialize();
-    return geocoder;
+    googleGeocoder.initialize();
+    return googleGeocoder;
   }());
 
   var mapboxGeocoder = (function() {
@@ -400,7 +400,7 @@ $(function () {
         '&autocomplete=true',
 
       geocode: function (options, success, failure) {
-        console.log(geocoder.provider + ' geocoding: ');
+        console.log(mapboxGeocoder.provider + ' geocoding: ');
         console.log(options);
 
         var query;
