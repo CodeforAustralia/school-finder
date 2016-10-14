@@ -432,7 +432,6 @@ $(function () {
             var time = Date.now() - start;
             console.log('geocoder gives these results in ' + time + ' milleseconds:');
             console.log(data);
-            success(data);
 
             var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
             if (haveResponses) {
