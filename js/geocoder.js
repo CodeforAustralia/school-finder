@@ -157,6 +157,8 @@ $(function () {
           googleDistanceService._newService();
           googleDistanceService.pauseUntil = 0; // not yet throttled
         }
+
+        return googleDistanceService;
       },
 
       _newService: function () {
@@ -221,8 +223,6 @@ $(function () {
       },
     };
 
-    googleDistanceService.initialize();
-
     return googleDistanceService;
   }());
 
@@ -231,6 +231,8 @@ $(function () {
     var distanceService = {
       // provider: 'Mapbox',
       pauseUntil: 0, // not yet throttled
+
+      initialize: function() { return distanceService; },
 
       // getRouteDistance : find distance between origin and destination, calling success or failure afterwards
       // origin: app.LatLng
@@ -374,10 +376,11 @@ $(function () {
           });
           autocomplete.setBounds(circle.getBounds());
         });
+
+        return googleGeocoder;
       }
     };
 
-    googleGeocoder.initialize();
     return googleGeocoder;
   }());
 
@@ -509,10 +512,11 @@ $(function () {
           }
           mapboxGeocoder.lastKeyTimestamp = now;
         });
+
+        return mapboxGeocoder;
       }
     };
 
-    mapboxGeocoder.initialize();
     return mapboxGeocoder;
   }());
 
@@ -521,6 +525,8 @@ $(function () {
     var cache = {};
 
     var cachingGeocoder = {
+
+      initialize: function () { return cachingGeocoder; },
 
       geocode: function (options, success, failure) {
 
@@ -589,16 +595,14 @@ $(function () {
   };
 
 
-  // geocoder = mapboxGeocoder;
-  // geocoder = googleGeocoder;
-  // geocoder = cachingGeocoder(googleGeocoder);
-  app.geocoder = cachingGeocoder(mapboxGeocoder);
+  app.geocoder = cachingGeocoder(googleGeocoder.initialize()).initialize();
+  // app.geocoder = cachingGeocoder(mapboxGeocoder.initialize()).initialize();
 
   var distanceCache = new app.DistanceCache();
   // build a function that takes the same parameters as the other (mapbox/google) route distance functions by
   // pre-filling the parameters that are unique to getCachedRouteDistance()
-  var cachingRouteDistanceFn = _.partial(getCachedRouteDistance, distanceCache, mapboxDistanceService.getRouteDistance);
-  // var cachingRouteDistanceFn = _.partial(getCachedRouteDistance, distanceCache, googleDistanceService.getRouteDistance);
+  var cachingRouteDistanceFn = _.partial(getCachedRouteDistance, distanceCache, mapboxDistanceService.initialize().getRouteDistance);
+  // var cachingRouteDistanceFn = _.partial(getCachedRouteDistance, distanceCache, googleDistanceService.initialize().getRouteDistance);
 
   app.geo.getRouteDistance = cachingRouteDistanceFn;
 
