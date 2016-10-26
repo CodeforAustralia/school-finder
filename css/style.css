@@ -8,6 +8,9 @@ body { background-color: #39acc9; color: #3e3e3e;
 	padding-bottom: 0px;
 	font-size: 34px;
 }
+.sitename {
+    text-align: right;
+}
 .sitename, .results-list .btn, .new-search, footer {
 	text-shadow: 0px 0px 1px #375a63;
 	text-shadow: 0px 0px 1px rgb(55, 90, 99);
