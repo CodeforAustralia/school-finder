@@ -29,12 +29,15 @@
 	}
 	.school-info {border-bottom: none;}
 
+	.sitename {
+		padding-right: 0;
+	}
 	.org-logo {
-		text-align: right;
+		padding-left: 0;
 	}
 	.org-logo:after {
 		/* we've hidden default logo; but show a print version */
-		content: url('/css/images/dept-logo-black-on-white-40h.png') !important;
+		content: url('/css/images/secondary-logo-black-on-white-48h.png') !important;
 	}
 }
 
