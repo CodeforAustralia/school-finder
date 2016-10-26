@@ -282,6 +282,8 @@ a:focus .fa-stack-1x {
 }
 .school-info .field-label {
 	color: rgb(189, 239, 252); /* based on background blue but lighter for readability */
+	text-shadow: 0px 0px 1px #3e3e3e;
+	font-weight: bold;
 }
 .expandable-text .body { display:none; }
 
@@ -611,7 +613,7 @@ input#nearby-girls {
 
 .jumbotron .lesser-text {
 	font-size: 16px;
-	color: #717171;
+	color: #3e3e3e;
 }
 .lesser-text a {
 	color: inherit;
