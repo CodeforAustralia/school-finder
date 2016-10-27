@@ -539,7 +539,7 @@ input#nearby-girls {
 	margin-bottom: 0.5em; /* vertically separate buttons on narrow screens */
 	width: 100%;
 }
-@media (min-width: 570px) { /* breaks at < 570px */
+@media (min-width: 620px) { /* layout breaks below this point for two buttons side by side  */
 	.block-intro .btn.school-level {
 		width: 42%; /* Make school level buttons equal width */
 	}
