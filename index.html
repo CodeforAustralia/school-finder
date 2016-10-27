@@ -384,7 +384,17 @@
 
   ga('create', 'UA-63141018-1', 'auto');
   ga('send', 'pageview');
-
+  
+  $(document).ready(function() {
+	  // do not remove - fixes weird scrolling bug
+	  var timeout = setTimeout(function(){ 
+		  if (document.activeElement.id == "body"){
+			  $("#dept-logo").focus();
+			  $("#schoolname").focus();
+			  clearTimeout(timeout);	
+		  }
+	  }, 1);
+	});
 </script>
 
 
