@@ -178,15 +178,6 @@
         '   </fieldset>' +
         ' </div>' +
         '</div>';
-
-      // set defaults
-      app.state.nearby.showFilters = false;
-      app.state.nearby.filterFeatureForType = {};
-	  app.state.showNearby = null;
-      app.state.nearby.othersForType = {
-        primary: ['infants', 'central'],
-        secondary: ['central'],
-      };
 	  
       this._setEventHandlers();
       this.update();

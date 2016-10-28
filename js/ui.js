@@ -80,6 +80,8 @@ app.ui = app.ui || {};
     return function (e) {
       e.preventDefault();
 
+	  app.resetState();
+
       var inputId = $(e.target).data('input');
 
       // Use Search button as status
