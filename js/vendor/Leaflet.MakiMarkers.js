@@ -38,16 +38,20 @@
     apiUrl: "https://api.tiles.mapbox.com/v3/marker/",
     smallOptions: {
       iconSize: [20, 50],
-      popupAnchor: [0,-20]
+      popupAnchor: [0,-20],
+      popupAnchorGoogle: [10,25]
     },
     mediumOptions: {
       iconSize: [30,70],
-      popupAnchor: [0,-30]
+      popupAnchor: [0,-30],
+      popupAnchorGoogle: [15,35]
     },
     largeOptions: {
       iconSize: [36,90],
-      popupAnchor: [0,-40]
+      popupAnchor: [0,-40],
+      popupAnchorGoogle: [18,45]
     }
+
   };
 
   L.MakiMarkers.Icon = L.Icon.extend({
