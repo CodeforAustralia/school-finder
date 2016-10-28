@@ -66,6 +66,16 @@ app = app || {};
     nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
   };
 
+  app.geographic_centre = { // Middle of Sydney 
+			lat: -33.848217,
+	        lng: 150.931963
+	    };
+
+  app.geographic_bounds = new google.maps.Circle({
+        center: app.geographic_centre,
+        radius: 50000
+  });
+
   app.analytics = {
 		    url: "http://localhost:8080"
   };
