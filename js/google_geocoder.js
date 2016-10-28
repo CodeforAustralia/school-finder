@@ -8,7 +8,14 @@ app.geocodeAddress = function (callback) {
   app.resetState();
   
   app.address = document.getElementById('address').value;
-  geocoder.geocode({ 'address': app.address}, function (results, status) {
+    geocoder.geocode({ 
+   		'address': app.address, 
+   		'componentRestrictions': {
+   	        country: 'au' // Australia 
+   	      },
+   	    'bounds': app.geographic_bounds.getBounds()
+    }, function (results, status) {
+    
     if (status === google.maps.GeocoderStatus.OK) {
 
       app.lat = results[0].geometry.location.lat();
@@ -58,22 +65,8 @@ var googlePlacesInitialize = function () {
         country: 'au' // Australia
       }
     });
-	var geolocation = { // Middle of Sydney
-		lat: -33.848217,
-        lng: 150.931963
-    };
-	/*
-	var geolocation = { // Merbn
-		lat: -37.815249, 
-        lng: 144.940926
-    };
-	*/
-	
-    var circle = new google.maps.Circle({
-        center: geolocation,
-        radius: 50000
-    });
-    autocomplete.setBounds(circle.getBounds());	
+    
+    autocomplete.setBounds(app.geographic_bounds.getBounds());	
 
 	return autocomplete;
   });
