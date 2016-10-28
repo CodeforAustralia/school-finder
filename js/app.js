@@ -28,12 +28,6 @@ app = app || {};
 
   app.resetState();
 
-  app.schools = new app.Schools(); // schools results collection
-
-  app.listView = new app.ListView(); // summary / selector to choose school if multiple results
-  app.schoolView = new app.SchoolView(); // info area for one school
-  app.mapView = new app.MapView(); // map of results and surrounding schools
-
   var updateUI = function (rows) {
     app.schools.update(rows);
 
