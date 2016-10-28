@@ -2,16 +2,31 @@ app = app || {};
 
 (function () {
 
-  app.sql = new cartodb.SQL({ user: app.db.user });
-  app.state = {}; // UI and application state.
-  app.state.nearby = {}; // info about nearby markers to display
+  app.resetState = function(){
+	  app.sql = new cartodb.SQL({ user: app.db.user });
+	  app.state = {}; // UI and application state.
+	  app.state.nearby = {}; // info about nearby markers to display
+	  app.state.nearby.showFilters = false;
+	  app.state.nearby.filterFeatureForType = {};
+	  app.state.showNearby = null;
+	  app.state.nearby.othersForType = {
+		    primary: ['infants', 'central'],
+		    secondary: ['central'],
+	  };
 
+	  
+	  app.schools = new app.Schools(); // schools results collection
 
-  app.schools = new app.Schools(); // schools results collection
+	  app.listView = new app.ListView(); // summary / selector to choose school if multiple results
+	  app.schoolView = new app.SchoolView(); // info area for one school
+	  app.mapView = new app.MapView(); // map of results and surrounding schools
 
-  app.listView = new app.ListView(); // summary / selector to choose school if multiple results
-  app.schoolView = new app.SchoolView(); // info area for one school
-  app.mapView = new app.MapView(); // map of results and surrounding schools
+	  app.lat = null;
+	  app.lng = null;	
+	  app.activeQuery = null;
+  }
+
+  app.resetState();
 
   var updateUI = function (rows) {
     app.schools.update(rows);
@@ -241,7 +256,14 @@ app = app || {};
     //   }
     // });
 
-    $("#schoolname").autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
+    $("#schoolname").autocomplete({
+		minLength: 3, 
+		delay: 700, 
+		source: app.util.schoolNameCompleter,
+    	select: function (event, ui) {
+    		app.level = null;
+    	}
+	});
 
     // DEBUG: jump right to the map
     // $(".btn.primary").click();
