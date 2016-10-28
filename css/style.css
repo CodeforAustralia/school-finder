@@ -501,9 +501,6 @@ select#soflow, .styled-select {
 .nearby-schools-options input[type="checkbox"] {
 	margin: 0em 3px 0.25em 0;
 }
-input#nearby-girls {
-	margin-left:1em;
-}
 .nearby-schools-options label {
 	font-weight: normal;
 }

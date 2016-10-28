@@ -395,7 +395,7 @@ function SchoolsControl(map) {
     };
 
     var controlUI = document.createElement('div');
-    controlUI.className = 'nearby-schools-control leaflet-bar generic-bar';		
+    controlUI.className = 'nearby-schools-control leaflet-bar';		
     
     that.container = controlUI;    
     

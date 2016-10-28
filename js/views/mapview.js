@@ -4,8 +4,6 @@ app = app || {};
 
   var MapView = function () {
     this.$el = $('#map-container');
-	$('#cartodb-map').remove();
-	$('#cartodb-map').append("<div class='cartodb-map' id='cartodb-map'></div>");
     this.template = Handlebars.compile($("#map-template").html());
   };
 
