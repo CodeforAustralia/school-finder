@@ -4,6 +4,9 @@ app = app || {};
 
 // Geocode the address in the text field, then run the callback function
 app.geocodeAddress = function (callback) {
+  
+  app.resetState();
+  
   app.address = document.getElementById('address').value;
   geocoder.geocode({ 'address': app.address}, function (results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
