@@ -293,7 +293,9 @@ app = app || {};
   };
 
 
-  MapView.prototype.fitBounds = function () {
+  // positions map based on user location, school location, and school catchment if any
+  // Calls optional callback after we think we're done with pan/zoom.
+  MapView.prototype.fitBounds = function (callback) {
     if (!this.map) { return; } // can't zoom on a map doesn't yet exist.
     var that = this;
 
@@ -303,15 +305,21 @@ app = app || {};
       // zoom in to show the full catchment area
       app.sql.getBounds(this.catchmentsSQL).done(function (bounds) {
         that.map.fitBounds(bounds);
+        if (callback) callback();
+        return;
       });
     } else if (app.lat && app.lng) {
       // zoom to fit selected school + user location
       var southWest = L.latLng(school.latitude, school.longitude);
       var northEast = L.latLng(app.lat, app.lng);
       this.map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
+      if (callback) callback();
+      return;
     } else {
       // no school catchment & no user location, so just zoom to the school's location
       this.map.panTo([school.latitude, school.longitude]);
+      if (callback) callback();
+      return;
     }
   };
 
@@ -487,9 +495,15 @@ app = app || {};
     this.resultMarkersGroup = new L.featureGroup(markers);
     this.map.addLayer(this.resultMarkersGroup);
 
-    // pan + zoom to the selected results
-    this.fitBounds();
-    this.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
+    // pan + zoom to the selected results, then open marker popup
+    // note! important to not try opening the marker popup while zooming/panning via fitBounds,
+    // as that can result in just seeing all black tiles.
+    // the behavior was observed while following the procedure to reproduce issue #254 and
+    // seems to also cause the misplaced controls from #253.
+    // To solve that, we ask fitBounds to open the popup later via a callback.
+    this.fitBounds(function () {
+      that.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
+    });
   };
 
 
