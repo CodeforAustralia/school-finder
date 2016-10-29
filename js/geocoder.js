@@ -351,7 +351,7 @@ $(function () {
         var $inputs = $('input[data-geocode-autocomplete]');
         $inputs.autocomplete({
           minLength: 4,
-          delay: 200, // pause after typing, in millesecond, before searching
+          delay: 0, // pause after typing, in millesecond, before searching
           source: this.autocompleter,
           // change: function( event, ui ) {
           //   console.log('autocomplete change');
