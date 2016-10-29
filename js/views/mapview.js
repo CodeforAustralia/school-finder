@@ -381,7 +381,12 @@ app = app || {};
         that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
       });
 
-      L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
+      // L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
+
+      var roadMutant = L.gridLayer.googleMutant({
+        maxZoom: 24,
+        type:'roadmap'
+      }).addTo(map);
 
       cartodb.createLayer(map, {
         user_name: app.db.user,

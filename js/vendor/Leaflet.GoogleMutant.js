@@ -1,4 +1,3 @@
-
 // Based on https://github.com/shramov/leaflet-plugins
 // GridLayer like https://avinmathew.com/leaflet-and-google-maps/ , but using MutationObserver instead of jQuery
 
@@ -29,8 +28,6 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		this._ready = !!window.google && !!window.google.maps && !!window.google.maps.Map;
 
-// 		L.Util.setOptions(this, options);
-
 		this._GAPIPromise = this._ready ? Promise.resolve(window.google) : new Promise(function (resolve, reject) {
 			var checkCounter = 0;
 			var intervalId = null;
@@ -56,7 +53,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	},
 
 	onAdd: function (map) {
-		L.GridLayer.prototype.onAdd.call(this, map)
+		L.GridLayer.prototype.onAdd.call(this, map);
 		this._initMutantContainer();
 
 		this._GAPIPromise.then(function () {
@@ -138,7 +135,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			disableDoubleClickZoom: true,
 			scrollwheel: false,
 			streetViewControl: false,
-// 			styles: this.options.mapOptions.styles,
+			styles: this.options.styles || {},
 			backgroundColor: 'transparent'
 		});
 
@@ -149,16 +146,16 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this.fire('spawned', {mapObject: map});
 	},
 
-	_attachObserver: function _attachObserver(node) {
+	_attachObserver: function _attachObserver (node) {
 // 		console.log('Gonna observe', node);
 
 		var observer = new MutationObserver(this._onMutations.bind(this));
 
 		// pass in the target node, as well as the observer options
-		observer.observe(this._mutantContainer, { childList: true, subtree: true });
+		observer.observe(node, { childList: true, subtree: true });
 	},
 
-	_onMutations: function _onMutations(mutations){
+	_onMutations: function _onMutations (mutations) {
 		for (var i = 0; i < mutations.length; ++i) {
 			var mutation = mutations[i];
 			for (var j = 0; j < mutation.addedNodes.length; ++j) {
@@ -166,11 +163,11 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 				if (node instanceof HTMLImageElement) {
 					this._onMutatedImage(node);
-				} else if (node instanceof HTMLElement){
+				} else if (node instanceof HTMLElement) {
 					Array.prototype.forEach.call(node.querySelectorAll('img'), this._onMutatedImage.bind(this));
 				}
-			};
-		};
+			}
+		}
 	},
 
 	// Only images which 'src' attrib match this will be considered for moving around.
@@ -185,21 +182,21 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	// This will not be moved around, just removed from the DOM.
 	_staticRegExp: /StaticMapService\.GetMapImage/,
 
-	_onMutatedImage: function _onMutatedImage(imgNode) {
+	_onMutatedImage: function _onMutatedImage (imgNode) {
 // 		if (imgNode.src) {
 // 			console.log('caught mutated image: ', imgNode.src);
 // 		}
 
 		var coords;
 		var match = imgNode.src.match(this._roadRegexp);
-		var sublayer;
+		var sublayer, parent;
 
 		if (match) {
 			coords = {
 				z: match[1],
 				x: match[2],
 				y: match[3]
-			}
+			};
 			if (this._imagesPerTile > 1) { imgNode.style.zIndex = 1; }
 			sublayer = 1;
 		} else {
@@ -209,14 +206,14 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					x: match[1],
 					y: match[2],
 					z: match[3]
-				}
+				};
 			}
 // 			imgNode.style.zIndex = 0;
 			sublayer = 0;
 		}
 
 		if (coords) {
-			var key = this._tileCoordsToKey(coords)
+			var key = this._tileCoordsToKey(coords);
 			if (this._imagesPerTile > 1) { key += '/' + sublayer; }
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
@@ -224,7 +221,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				if (!this._tileCallbacks[key].length) { delete this._tileCallbacks[key]; }
 			} else {
 // console.log('Caching for later', key);
-				var parent = imgNode.parentNode;
+				parent = imgNode.parentNode;
 				if (parent) {
 					parent.removeChild(imgNode);
 					parent.removeChild = L.Util.falseFn;
@@ -237,7 +234,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				}
 			}
 		} else if (imgNode.src.match(this._staticRegExp)) {
-			var parent = imgNode.parentNode;
+			parent = imgNode.parentNode;
 			if (parent) {
 				// Remove the image, but don't store it anywhere.
 				// Image needs to be replaced instead of removed, as the container
@@ -248,7 +245,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	},
 
 	// This will be used as this.createTile for 'roadmap', 'sat', 'terrain'
-	_createSingleTile: function createTile(coords, done) {
+	_createSingleTile: function createTile (coords, done) {
 		var key = this._tileCoordsToKey(coords);
 // console.log('Need:', key);
 
@@ -261,8 +258,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		} else {
 			var tileContainer = L.DomUtil.create('div');
 			this._tileCallbacks[key] = this._tileCallbacks[key] || [];
-			this._tileCallbacks[key].push( (function (c, k) {
-				return function(imgNode) {
+			this._tileCallbacks[key].push( (function (c/*, k*/) {
+				return function (imgNode) {
 					var parent = imgNode.parentNode;
 					if (parent) {
 						parent.removeChild(imgNode);
@@ -271,16 +268,16 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					}
 					c.appendChild(imgNode);
 					done();
-// 					console.log('Sent ', key, ' to _tileCallbacks');
-				}.bind(this)
-			}.bind(this))(tileContainer, key) );
+// 					console.log('Sent ', k, ' to _tileCallbacks');
+				}.bind(this);
+			}.bind(this))(tileContainer/*, key*/) );
 
 			return tileContainer;
 		}
 	},
 
 	// This will be used as this.createTile for 'hybrid'
-	_createMultiTile: function createTile(coords, done) {
+	_createMultiTile: function createTile (coords, done) {
 		var key = this._tileCoordsToKey(coords);
 
 		var tileContainer = L.DomUtil.create('div');
@@ -295,8 +292,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 // 				console.log('Got ', key2, ' from _freshTiles');
 			} else {
 				this._tileCallbacks[key2] = this._tileCallbacks[key2] || [];
-				this._tileCallbacks[key2].push( (function (c, k2) {
-					return function(imgNode) {
+				this._tileCallbacks[key2].push( (function (c/*, k2*/) {
+					return function (imgNode) {
 						var parent = imgNode.parentNode;
 						if (parent) {
 							parent.removeChild(imgNode);
@@ -307,8 +304,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 						c.dataset.pending--;
 						if (!parseInt(c.dataset.pending)) { done(); }
 // 						console.log('Sent ', k2, ' to _tileCallbacks, still ', c.dataset.pending, ' images to go');
-					}.bind(this)
-				}.bind(this))(tileContainer, key2) );
+					}.bind(this);
+				}.bind(this))(tileContainer/*, key2*/) );
 			}
 		}
 
@@ -362,12 +359,33 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		this._mutant.setCenter(_center);
 		this._mutant.setZoom(Math.round(this._map.getZoom()));
+	},
+
+	// Agressively prune _freshtiles when a tile with the same key is removed,
+	// this prevents a problem where Leaflet keeps a loaded tile longer than
+	// GMaps, so that GMaps makes two requests but Leaflet only consumes one,
+	// polluting _freshTiles with stale data.
+	_removeTile: function (key) {
+		if (this._imagesPerTile > 1) {
+			for (var i=0; i<this._imagesPerTile; i++) {
+				var key2 = key + '/' + i;
+				if (key2 in this._freshTiles) { delete this._freshTiles[key2]; }
+// 				console.log('Pruned spurious hybrid _freshTiles');
+			}
+		} else {
+			if (key in this._freshTiles) {
+				delete this._freshTiles[key];
+// 				console.log('Pruned spurious _freshTiles', key);
+			}
+		}
+
+		return L.GridLayer.prototype._removeTile.call(this, key);
 	}
 });
 
 
 // 🍂factory gridLayer.googleMutant(options)
 // Returns a new `GridLayer.GoogleMutant` given its options
-L.gridLayer.googleMutant = function(options) {
+L.gridLayer.googleMutant = function (options) {
 	return new L.GridLayer.GoogleMutant(options);
 };
