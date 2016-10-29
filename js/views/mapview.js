@@ -372,6 +372,9 @@ app = app || {};
       });
       this.map = map;
 
+      var ggl = new L.Google('ROADMAP');
+      map.addLayer(ggl);
+
       this.schoolsNearby = L.schoolsNearby(map); // add nearby schools control
       this.legend = L.legend(map); // add nearby schools control
 
@@ -381,7 +384,7 @@ app = app || {};
         that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
       });
 
-      L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
+      // L.tileLayer(app.geo.tiles, { attribution: app.geo.attribution }).addTo(map);
 
       cartodb.createLayer(map, {
         user_name: app.db.user,
