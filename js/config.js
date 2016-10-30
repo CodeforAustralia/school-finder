@@ -66,6 +66,7 @@ app = app || {};
   app.config = {
     searchRadius: 105 * 1000, // maximum distance (meters) someone would be expected to travel to any school before we suggest distance schools
     nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
+    geoProvider: 'mapbox' // whether to use google or mapbox for geocoder, distance matrix
   };
 
   app.config.geocoder = {
