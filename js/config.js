@@ -3,6 +3,8 @@ app = app || {};
 
 (function () {
 
+  app.debug = true; // set to false in production environment - relates to console logging in util.js
+
   // CartoDB configuration
   app.db = {
     points: 'dec_schools', //table
@@ -64,6 +66,18 @@ app = app || {};
   app.config = {
     searchRadius: 105 * 1000, // maximum distance (meters) someone would be expected to travel to any school before we suggest distance schools
     nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
+    geoProvider: 'mapbox' // whether to use google or mapbox for geocoder, distance matrix
+  };
+
+  app.config.geocoder = {
+    // center search on Sydney - vertically center of state + population centered around there
+    center: {
+      lat: -33.8688,
+      lng: 151.2093
+    },
+    country: 'au', // au = Australia
+    // bbox: '140.6,-37.52,153.96,-27.9', // bounding box around NSW
+    mapboxToken: 'pk.eyJ1IjoidGVjaGllc2hhcmsiLCJhIjoiYzk2ZEFWTSJ9.8ZY6rG2BWXkDBmvAPvn_nw'
   };
 
   app.analytics = {

@@ -19,6 +19,31 @@ app = app || {};
     this.render();
   };
 
+
+  SchoolView.prototype.insertDistanceToUser = function () {
+
+    var selectorPrefix = '#school-info-' + this.school.school_code + ' ';
+    var that = this;
+
+    this.school.getRouteDistanceToUser (
+      function onSuccess(routeDistance) {
+        $(selectorPrefix + '.route-distance').html('Via roads: '
+            + routeDistance.kilometers + '&nbsp;km in '
+            + routeDistance.minutes + '&nbsp;mins cycling');
+      },
+      function onFailure(error) {
+        app.util.log('Error: ' + error + '; using straight line distance instead');
+        // Use simple straight line distance when network path (e.g. street route) distance unavailable
+        var distance = that.school.distanceToUser();
+        if (distance) {
+          $(selectorPrefix + '.straight-distance').html('About ' + distance + ' km as the crow flies.');
+        }
+      }
+    );
+
+  };
+
+
   SchoolView.prototype.render = function () {
     if (!this.school) { return; } // no use rendering if the school hasn't been set
 
@@ -30,12 +55,9 @@ app = app || {};
     this.$el.empty();
     this.$el.append(html);
 
-    // lookup distance along road network and insert it into page when the results come back.
-    app.calculateRouteDistanceToUser(
-      this.school.latitude,
-      this.school.longitude,
-      '#school-info-' + this.school.school_code + ' .route-distance'
-    );
+    if (app.haveUserLocation()) {
+      this.insertDistanceToUser();
+    }
 
     this.$el.find('.readmore').click(function (event) {
       // toggle visibility of the clicked teaser and body.

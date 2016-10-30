@@ -71,6 +71,28 @@ app = app || {};
     return app.util.roundToOne(meters / 1000);
   };
 
+
+
+  // lookup network distance and call either success or failure callback
+  //
+  // success: function (routeDistance), where routeDistance has properties 'kilometers, meters, minutes, seconds'
+  // failure: function (error)
+  app.School.prototype.getRouteDistanceToUser = function (success, failure) {
+
+    if (!app.haveUserLocation()) {
+      failure(app.error.NO_USER_LOCATION);
+    } else {
+      var schoolCoords = app.LatLng(this.latitude, this.longitude);
+      var userCoords = app.LatLng(app.lat,app.lng);
+      try {
+        app.geo.getRouteDistance(schoolCoords, userCoords, success);
+      } catch (error) {
+        failure(error);
+      }
+    }
+
+  };
+
   app.School.prototype.toTemplateContext = function (i) {
 
     var context = _.extend(this,
