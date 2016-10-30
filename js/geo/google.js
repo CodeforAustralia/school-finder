@@ -92,10 +92,12 @@ app = app || {};
         // run geocoder for a given address (or reverse geocode on a coordinate pair),
         // and call success({address,lat,lng,results}) or failure(error_message) callback after
         geocode: function (options, success, failure) {
-          console.log(googleGeocoder.provider + ' geocoding: ');
-          console.log(options);
 
-          googleGeocoder.service.geocode(options, function (results, status) {
+          var geocoderOptions = _.extend({}, options, googleGeocoder.options);
+          console.log(googleGeocoder.provider + ' geocoding: ');
+          console.log(geocoderOptions);
+
+          googleGeocoder.service.geocode(geocoderOptions, function (results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 success({
@@ -126,19 +128,24 @@ app = app || {};
         initialize: function() {
           googleGeocoder.service = new google.maps.Geocoder();
 
-          var inputs = $('input[data-geocode-autocomplete]');
-          $.each(inputs, function () {
-            var autocomplete = new google.maps.places.Autocomplete(this, {
-              types: ['geocode'],
-              componentRestrictions: {
-                country: app.config.geocoder.country
-              }
-            });
-            var circle = new google.maps.Circle({
+          googleGeocoder.options = {};
+          if (app.config.geocoder.country) {
+            googleGeocoder.options.componentRestrictions = {
+              country: app.config.geocoder.country
+            };
+          }
+          if (app.config.geocoder.center) {
+            googleGeocoder.options.bounds = new google.maps.Circle({
               center: app.config.geocoder.center,
-              radius: 50000
-            });
-            autocomplete.setBounds(circle.getBounds());
+              radius: 50000 // meters
+            }).getBounds();
+          }
+
+          var autocompleteOptions = _.extend({}, googleGeocoder.options, {
+            types: ['geocode']
+          });
+          $('input[data-geocode-autocomplete]').each(function () {
+            new google.maps.places.Autocomplete(this, autocompleteOptions);
           });
 
           return googleGeocoder;
