@@ -80,9 +80,9 @@ app = app || {};
     mapboxToken: 'pk.eyJ1IjoidGVjaGllc2hhcmsiLCJhIjoiYzk2ZEFWTSJ9.8ZY6rG2BWXkDBmvAPvn_nw'
   };
 
-  app.analytics = {
-		    url: "http://localhost:8080"
-  };
+  // app.analytics = { // unused currently
+  //   url: "http://localhost:8080"
+  // };
 
   app.supports = [
     { id: 0, shortcode: "ignoreme" },
