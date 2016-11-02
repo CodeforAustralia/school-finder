@@ -66,7 +66,14 @@ app = app || {};
   app.config = {
     searchRadius: 105 * 1000, // maximum distance (meters) someone would be expected to travel to any school before we suggest distance schools
     nearbyLimit: 5, // when searching for schools 'nearby', this is the max number to explicitely highlight
-    geoProvider: 'mapbox' // whether to use google or mapbox for geocoder, distance matrix
+    geoProvider: 'google', // whether to use google or mapbox for geocoder, distance matrix
+    defaultZoom: 12, // 12: a good city level zoom (on Google & Mapbox) for any time we don't have a better idea
+    maxBounds: { // for handling edge cases or when we need a default.
+      east: 153.85,
+      north: -27.9, // <--- n/e/s/w: these are bounds around New South Wales (NSW)
+      south: -37.84,
+      west: 140.62
+    }
   };
 
   app.config.geocoder = {
