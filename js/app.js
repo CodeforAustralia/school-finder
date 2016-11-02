@@ -230,6 +230,7 @@ app = app || {};
       $('.block-address').hide();
       app.support_needed = false;
       app.support = 'no';
+      app.level = '';
       $('.block-support').hide();
       app.findByName(inputText);
     }));

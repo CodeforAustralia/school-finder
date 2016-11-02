@@ -293,7 +293,9 @@ app = app || {};
   };
 
 
-  MapView.prototype.fitBounds = function () {
+  // positions map based on user location, school location, and school catchment if any
+  // Calls optional callback after we think we're done with pan/zoom.
+  MapView.prototype.fitBounds = function (callback) {
     if (!this.map) { return; } // can't zoom on a map doesn't yet exist.
     var that = this;
 
@@ -303,15 +305,21 @@ app = app || {};
       // zoom in to show the full catchment area
       app.sql.getBounds(this.catchmentsSQL).done(function (bounds) {
         that.map.fitBounds(bounds);
+        if (callback) callback();
+        return;
       });
     } else if (app.lat && app.lng) {
       // zoom to fit selected school + user location
       var southWest = L.latLng(school.latitude, school.longitude);
       var northEast = L.latLng(app.lat, app.lng);
       this.map.fitBounds(L.latLngBounds(southWest, northEast), {padding: [50, 50]});
+      if (callback) callback();
+      return;
     } else {
       // no school catchment & no user location, so just zoom to the school's location
       this.map.panTo([school.latitude, school.longitude]);
+      if (callback) callback();
+      return;
     }
   };
 
@@ -330,25 +338,33 @@ app = app || {};
 
     var school = this.schools.selected();
 
-    // school level may be unspecified (if just searching by school name)
-    // allow for that
-    var levelFilter = '';
-    if (app.level) {
-      var alsoInfantsIfPrimary = '';
-      if (app.level === "primary") {
-        alsoInfantsIfPrimary = " OR school_type ~* 'infants'";
-      }
-      levelFilter = "(school_type ~* '" + app.level + "'" + alsoInfantsIfPrimary + ") AND ";
+    // get WHERE condition for SQL query to filter by catchment level.
+    // level is one of the main types: primary or secondary.
+    // If no level specified, empty string returned will have no affect on query
+    var catchmentLevelCondition = function catchmentLevelCondition(level) {
+      var sql = {
+        "primary": "('primary','infants')",
+        "secondary": "('secondary')",
+      };
+      return level ? " (catchment_level IN " + sql[level] + ") AND " : "";
     }
 
-    this.catchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "'";  // still useful for getting bounds 
-    this.catchmentsSQL1ary = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND (catchment_level IN ('primary','infants'))";
-    this.catchmentsSQL2ary = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code = '" + school.school_code + "' AND catchment_level = 'secondary'";
-    this.otherCatchmentsSQL = "SELECT * FROM " + app.db.polygons + " " +
-                 "WHERE " + levelFilter + "school_code != '" + school.school_code + "'";
+    var selectWhere = "SELECT * FROM " + app.db.polygons + " WHERE ";
+    var schoolMatchCondition = " school_code = '" + school.school_code + "' ";
+    var invertSchoolMatchCondition = " school_code != '" + school.school_code + "' ";
+
+    // catchmentsSQL: used for getting bounds.
+    // If school is community school, two (primary/secondary) catchments may be returned
+    // but if they're searching for a specific school level we'll limit result to that.
+    this.catchmentsSQL = selectWhere + catchmentLevelCondition(app.level) + schoolMatchCondition;
+
+    // these catchment queries give us polygons to overlay on map
+    this.catchmentsSQL1ary = selectWhere + catchmentLevelCondition('primary')   + schoolMatchCondition;
+    this.catchmentsSQL2ary = selectWhere + catchmentLevelCondition('secondary') + schoolMatchCondition;
+
+    // all other catchments. If user is searching for a type (they clicked primary or
+    // secondary school button), levelFilter will ensure the surrounding catchments match that type.
+    this.otherCatchmentsSQL = selectWhere + catchmentLevelCondition(app.level) + invertSchoolMatchCondition;
 
     app.state.nearby.type = app.level || school.type;
 
@@ -479,9 +495,15 @@ app = app || {};
     this.resultMarkersGroup = new L.featureGroup(markers);
     this.map.addLayer(this.resultMarkersGroup);
 
-    // pan + zoom to the selected results
-    this.fitBounds();
-    this.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
+    // pan + zoom to the selected results, then open marker popup
+    // note! important to not try opening the marker popup while zooming/panning via fitBounds,
+    // as that can result in just seeing all black tiles.
+    // the behavior was observed while following the procedure to reproduce issue #254 and
+    // seems to also cause the misplaced controls from #253.
+    // To solve that, we ask fitBounds to open the popup later via a callback.
+    this.fitBounds(function () {
+      that.selectedMarker.openPopup(); // make the current result quite visible by showing it's popup
+    });
   };
 
 
