@@ -168,6 +168,13 @@ app = app || {};
       $('html').addClass('ios');
     }
 
+    // the very last thing we do before a reload is scroll to the top,
+    // so the page always starts there once reloaded.
+    // Fixes reload issue here: https://github.com/CodeforAustralia/school-finder/issues/262
+    window.onunload = function() {
+      window.scrollTo(0,0);
+    };
+
     app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
 
     var clickSchoolType = function (e) {
