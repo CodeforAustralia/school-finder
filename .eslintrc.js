@@ -9,6 +9,7 @@ module.exports = {
         "ga": true,
         "_": true,
         "L": true,
+        "M": true,
         "cartodb": true,
     },
     "env": {
@@ -27,7 +28,7 @@ module.exports = {
         ],
         "no-console": 0, // TODO disable for production http://eslint.org/docs/rules/no-console
         "quotes": [
-            "error",
+            "warn",
             "single"
         ],
         "semi": [
