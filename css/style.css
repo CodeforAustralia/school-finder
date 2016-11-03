@@ -11,7 +11,7 @@ body { background-color: #39acc9; color: #3e3e3e;
 .sitename {
     text-align: right;
 }
-.sitename, .results-list .btn, .new-search, footer {
+.sitename, .results-list .btn, .results-footer-btn, footer {
 	text-shadow: 0px 0px 1px #375a63;
 	text-shadow: 0px 0px 1px rgb(55, 90, 99);
 }
@@ -21,7 +21,7 @@ body { background-color: #39acc9; color: #3e3e3e;
 }
 
 .org-logo a:focus,
-.new-search.btn:focus,
+.results-footer-btn:focus,
 .footer a:focus,
 .school-details a:focus {
     box-shadow: 0px 0px 10px white; /* stand out against blue page background */
@@ -562,7 +562,7 @@ input#nearby-girls {
 	margin-top: 25px;
 }
 
-.results-footer .fa-search {
+.results-footer-btn .fa {
 	margin-right: 1em;
 }
 
@@ -572,7 +572,7 @@ input#nearby-girls {
 	}
 }
 
-.new-search.btn {
+.results-footer-btn {
 	display: block;
 	padding: 2em;
 	border: 1px solid rgba(255, 255, 255, 0.19);
@@ -580,15 +580,15 @@ input#nearby-girls {
 	width: 100%;
 }
 
-.new-search.btn:hover {
+.results-footer-btn:hover {
     border: 1px solid white;
     background-color: transparent;
  	text-decoration: none;
 }
-.new-search span {
+.results-footer-btn span {
 	border-bottom: 1px dotted;
 }
-.new-search:hover span {
+.results-footer-btn:hover span {
 	border-bottom-style: solid;
 }
 
