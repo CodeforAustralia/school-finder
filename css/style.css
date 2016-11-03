@@ -555,19 +555,19 @@ input#nearby-girls {
 }
 
 
-.new-search-btn-container {
+.results-footer {
 	display: none; /* hidden until we have results */
 	margin: 50px auto;
 	max-width: 730px;
 	margin-top: 25px;
 }
 
-.new-search-btn-container .fa-search {
+.results-footer .fa-search {
 	margin-right: 1em;
 }
 
 @media (min-width: 768px) {
-	.new-search-btn-column {
+	.results-footer-btn-column {
 		padding-right: 0;
 	}
 }

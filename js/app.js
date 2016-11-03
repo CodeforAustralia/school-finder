@@ -22,7 +22,7 @@ app = app || {};
     app.mapView.update(app.schools);
     app.schoolView.update(app.schools);
 
-    $('.new-search-btn-container').show();
+    $('.results-footer').show();
 
     // ensure we're not adding same handler repeatedly
     $('.btn.new-search').off('click.new-search');
