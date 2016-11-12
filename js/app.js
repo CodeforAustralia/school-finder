@@ -6,6 +6,15 @@ app = app || {};
   app.state = {}; // UI and application state.
   app.state.nearby = {}; // info about nearby markers to display
 
+  // set defaults used by map controls too
+  app.state.nearby.showFilters = false;
+  app.state.nearby.filterFeatureForType = {};
+  app.state.showNearby = null;
+  app.state.nearby.othersForType = {
+    primary: ['infants', 'central'],
+    secondary: ['central'],
+  };
+
 
   app.schools = new app.Schools(); // schools results collection
 

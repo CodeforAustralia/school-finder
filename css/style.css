@@ -105,6 +105,10 @@ a:focus .fa-stack-1x {
  margin-top: 25em;
 }
 
+.map-legend {
+    margin: 10px;
+}
+
 .cartodb-map { width: 100%; height:100%; height: 500px; background: black; }
 
 .leaflet-control .active-filter {
