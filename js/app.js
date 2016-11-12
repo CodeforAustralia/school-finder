@@ -173,6 +173,11 @@ app = app || {};
     // Fixes reload issue here: https://github.com/CodeforAustralia/school-finder/issues/262
     window.onunload = function() {
       window.scrollTo(0,0);
+
+      // we also protect privacy of address field when leaving page.
+      // Users should be able to use this, then navigate to another webpage,
+      // then go 'back' and not have their most recent address search visible.
+      $('#address').val('');
     };
 
     app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
