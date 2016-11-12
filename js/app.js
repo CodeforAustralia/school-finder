@@ -22,12 +22,12 @@ app = app || {};
     app.mapView.update(app.schools);
     app.schoolView.update(app.schools);
 
-    $('.new-search-btn-container').show();
+    $('.results-footer').show();
 
     // ensure we're not adding same handler repeatedly
-    $('.btn.new-search').off('click.new-search');
-    $('.btn.new-search').on('click.new-search', function (e) {
-      console.log('clicked "new search" button');
+    $('.results-footer-btn').off('click.results-footer-btn');
+    $('.results-footer-btn').on('click.results-footer-btn', function (e) {
+      console.log('clicked "scroll to top" button');
       var target = '#search-start';
       app.ui.scrollAndCenter(target);
     });
