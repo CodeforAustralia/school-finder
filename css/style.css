@@ -501,10 +501,11 @@ select#soflow, .styled-select {
     margin-bottom: 0.5em;
     font-size: 14px;
 }
-.nearby-schools-feature input[type="radio"],
-.nearby-schools-options input[type="checkbox"] {
-	margin: 0em 3px 0.25em 0;
+
+.nearby-schools-control input {
+    margin: 0em 3px 0.25em 0;
 }
+
 input#nearby-girls {
 	margin-left:1em;
 }
