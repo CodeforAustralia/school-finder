@@ -501,6 +501,10 @@ select#soflow, .styled-select {
     margin-bottom: 0.5em;
     font-size: 14px;
 }
+.nearby-schools-feature label,
+.nearby-schools-options label {
+    font-weight: normal;
+}
 
 .nearby-schools-control input {
     margin: 0em 3px 0.25em 0;
@@ -508,12 +512,6 @@ select#soflow, .styled-select {
 
 input#nearby-girls {
 	margin-left:1em;
-}
-.nearby-schools-options label {
-	font-weight: normal;
-}
-.nearby-schools-feature label {
-	font-weight: normal;
 }
 
 
