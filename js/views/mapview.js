@@ -539,6 +539,9 @@ app = app || {};
           console.error(err); // TODO: console.XYZ needs definition on some older browsers
         });
 
+
+      this.mapX.addMapControls();
+
     } else { // update the existing map
       map = this.map;
       that.sublayers.selectedCatchment1.setSQL(this.catchmentsSQL1ary);
@@ -577,8 +580,6 @@ app = app || {};
       markers.push(marker);
 
     });
-
-    this.mapX.addMapControls();
 
     if (this.resultMarkers) {
       this.mapX.removeMarkerSet(this.resultMarkers);
