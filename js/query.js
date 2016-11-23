@@ -112,10 +112,10 @@ app = app || {};
         values = _.map(value, function (item) { return "'" + item + "'"; }).join(',');
       }
 
-      return field + " IN (" + values + ")";
+      return field + ' IN (' + values + ')';
     }).join(' AND ');
 
-    return "(" + conditions + ")";
+    return '(' + conditions + ')';
 
   };
 
@@ -158,11 +158,11 @@ app = app || {};
     }
 
     if (type === 'all') {
-      this.where("(1=1)");
+      this.where('(1=1)');
     } else if (type === 'distance') {
-      this.where("((s.distance_education IN ('null') OR s.distance_education IS NULL) " + otherTypesExpression + ")");
+      this.where("((s.distance_education IN ('null') OR s.distance_education IS NULL) " + otherTypesExpression + ')');
     } else {
-      this.where("(s.type = '" + type + "' " + otherTypesExpression + ")");
+      this.where("(s.type = '" + type + "' " + otherTypesExpression + ')');
     }
     return this;
   };
@@ -185,7 +185,7 @@ app = app || {};
     this.queryBy = 'closest';
     this.lat = lat;
     this.lng = lng;
-    this.where("(1=1)");
+    this.where('(1=1)');
     return this;
   };
 
@@ -221,7 +221,7 @@ app = app || {};
   Query.prototype.logCatchmentHit = function (catchment_id) {
 	  ga('send', 'pageview', {
 		  'dimension1': catchment_id
-		});
+  });
 	  //if (app.analytics.url != null)
 	//	  $.get(app.analytics.url + "/catchment?schoolCode=" + catchment_id);
   };
@@ -237,45 +237,45 @@ app = app || {};
 
     if (this.queryBy === 'name') {
 
-      joinSubtype = "LEFT OUTER";
+      joinSubtype = 'LEFT OUTER';
       whereCondition = "s.school_name ILIKE '%" + this.name + "%'";
-      orderBy = "ORDER BY s.school_name ASC";
+      orderBy = 'ORDER BY s.school_name ASC';
 
     } else if (this.queryBy === 'school_code') {
 
-      joinSubtype = "LEFT OUTER";
-      whereCondition = "s.school_code = " + this.school_code;
+      joinSubtype = 'LEFT OUTER';
+      whereCondition = 's.school_code = ' + this.school_code;
 
     } else if (this.queryBy === 'catchment') {
 
       // Find schools whose catchment area serves the chosen location
 
-      whereCondition = "ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)) ";
+      whereCondition = 'ST_CONTAINS(b.the_geom, ST_SetSRID(ST_Point(' + this.lng + ',' + this.lat + '),4326)) ';
 
     } else if (this.queryBy === 'distance') {
 
-      joinSubtype = "LEFT OUTER";
-      otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
-      whereCondition = "ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) < " + this.radius;
-      orderBy = "ORDER BY dist ASC";
+      joinSubtype = 'LEFT OUTER';
+      otherFields = ', ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(' + this.lng + ',' + this.lat + '),4326)::geography) AS dist ';
+      whereCondition = 'ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(' + this.lng + ',' + this.lat + '),4326)::geography) < ' + this.radius;
+      orderBy = 'ORDER BY dist ASC';
 
     } else if (this.queryBy === 'closest') {
 
-      joinSubtype = "LEFT OUTER";
-      otherFields = ", ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(" + this.lng + "," + this.lat + "),4326)::geography) AS dist ";
-      whereCondition = "(1 = 1)";
-      orderBy = "ORDER BY dist ASC";
+      joinSubtype = 'LEFT OUTER';
+      otherFields = ', ST_DISTANCE(s.the_geom::geography, ST_SetSRID(ST_Point(' + this.lng + ',' + this.lat + '),4326)::geography) AS dist ';
+      whereCondition = '(1 = 1)';
+      orderBy = 'ORDER BY dist ASC';
 
     } else if (this.queryBy === 'bounds') {
 
-      joinSubtype = "LEFT OUTER";
-      whereCondition = "s.the_geom && ST_MakeEnvelope(" +
-                          this.bounds.left + "," +
-                          this.bounds.bottom + ", " +
-                          this.bounds.right + "," +
-                          this.bounds.top + ") ";
+      joinSubtype = 'LEFT OUTER';
+      whereCondition = 's.the_geom && ST_MakeEnvelope(' +
+                          this.bounds.left + ',' +
+                          this.bounds.bottom + ', ' +
+                          this.bounds.right + ',' +
+                          this.bounds.top + ') ';
 
-    } else { console.error("No query type specified."); return; }
+    } else { console.error('No query type specified.'); return; }
 
     // build where condition
     if (_.size(this.filters) > 0) {
@@ -286,24 +286,24 @@ app = app || {};
       whereCondition += ' AND ' + this.whereConditions.join(' AND ');
     }
 
-    var supportField = "";
+    var supportField = '';
     if (this.support) {
       var support_id = _.find(app.supports, function (s) { return s.shortcode === app.support; });
       support_id = support_id.id;
-      supportField = ", (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ";
+      supportField = ', (SELECT array_agg(sc.scdefid) FROM support_classes AS sc WHERE sc.school_code = s.school_code) AS support_ids ';
       whereCondition += ' AND s.school_code IN (SELECT school_code FROM support_classes WHERE scdefid = ' + support_id + ')';
     }
 
     // build query
     query =
-      "SELECT s.*, b.shape_area " + supportField + otherFields + " " +
-      "FROM " + app.db.points + " AS s " + joinSubtype + " " +
-      "JOIN " + app.db.polygons + " AS b " +
-      "ON s.school_code = b.school_code " +
-      "WHERE (" + whereCondition + ") " + orderBy;
+      'SELECT s.*, b.shape_area ' + supportField + otherFields + ' ' +
+      'FROM ' + app.db.points + ' AS s ' + joinSubtype + ' ' +
+      'JOIN ' + app.db.polygons + ' AS b ' +
+      'ON s.school_code = b.school_code ' +
+      'WHERE (' + whereCondition + ') ' + orderBy;
 
     // add on the LIMIT if that's been specified
-    query += this.limit ? " LIMIT " + this.limit : "";
+    query += this.limit ? ' LIMIT ' + this.limit : '';
 
     this.logQuery(whereCondition);
     

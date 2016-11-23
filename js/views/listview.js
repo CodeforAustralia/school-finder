@@ -4,7 +4,7 @@ app = app || {};
 
   var ListView = function () {
     this.$el = $('#list-container');
-    this.template = Handlebars.compile($("#result-list-template").html());
+    this.template = Handlebars.compile($('#result-list-template').html());
   };
 
   app.ListView = ListView;
@@ -35,7 +35,7 @@ app = app || {};
     this.$el.empty();
     this.$el.append(html);
 
-    this.$el.find(".btn").click(function (e) {
+    this.$el.find('.btn').click(function (e) {
       var el = $(this);
       e.preventDefault();
 
@@ -60,22 +60,22 @@ app = app || {};
       var target = this.hash;
       app.ui.scrollAndCenter(target);
     }
-    this.$el.find('.jump-to-start').click(jumpToTop)
+    this.$el.find('.jump-to-start').click(jumpToTop);
 
     var that = this;
 
     // button gets focus or hover
     function onAttention (event) {
-      that.$el.find(".btn.selected").addClass("dimmer");
+      that.$el.find('.btn.selected').addClass('dimmer');
     }
     function offAttention (event) {
       // if mouse .hover's offAttention() was called, ensure nothing has
       // mouse :focus before we un-dim the .selected button.
-      if (that.$el.find(".btn:not(.selected):focus").length === 0) {
-        that.$el.find(".btn.selected").removeClass("dimmer");
+      if (that.$el.find('.btn:not(.selected):focus').length === 0) {
+        that.$el.find('.btn.selected').removeClass('dimmer');
       }
     }
-    $unselecteds = this.$el.find(".btn:not(.selected)");
+    $unselecteds = this.$el.find('.btn:not(.selected)');
     $unselecteds.hover(onAttention, offAttention)
       .focusin(onAttention)
       .focusout(offAttention);

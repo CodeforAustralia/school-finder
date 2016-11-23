@@ -4,11 +4,11 @@ app.util = app.util || {};
 (function () {
 
   Handlebars.registerHelper('search_radius', function () {
-    return app.config.searchRadius / 1000 + " km";
+    return app.config.searchRadius / 1000 + ' km';
   });
 
   Handlebars.registerHelper('search_radius', function () {
-    return app.config.searchRadius / 1000 + " km";
+    return app.config.searchRadius / 1000 + ' km';
   });
 
   Handlebars.registerHelper('round', function (num) {
@@ -20,7 +20,7 @@ app.util = app.util || {};
     if (support_wanted) {
       return support_wanted.long_description;
     }
-    return "";
+    return '';
   };
 
   // function roundToTwo(num) {
@@ -28,7 +28,7 @@ app.util = app.util || {};
   // }
 
   app.util.roundToOne = function (num) {
-    return +(Math.round(num + "e+1")  + "e-1");
+    return +(Math.round(num + 'e+1')  + 'e-1');
   };
 
   app.util.schoolNameCompleter = function (request, response) {
@@ -45,7 +45,7 @@ app.util = app.util || {};
         // show suggestions
         response(autocompleteResponses);
       } else {
-        $input.autocomplete("close");
+        $input.autocomplete('close');
       }
     };
 

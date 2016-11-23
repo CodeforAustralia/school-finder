@@ -3,25 +3,25 @@ app = app || {};
 (function () {
 
   Handlebars.registerHelper('yesNo', function (field) {
-    return field ? "Yes" : "No";
+    return field ? 'Yes' : 'No';
   });
 
   Handlebars.registerHelper('careOptions', function(before, after, vacation) {
-	var ret = "";
-    if (before == "true")
-		ret = "Before school";
-    if (after == "true"){
-		if (ret != "")
-			ret += ", ";
-		ret += "After school";
-	}
+    var ret = '';
+    if (before == 'true')
+      ret = 'Before school';
+    if (after == 'true'){
+      if (ret != '')
+        ret += ', ';
+      ret += 'After school';
+    }
 	
-    if (vacation == "true"){
-		if (ret != "")
-			ret += ", ";
-		ret += "Vacation care";
-	}
-	return ret;
+    if (vacation == 'true'){
+      if (ret != '')
+        ret += ', ';
+      ret += 'Vacation care';
+    }
+    return ret;
   });
   
   /* create a new School. */
@@ -98,7 +98,7 @@ app = app || {};
     var context = _.extend(this,
       {
         resultNumber: i,
-        website: this.website.replace("http://", ""),
+        website: this.website.replace('http://', ''),
         grades: this.school_subtype,
         established: function () {
           // try to return something human friendly if we can parse date.
@@ -116,7 +116,7 @@ app = app || {};
         is_opportunity_class_possible: is_opportunity_class_possible(this.type),
         is_selective_possible: is_selective_possible(this.type),
         is_specialty_possible: is_specialty_possible(this.type),
-        is_somewhat_selective: this.selective_school !== "Not Selective",
+        is_somewhat_selective: this.selective_school !== 'Not Selective',
         is_intensive_english_possible: is_intensive_english_possible(this.type),
         support_offered: this.support_ids ? _.map(this.support_ids, function (id) {
           return app.supports[id];
