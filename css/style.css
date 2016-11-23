@@ -5,15 +5,15 @@ body { background-color: #39acc9; color: #3e3e3e;
 }
 .header h3 {color: #f7f6f6;
 	margin-top: 0.5em;
-	padding-bottom: 0px;
+	padding-bottom: 0;
 	font-size: 34px;
 }
 .sitename {
     text-align: right;
 }
 .sitename, .results-list .btn, .results-footer-btn, footer {
-	text-shadow: 0px 0px 1px #375a63;
-	text-shadow: 0px 0px 1px rgb(55, 90, 99);
+	text-shadow: 0 0 1px #375a63;
+	text-shadow: 0 0 1px rgb(55, 90, 99);
 }
 .org-logo img {
 	height: 48px;
@@ -24,16 +24,16 @@ body { background-color: #39acc9; color: #3e3e3e;
 .results-footer-btn:focus,
 .footer a:focus,
 .school-details a:focus {
-    box-shadow: 0px 0px 10px white; /* stand out against blue page background */
+    box-shadow: 0 0 10px white; /* stand out against blue page background */
 }
 
 .block-intro input, .block-address input, .block-support select {
 	font-weight: normal;
 }
-.container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
+.container .jumbotron { background-color: #f7f6f6; border-radius: 0; margin-bottom: 25em;}
 .btn {
 	border: none;
-	border-radius: 0px;
+	border-radius: 0;
 	background-color: rgb(215, 45, 108);
 	color: white;
 }
@@ -257,8 +257,8 @@ a:focus .fa-stack-1x {
 
 @media (min-width: 980px) { /* desktop and up */
 	.school-details-container {
-		margin-right: 0px;
-		margin-left: 0px;
+		margin-right: 0;
+		margin-left: 0;
 	}
 	.school-email a, .school-website a {
 		font-size: small; /* so it fits in one line */
@@ -286,16 +286,15 @@ a:focus .fa-stack-1x {
 }
 .school-details .field-label {
 	color: rgb(189, 239, 252); /* based on background blue but lighter for readability */
-	text-shadow: 0px 0px 1px #3e3e3e;
+	text-shadow: 0 0 1px #3e3e3e;
 	font-weight: bold;
 }
 .expandable-text .body { display:none; }
 
 a.readmore {
 	font-weight: bold;
-	color: inherit;
 	text-decoration: none;
-    color: #717171;
+	color: #717171;
 }
 .readmore span {
      margin-left: 4px;
@@ -409,7 +408,7 @@ ul.school-details {
 select#soflow, .styled-select {
    -webkit-appearance: button;
    -webkit-border-radius: 2px;
-   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
    -webkit-padding-end: 20px;
    -webkit-padding-start: 2px;
    -webkit-user-select: none;
@@ -434,14 +433,16 @@ select#soflow, .styled-select {
 	width: 142px;
 }
 .nearby-schools-control {
+	background-color: #f8f8f8;
 	background-color: rgba(255, 255, 255, 0.85);
 	padding: 1em;
 	margin: 1em;
 }
-.nearby-schools-control a.close {
+.nearby-schools-control .close {
     width: 100%;
     font-weight: bold;
     color: black;
+    background: white;
     background: rgba(152, 110, 110, 0);
     border-top: 1px solid rgb(146, 146, 146);
     padding-top: .25em;
@@ -507,10 +508,11 @@ select#soflow, .styled-select {
 }
 
 .nearby-schools-control input {
-    margin: 0em 3px 0.25em 0;
+    margin: 0 3px 0.25em 0;
 }
 
-input#nearby-girls {
+/* input#nearby-girls */
+#nearby-girls {
 	margin-left:1em;
 }
 
@@ -527,13 +529,14 @@ input#nearby-girls {
 	}
 }
 .container {
-	padding-left: 0px;
-	padding-right: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .leaflet-popup-content-wrapper {
+	background-color: #f8f8f8; /* fallback */
 	/* give a little transparency so we don't totally hide other markers. */
 	background-color: rgba(255, 255, 255, 0.9);
 }
@@ -578,6 +581,7 @@ input#nearby-girls {
 .results-footer-btn {
 	display: block;
 	padding: 2em;
+	border: 1px solid #64bcd2; /* fallback */
 	border: 1px solid rgba(255, 255, 255, 0.19);
 	background-color: transparent;
 	width: 100%;
@@ -605,13 +609,13 @@ input#nearby-girls {
 	font-size: 18px;
 	margin-bottom: 1em;
 }
-.jumbotron p.lead {
+.jumbotron .lead {
 	margin-bottom: 1em;
 	margin-top: 1em;
 }
 .jumbotron .disclaimer {
 	margin-top: 24px;
-	margin-bottom: 0em;
+	margin-bottom: 0;
 }
 
 .jumbotron .lesser-text {
