@@ -65,17 +65,17 @@ app = app || {};
     var that = this;
 
     // button gets focus or hover
-    function onAttention (event) {
+    function onAttention () {
       that.$el.find('.btn.selected').addClass('dimmer');
     }
-    function offAttention (event) {
+    function offAttention () {
       // if mouse .hover's offAttention() was called, ensure nothing has
       // mouse :focus before we un-dim the .selected button.
       if (that.$el.find('.btn:not(.selected):focus').length === 0) {
         that.$el.find('.btn.selected').removeClass('dimmer');
       }
     }
-    $unselecteds = this.$el.find('.btn:not(.selected)');
+    var $unselecteds = this.$el.find('.btn:not(.selected)');
     $unselecteds.hover(onAttention, offAttention)
       .focusin(onAttention)
       .focusout(offAttention);

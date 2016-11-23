@@ -35,7 +35,7 @@ app = app || {};
 
     // ensure we're not adding same handler repeatedly
     $('.results-footer-btn').off('click.results-footer-btn');
-    $('.results-footer-btn').on('click.results-footer-btn', function (e) {
+    $('.results-footer-btn').on('click.results-footer-btn', function () {
       console.log('clicked "scroll to top" button');
       var target = '#search-start';
       app.ui.scrollAndCenter(target);
@@ -281,7 +281,7 @@ app = app || {};
 
 function getUrlVars() {
   var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
     function(m,key,value) {
       vars[key] = value;
     });

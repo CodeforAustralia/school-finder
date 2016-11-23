@@ -219,16 +219,14 @@ app = app || {};
   };
   
   Query.prototype.logCatchmentHit = function (catchment_id) {
-	  ga('send', 'pageview', {
-		  'dimension1': catchment_id
-  });
-	  //if (app.analytics.url != null)
-	//	  $.get(app.analytics.url + "/catchment?schoolCode=" + catchment_id);
+    ga('send', 'pageview', {'dimension1': catchment_id});
+    //if (app.analytics.url != null)
+    //  $.get(app.analytics.url + "/catchment?schoolCode=" + catchment_id);
   };
 
-  Query.prototype.logQuery = function (whereStr) {
-	  //if (app.analytics.url != null)
-		//  $.get(app.analytics.url + "/query/whereStr=" + whereStr);
+  Query.prototype.logQuery = function (/*whereStr*/) {
+    //if (app.analytics.url != null)
+    //  $.get(app.analytics.url + "/query/whereStr=" + whereStr);
   };
 
   Query.prototype.run = function (callback) {

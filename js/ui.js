@@ -54,8 +54,8 @@ app.ui = app.ui || {};
   };
 
   app.ui.viewSchool = function(school_code, selector){
-	  var q = new app.Query();
-	  q.logCatchmentHit(school_code);
+    var q = new app.Query();
+    q.logCatchmentHit(school_code);
     app.ui.scrollTo(selector);
 
     // make the selected school's popup the next thing we'll tab to (from container with silent[1] focus),
