@@ -190,7 +190,7 @@ app = app || {};
 
   // Fetch nearby schools and add them to the map for context
   MapView.prototype.loadNearby = function () {
-    app.util.log("loadNearby()");
+    app.util.log('loadNearby()');
     if (!app.state.showNearby) {
       if (this.nearbyMarkers) {
         app.util.log('loadNearby(): removing nearby markers');
@@ -389,13 +389,13 @@ app = app || {};
     // If no level specified, empty string returned will have no affect on query
     var catchmentLevelCondition = function catchmentLevelCondition(level) {
       var sql = {
-        "primary": "('primary','infants')",
-        "secondary": "('secondary')",
+        'primary': "('primary','infants')",
+        'secondary': "('secondary')",
       };
-      return level ? " (catchment_level IN " + sql[level] + ") AND " : "";
+      return level ? ' (catchment_level IN ' + sql[level] + ') AND ' : '';
     };
 
-    var selectWhere = "SELECT * FROM " + app.db.polygons + " WHERE ";
+    var selectWhere = 'SELECT * FROM ' + app.db.polygons + ' WHERE ';
     var schoolMatchCondition = " school_code = '" + schoolCode + "' ";
     var invertSchoolMatchCondition = " school_code != '" + schoolCode + "' ";
 
@@ -487,22 +487,22 @@ app = app || {};
         https: true,
         tiler_protocol: 'https',
         tiler_port: '443',
-        sql_port: "443",
-        sql_protocol: "https",
+        sql_port: '443',
+        sql_protocol: 'https',
         type: 'cartodb',
         sublayers:
         [
           { // background layer; all but selected polygon, for context
             sql: this.otherCatchmentsSQL,
-            cartocss: "#" + app.db.polygons + app.geo.backgroundCSS,
+            cartocss: '#' + app.db.polygons + app.geo.backgroundCSS,
           },
           { // selected boundary
             sql: this.catchmentsSQL1ary,
-            cartocss: "#" + app.db.polygons + app.geo.catchmentCSS1ary,
+            cartocss: '#' + app.db.polygons + app.geo.catchmentCSS1ary,
           },
           { // selected boundary
             sql: this.catchmentsSQL2ary,
-            cartocss: "#" + app.db.polygons + app.geo.catchmentCSS,
+            cartocss: '#' + app.db.polygons + app.geo.catchmentCSS,
           },
         ]
       }).addTo(map)

@@ -37,52 +37,52 @@
     //   // sql: 'select * from dec_schools' but also vary based on if support needed,
     // },
     primary: {
-      label: "Primary",
-      category: "General",
-      type: "primary",
+      label: 'Primary',
+      category: 'General',
+      type: 'primary',
       features: [
-      {label: "Any", name: "any", matchTest: function () { return true; }},
-      {label: "Outside School Hours Care", name: "oshc", sql: "s.oshc = true", matchLabel: "This school offers Outside School Hours Care.", mismatchLabel: "Not offered: Outside School Hours Care.", matchTest: function (s) { return s.oshc; }},
-      {label: "Opportunity Classes", name: "oc", sql: "s.opportunity_class = true", matchLabel: "This school offers opportunity classes.", mismatchLabel: "Not offered: opportunity classes.", matchTest: function (s) { return s.opportunity_class; }},
-      {label: "Distance Classes", name: "distance",  sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school.", mismatchLabel: "Not a distance school.", matchTest: function (s) { return s.distance_education !== "false"; }},
+      {label: 'Any', name: 'any', matchTest: function () { return true; }},
+      {label: 'Outside School Hours Care', name: 'oshc', sql: 's.oshc = true', matchLabel: 'This school offers Outside School Hours Care.', mismatchLabel: 'Not offered: Outside School Hours Care.', matchTest: function (s) { return s.oshc; }},
+      {label: 'Opportunity Classes', name: 'oc', sql: 's.opportunity_class = true', matchLabel: 'This school offers opportunity classes.', mismatchLabel: 'Not offered: opportunity classes.', matchTest: function (s) { return s.opportunity_class; }},
+      {label: 'Distance Classes', name: 'distance',  sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: 'This is a distance school.', mismatchLabel: 'Not a distance school.', matchTest: function (s) { return s.distance_education !== 'false'; }},
       ],
       options: [
-      {label: "Include Infant (K-2)", name: "infants", type: "infants"},
-      {label: "Include Central/Community (K-12)", name: "central", type: "central"}
+      {label: 'Include Infant (K-2)', name: 'infants', type: 'infants'},
+      {label: 'Include Central/Community (K-12)', name: 'central', type: 'central'}
       ],
     },
     secondary: {
-      label: "Secondary",
-      category: "General",
-      type: "secondary",
+      label: 'Secondary',
+      category: 'General',
+      type: 'secondary',
       features: [
-      {label: "Any", name: "any"},
-      {label: "Boys", name: "boys", sql: "s.gender = 'boys'", matchLabel: "This is a boys school.", mismatchLabel: "Not a boys school.", matchTest: function (s) { return s.gender === 'boys'; }},
-      {label: "Girls", name: "girls", sql: "s.gender = 'girls'", matchLabel: "This is a girls school.", mismatchLabel: "Not a girls school.", matchTest: function (s) { return s.gender === 'girls'; }},
-      {label: "Selective option", name: "selective", sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: "This school offers an academically selective option.", mismatchLabel: "Not offered: academically selective option.", matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
-      {label: "Intensive English option", name: "intensive_english", sql: "s.intensive_english_centre ", matchLabel: "This school has an Intensive English Centre.", mismatchLabel: "Not offered: Intensive English Centre.", matchTest: function (s) { return s.intensive_english_centre == true; }},
-      {label: "Specialty option", name: "specialty", sql: "school_specialty_type NOT IN ('Comprehensive')", matchLabel: "This school offers specialized classes", mismatchLabel: "Not offered: specialized classes.", matchTest: function (s) { return s.school_specialty_type !== 'Comprehensive'; }},
-      {label: "Distance Classes", name: "distance", sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: "This is a distance school.", mismatchLabel: "Not a distance schoool", matchTest: function (s) { return s.distance_education !== false; }},
+      {label: 'Any', name: 'any'},
+      {label: 'Boys', name: 'boys', sql: "s.gender = 'boys'", matchLabel: 'This is a boys school.', mismatchLabel: 'Not a boys school.', matchTest: function (s) { return s.gender === 'boys'; }},
+      {label: 'Girls', name: 'girls', sql: "s.gender = 'girls'", matchLabel: 'This is a girls school.', mismatchLabel: 'Not a girls school.', matchTest: function (s) { return s.gender === 'girls'; }},
+      {label: 'Selective option', name: 'selective', sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: 'This school offers an academically selective option.', mismatchLabel: 'Not offered: academically selective option.', matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
+      {label: 'Intensive English option', name: 'intensive_english', sql: 's.intensive_english_centre ', matchLabel: 'This school has an Intensive English Centre.', mismatchLabel: 'Not offered: Intensive English Centre.', matchTest: function (s) { return s.intensive_english_centre == true; }},
+      {label: 'Specialty option', name: 'specialty', sql: "school_specialty_type NOT IN ('Comprehensive')", matchLabel: 'This school offers specialized classes', mismatchLabel: 'Not offered: specialized classes.', matchTest: function (s) { return s.school_specialty_type !== 'Comprehensive'; }},
+      {label: 'Distance Classes', name: 'distance', sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: 'This is a distance school.', mismatchLabel: 'Not a distance schoool', matchTest: function (s) { return s.distance_education !== false; }},
       ],
       options: [
-      {label: "Include Central/Community (K-12)", name: "central", type: "central"}
+      {label: 'Include Central/Community (K-12)', name: 'central', type: 'central'}
       ],
     },
     supported: {
-      label: "Schools with special support",
+      label: 'Schools with special support',
       //sql = ??? ssp OR (do annoying join)
-      category: "General",
+      category: 'General',
       features: [
-      {label: "Any", name: "any"},
-      {label: "Schools for Specific Purposes"},
-      {label: "Schools with support classes"}
+      {label: 'Any', name: 'any'},
+      {label: 'Schools for Specific Purposes'},
+      {label: 'Schools with support classes'}
       ],
     },
     distance: {
-      label: "Distance / Online",
-      category: "Specific",
+      label: 'Distance / Online',
+      category: 'Specific',
       // sql: "s.distance_education != 'false'",
-      type: "distance",
+      type: 'distance',
     },
     // environmental: {
     //   label: "Environmental Centre",
@@ -90,19 +90,19 @@
     //   type: "environmental",
     // },
     k12: {
-      label: "Central / Community (K-12)",
-      category: "Specific",
-      type: "central",
+      label: 'Central / Community (K-12)',
+      category: 'Specific',
+      type: 'central',
     },
     infants: {
-      label: "Infant (K-2)",
-      category: "Specific",
-      type: "infants",
+      label: 'Infant (K-2)',
+      category: 'Specific',
+      type: 'infants',
     },
     other: {
-      label: "Other",
-      category: "Specific",
-      type: "other",
+      label: 'Other',
+      category: 'Specific',
+      type: 'other',
     }
   };
 
@@ -156,7 +156,7 @@
   };
 
   var selectOption = function (value, text, selected) {
-    var option = document.createElement("option");
+    var option = document.createElement('option');
     option.value = value;
     option.text = text;
     option.selected = selected;
@@ -199,7 +199,7 @@
     control.id = id;
     control.name = name;
     if (onClick)
-      control.addEventListener("click", onClick);
+      control.addEventListener('click', onClick);
     container.appendChild(control);
 
     var label = document.createElement('label');
@@ -296,12 +296,12 @@
       label.htmlFor = 'nearby-schools-type';
       label.innerHTML = 'Type:';
 
-      var selectList = document.createElement("select");
-      selectList.id = "nearby-schools-type";
+      var selectList = document.createElement('select');
+      selectList.id = 'nearby-schools-type';
       selectList.className = 'styled-select type-filter';
       selectList.addEventListener('change', this.getNearbySchoolsFilterOnChange());
 
-      var optgroup = document.createElement("optgroup");
+      var optgroup = document.createElement('optgroup');
       optgroup.label = 'General:';
       selectList.appendChild(optgroup);
 
@@ -328,7 +328,7 @@
         app.state.showNearby = true;
       if (app.state.showNearby)
         app.mapView.loadNearby();
-      $("#nearby-schools-show").prop("checked", app.state.showNearby);
+      $('#nearby-schools-show').prop('checked', app.state.showNearby);
       this.update();
     },
 
@@ -338,7 +338,7 @@
         var selected = $('option:selected', this);
         if (selected.length > 0) {
           var type = $('option:selected', this)[0].value;
-          console.log("Type selected: " + type);
+          console.log('Type selected: ' + type);
           app.state.nearby.type = type;
 
           app.mapView.updateResultsPopups();
@@ -362,12 +362,12 @@
       if (app.state.nearby.showFilters) {
         $('.school-filters', container).show();
         toggleFilterIcon.removeClass('fa-caret-left').addClass('fa-caret-down');
-        toggleFilterButton.title = "Collapse";
+        toggleFilterButton.title = 'Collapse';
         toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       } else {
         $('.school-filters', container).hide();
         toggleFilterIcon.removeClass('fa-caret-down').addClass('fa-caret-left');
-        toggleFilterButton.title = "Expand";
+        toggleFilterButton.title = 'Expand';
         toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       }
 
@@ -380,7 +380,7 @@
 
 
       var support = app.util.support_description();
-      var explanation = support && app.support_needed ? "(supporting " + support + ")" : ""; // app.support_needed
+      var explanation = support && app.support_needed ? '(supporting ' + support + ')' : ''; // app.support_needed
       $('.nearby-schools-filter-explanation', container).text(explanation);
 
       $(container).find('.nearby-schools-feature fieldset').hide();
@@ -400,9 +400,9 @@
       if (app.state.nearby.othersForType[type]) {
         var others = app.state.nearby.othersForType[type]; //others: things like infants, central
 
-        $(".nearby-schools-options input:checkbox", container).prop('checked', false); // reset: uncheck everything
+        $('.nearby-schools-options input:checkbox', container).prop('checked', false); // reset: uncheck everything
         others.forEach(function (otherType) {
-          $("#nearby-" + otherType, container).prop('checked', true);
+          $('#nearby-' + otherType, container).prop('checked', true);
         });
       }
     },
