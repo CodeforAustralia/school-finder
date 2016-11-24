@@ -270,7 +270,7 @@
 
       var spanUI = document.createElement('span');
 
-      var iUI = document.createElement('span');
+      var iUI = document.createElement('i');
       iUI.className = 'fa fa-caret-left';
       spanUI.appendChild(iUI);
       buttonUI.appendChild(spanUI);
