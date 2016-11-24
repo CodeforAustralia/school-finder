@@ -1,0 +1,19 @@
+{
+  "extends": "stylelint-config-standard/",
+  "rules": {
+    "color-hex-case": null,
+
+    "declaration-block-single-line-max-declarations": null,
+    "indentation": null,
+    "selector-list-comma-newline-after": null,
+
+    "at-rule-empty-line-before": null,
+    "comment-empty-line-before": null,
+    "declaration-colon-space-after": null,
+    "max-empty-lines": null,
+    "rule-non-nested-empty-line-before": null,
+    "rule-nested-empty-line-before": null,
+    "selector-pseudo-element-colon-notation": null,
+
+  },
+}
