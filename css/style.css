@@ -69,31 +69,31 @@ body {
 
 
 .footer { margin-bottom: 1.5em; }
-.footer p {color: #f7f6f6; }
+.footer p { color: #f7f6f6; }
 .footer a {
     color: #f7f6f6;
     font-weight: bold;
     padding: 0 0.2em;
 }
-.footer a:hover {  text-decoration: none; border-bottom: 1px solid; }
-.footer .fa-inverse {color:  #76BFD1; }
-.footer .fa-stack {color: #f7f6f6; }
+.footer a:hover { text-decoration: none; border-bottom: 1px solid; }
+.footer .fa-inverse { color:  #76BFD1; }
+.footer .fa-stack { color: #f7f6f6; }
 .footer .icon {
 	position: relative;
 	float: right;
 	top: -5px;
-	margin-left: .3em;
+	margin-left: 0.3em;
 }
 .footer a.icon:hover {
 	border-bottom: none;
 }
 
 a .fa {
-	-webkit-transition: all .33s ease;
-	-moz-transition: all .33s ease;
-	-ms-transition: all .33s ease;
-	-o-transition: all .33s ease;
-	transition: all .33s ease;
+	-webkit-transition: all 0.33s ease;
+	-moz-transition: all 0.33s ease;
+	-ms-transition: all 0.33s ease;
+	-o-transition: all 0.33s ease;
+	transition: all 0.33s ease;
 }
 
 a:hover .fa-circle {
@@ -133,7 +133,7 @@ a:focus .fa-stack-1x {
 .cartodb-logo a:focus:not(:active) img {
     background: rgb(57, 172, 201);
     outline: 1px dashed darkblue !important;
-    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
     padding: 1em;
     color: white;
     display: inline-block;
@@ -151,7 +151,7 @@ a:focus .fa-stack-1x {
     	a.popup-schoolname:focus {
     	    outline: 1px dashed darkblue;
     	    margin: -3px 0;
-    	    padding: 9px 9px;
+    	    padding: 9px;
     	}
 
         /* prevent funny resize (from padding change) when activated (usually by mouse press) */
@@ -173,7 +173,7 @@ a:focus .fa-stack-1x {
 .results-list .btn {
     width: 100%;
     text-align: left;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
     padding: 1em;
 }
 
@@ -195,8 +195,7 @@ a:focus .fa-stack-1x {
 }
 
     .material-radio .btn {
-        /*border: 2px solid transparent;*/
-        transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         color: #333;
         text-shadow: none;
         background-color: transparent;
@@ -207,25 +206,21 @@ a:focus .fa-stack-1x {
 
     .material-radio .btn:hover,
     .material-radio .btn:focus,
-    .material-radio .btn.selected
-    {
+    .material-radio .btn.selected {
         font-weight: bold;
         color: white;
-
         background: rgb(57, 172, 201); /* blue */
     }
     .material-radio .btn.red:hover,
     .material-radio .btn.red:focus,
-    .material-radio .btn.red.selected
-    {
+    .material-radio .btn.red.selected {
         background: rgb(215, 45, 108); /* red */
     }
 
 
     .material-radio .btn:hover,
-    .material-radio .btn:focus
-    {
-        box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    .material-radio .btn:focus {
+        box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
     }
     .material-radio .btn:focus:not(:active) {
         outline: 2px dashed white;
@@ -233,16 +228,15 @@ a:focus .fa-stack-1x {
 
     /* .dimmer added w/ a bit of help from listview.js since CSS can't select backwards */
     /* general sibling ~ selector only goes forwards */
-    /*.material-radio .btn:not(.selected):hover ~ .btn.selected.dimmer,*/
+    /* .material-radio .btn:not(.selected):hover ~ .btn.selected.dimmer, */
     .material-radio .btn.dimmer {
-    	text-shadow: 0 0 1px #3a3a3a;
-
-        background: rgb(154, 208, 213); /* ie8 non-RGBa fallback */
-        background: rgba(57, 172, 201, 0.5); /* lighter blue */
+      text-shadow: 0 0 1px #3a3a3a;
+      background: rgb(154, 208, 213); /* ie8 non-RGBa fallback */
+      background: rgba(57, 172, 201, 0.5); /* lighter blue */
     }
     .material-radio .btn.dimmer.red {
-        background: rgb(233, 145, 167); /* ie8 non-RGBa fallback */
-        background: rgba(215, 45, 108, 0.5); /* lighter red */
+      background: rgb(233, 145, 167); /* ie8 non-RGBa fallback */
+      background: rgba(215, 45, 108, 0.5); /* lighter red */
     }
 
 .results-list .school-distance {
@@ -271,7 +265,10 @@ a:focus .fa-stack-1x {
 
 
 #school-info-container {
-    margin-top: -1em; padding-top: 1em; /* hack so that jumping here keeps part of the map in view */
+    /* margin/padding cancel each other out intentionally
+       adjustment so that jumping here keeps part of the map in view */
+    margin-top: -1em;
+    padding-top: 1em;
 }
 
 
@@ -331,14 +328,13 @@ ul.school-details {
 	height: 100%;
 }
 
-.school-details  a {
+.school-details a {
 	color: white;
 	/* text-decoration: underline; */
 	border-bottom: 1px dotted rgb(225, 225, 225);
 	padding: 0.1em;
 }
-.school-details  a:hover {
-	/*color: #deeef2;*/
+.school-details a:hover {
 	border-bottom: 1px solid white;
 	text-decoration: none;
 }
@@ -387,7 +383,8 @@ ul.school-details {
 	height: 65px;
 	top: 12px;
 	position: relative;
-	margin-right: 5px;}
+	margin-right: 5px;
+}
 
 /* End results */
 
@@ -422,7 +419,7 @@ select#soflow, .styled-select {
    border: 1px solid #AAA;
    color: #555;
    font-size: inherit;
-   margin: 20px 0 20px 0;
+   margin: 20px 0;
    overflow: hidden;
    padding: 5px 10px;
    text-overflow: ellipsis;
@@ -449,7 +446,7 @@ select#soflow, .styled-select {
     background: white;
     background: rgba(152, 110, 110, 0);
     border-top: 1px solid rgb(146, 146, 146);
-    padding-top: .25em;
+    padding-top: 0.25em;
 }
 .nearby-schools-control button.toggle-filters {
 	background: none;
@@ -460,8 +457,7 @@ select#soflow, .styled-select {
 	height: 2em;
 }
 .nearby-schools-control button.toggle-filters:hover,
-.nearby-schools-control button.toggle-filters:focus
-{
+.nearby-schools-control button.toggle-filters:focus {
     background: rgb(57, 172, 201);
     color: white;
 }
@@ -484,7 +480,7 @@ select#soflow, .styled-select {
 }
 #nearby-schools-type {
 	width: 210px;
-	margin: 0.5em 0 1em 0;
+	margin: 0.5em 0 1em;
 }
 
 .nearby-schools-filter-explanation {
@@ -672,7 +668,7 @@ select#soflow, .styled-select {
 	}
 }
 
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) { /*and (orientation : portrait) */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) { /* and (orientation : portrait) */
 	.cartodb-map {
 		height: 310px;
 	}
