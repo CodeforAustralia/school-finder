@@ -269,8 +269,9 @@
       buttonUI.id = 'nearby-schools-control-expand';
 
       var spanUI = document.createElement('span');
+      spanUI.setAttribute('aria-hidden', true);
 
-      var iUI = document.createElement('span');
+      var iUI = document.createElement('i');
       iUI.className = 'fa fa-caret-left';
       spanUI.appendChild(iUI);
       buttonUI.appendChild(spanUI);
