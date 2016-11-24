@@ -1,6 +1,6 @@
 @media print {
 
-	.org-logo a, .block-intro, .block-support, .block-address, .results-list, .leaflet-control, .leaflet-popup-close-button, .cartodb-logo, .results-footer, .footer {
+	.org-logo a, .block-intro, .block-support, .block-address, .results-list, .leaflet-control, .leaflet-popup-close-button, .cartodb-logo, .results-footer, .get-directions, .footer {
 		display: none !important;
 	}
 
@@ -16,9 +16,6 @@
 
 	.field-label {
 		font-weight: bolder;
-	}
-	a.get-directions {
-		display: none;
 	}
 	.fa-stack-1x {
 		background-color:white !important;
