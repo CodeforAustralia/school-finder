@@ -4,6 +4,12 @@ engines:
     enabled: true
   duplication:
     enabled: true
+    # ... CONFIG CONTENT ...
+    exclude_fingerprints:
+    - 86e657794bdefa94748a3cc3863a1819
+    - aae70d598280bb1c4cdabb95c64a30a9
+    - 866f47e60dd2327bae9048020bc62c15
+    # ... CONFIG CONTENT ...
     config:
       languages:
         javascript:
