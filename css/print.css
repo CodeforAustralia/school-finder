@@ -11,8 +11,8 @@
 		margin-bottom: 1em;
 	}
 
-	.leaflet-popup-content {margin:0;}
-	.leaflet-popup {bottom:18px !important;}
+	.leaflet-popup-content { margin:0; }
+	.leaflet-popup { bottom:18px !important; }
 
 	.field-label {
 		font-weight: bolder;
@@ -23,11 +23,11 @@
 	.fa-stack-1x {
 		background-color:white !important;
 	}
-	.school-name {margin-bottom: 0;}
+	.school-name { margin-bottom: 0; }
 	.school-email a:after, .school-website a:after {
 		content:none;
 	}
-	.school-info {border-bottom: none;}
+	.school-info { border-bottom: none; }
 
 	.sitename {
 		padding-right: 0;
