@@ -537,7 +537,7 @@ app = app || {};
         })
         .error(function (err) {
           //log the error
-          console.error(err); // TODO: console.XYZ needs definition on some older browsers
+          console.error(err);
         });
 
 
