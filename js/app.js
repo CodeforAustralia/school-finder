@@ -36,7 +36,7 @@ app = app || {};
     // ensure we're not adding same handler repeatedly
     $('.results-footer-btn').off('click.results-footer-btn');
     $('.results-footer-btn').on('click.results-footer-btn', function () {
-      console.log('clicked "scroll to top" button');
+      app.util.log('clicked "scroll to top" button');
       var target = '#search-start';
       app.ui.scrollAndCenter(target);
     });
@@ -60,7 +60,7 @@ app = app || {};
     q.bySchoolCode(schoolCode).run(function (data) {
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
-        console.log('No luck; go fish!');
+        app.util.log('No luck; go fish!');
         $('#noResultsForNameModal').modal();
       } else {
         updateUI(data.rows);
@@ -68,7 +68,7 @@ app = app || {};
     }).error(function (errors) {
       app.ui.resetSearchBtns();
       // errors contains a list of errors
-      console.log('errors:' + errors);
+      app.util.log('errors:' + errors);
     });
   };
 
@@ -88,7 +88,7 @@ app = app || {};
     q.byName(name).run(function (data) {
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
-        console.log('No luck; go fish!');
+        app.util.log('No luck; go fish!');
         $('#noResultsForNameModal').modal();
       } else if (data.rows.length > 10) {
         $('#tooManyResultsModal .results-count').text(data.rows.length);
@@ -99,7 +99,7 @@ app = app || {};
     }).error(function (errors) {
       app.ui.resetSearchBtns();
       // errors contains a list of errors
-      console.log('errors:' + errors);
+      app.util.log('errors:' + errors);
     });
   };
 
@@ -142,7 +142,7 @@ app = app || {};
         q2.setSupport(app.support_needed);
         q2.setSchoolType(types);
         q2.run(function (data) {
-          console.log(data);
+          app.util.log(data);
           if (data.rows.length < 1) {
             app.ui.resetSearchBtns();
 
@@ -154,7 +154,7 @@ app = app || {};
             $('#noResultsForAddressModal').modal();
             $('#noResultsForAddressModal').on('hidden.bs.modal', function () {
               if (app.support_needed) {
-                console.log('searching again, this time sans support');
+                app.util.log('searching again, this time sans support');
                 app.support_needed = false;
                 $('.block-support select').val('no');
                 $('#button-search-address').click();
@@ -258,7 +258,7 @@ app = app || {};
 
     // $("#address").keyup(function (event) {
     //   if (event.keyCode === 13) {
-    //     console.log("keyup on #address, fake clicking #button-search-address");
+    //     app.util.log("keyup on #address, fake clicking #button-search-address");
     //     $("#button-search-address").click();
     //   }
     // });

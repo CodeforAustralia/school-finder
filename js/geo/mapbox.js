@@ -122,8 +122,8 @@ app = app || {};
           '&autocomplete=true',
 
         geocode: function (options, success, failure) {
-          console.log(mapboxGeocoder.provider + ' geocoding: ');
-          console.log(options);
+          app.util.log(mapboxGeocoder.provider + ' geocoding: ');
+          app.util.log(options);
 
           var query;
           if (options.address) {
@@ -148,8 +148,8 @@ app = app || {};
           $.getJSON(url)
             .done(function( data ) {
               var time = Date.now() - start;
-              console.log('geocoder gives these results in ' + time + ' milleseconds:');
-              console.log(data);
+              app.util.log('geocoder gives these results in ' + time + ' milleseconds:');
+              app.util.log(data);
 
               var haveResponses = typeof data.features !== 'undefined' && data.features.length > 0;
               if (haveResponses) {
@@ -217,8 +217,8 @@ app = app || {};
             delay: 0, // pause after typing, in millesecond, before searching
             source: this.autocompleter,
             // change: function( event, ui ) {
-            //   console.log('autocomplete change');
-            //   console.log(ui);
+            //   app.util.log('autocomplete change');
+            //   app.util.log(ui);
             // }
           });
 

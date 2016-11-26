@@ -62,9 +62,10 @@ app = app || {};
     return function onMarkerDragEnd () {
       marker.closePopup();
       var ll = M.getMarkerLatLng(marker);
-      console.log(ll);
+      app.util.log(ll);
       app.lat = ll.lat;
       app.lng = ll.lng;
+
       // reverse geocode to grab the selected address, then get results.
       app.reverseGeocode(app.findByLocation);
       app.mapView.homeMarker = marker;
@@ -227,7 +228,7 @@ app = app || {};
     }
     q.run(function (data) {
       // add schools (except this one, already added) to map
-      console.log(data);
+      app.util.log(data);
       if (data.rows.length < 1) {
 
         app.util.log('No results visible; re-doing search and zooming...');
@@ -237,7 +238,7 @@ app = app || {};
         // on the school they must have searched for.
         var lat = app.lat || app.schoolView.school.latitude;
         var lng = app.lng || app.schoolView.school.longitude;
-        if (!lat || !lng) { console.log('yikes, we have no lat/lng to search around!'); }
+        if (!lat || !lng) { app.util.log('yikes, we have no lat/lng to search around!'); }
 
         q2.setSchoolType(type, true).setSupport(app.support_needed)
           .where('s.school_code NOT IN (' +  _.pluck(that.schools.schools, 'school_code') + ')')

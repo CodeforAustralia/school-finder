@@ -221,12 +221,12 @@
 
   var radioClick = function () {
     var featureName = $(this).attr('value');
-    console.log('doing stuff for feature: ' + featureName);
+    app.util.log('doing stuff for feature: ' + featureName);
     var type = app.state.nearby.type;
     var feature = _.find(filters[type].features, function (feature) {
       return feature.name === featureName;
     });
-    console.log(feature);
+    app.util.log(feature);
     if (feature) {
       app.state.nearby.filterFeatureForType[type] = feature;
     }
@@ -338,7 +338,7 @@
         var selected = $('option:selected', this);
         if (selected.length > 0) {
           var type = $('option:selected', this)[0].value;
-          console.log('Type selected: ' + type);
+          app.util.log('Type selected: ' + type);
           app.state.nearby.type = type;
 
           app.mapView.updateResultsPopups();

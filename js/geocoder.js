@@ -163,7 +163,7 @@ $(function () {
 
         var data = cache[key];
         if (data) { // use cached geocoder response
-          console.log('Using cached geocoder results for query "' + key + '".');
+          app.util.log('Using cached geocoder results for query "' + key + '".');
           success(data);
         } else {
           return geocoder.geocode(

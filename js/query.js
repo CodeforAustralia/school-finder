@@ -305,8 +305,8 @@ app = app || {};
 
     this.logQuery(whereCondition);
     
-    console.log('running query:');
-    console.log(query);
+    app.util.log('running query:');
+    app.util.log(query);
 
     this.execSql = app.sql.execute(query).done(callback);
 

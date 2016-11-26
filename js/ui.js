@@ -88,7 +88,7 @@ app.ui = app.ui || {};
       var inputText = $('#' + inputId).val();
 
       if (!inputText) {
-        console.log('nothing entered to search for, not trying!');
+        app.util.log('nothing entered to search for, not trying!');
         setTimeout(function () {app.ui.resetSearchBtns(); }, 200);
       } else {
         processInput(inputText);
