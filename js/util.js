@@ -55,6 +55,14 @@ app.util = app.util || {};
     app.sql.execute(query).done(processResults);
   };
 
+  // polyfill console object so IE9 & below don't give 'console is undefined' errors
+  // based on http://stackoverflow.com/a/11638491/1024811
+  window.console = window.console || (function() {
+    var c = {};
+    c.log = c.warn = c.debug = c.info = c.error = function(){};
+    return c;
+  })();
+
   if (app.debug) {
     app.util.log = console.log.bind(console); // eslint-disable-line no-console
   } else {
