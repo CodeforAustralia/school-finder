@@ -146,6 +146,7 @@ app.M = (function() {
         var schoolsControl = new app.M.MapControlSchoolsFilter();
         mapX.schoolsControl = schoolsControl;
         schoolsControl.update(); // initialize
+        L.DomEvent.disableClickPropagation(schoolsControl.container);
         return schoolsControl.container;
       }
     });
