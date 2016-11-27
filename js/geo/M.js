@@ -346,6 +346,21 @@ app.M = (function() {
       return new M.classes[M.provider]['marker'](latLng, mapOptions);
     },
 
+    // works with either Leaflet or Google markers
+    // returns an object with lat and lng properties.
+    getMarkerLatLng: function (marker) {
+      var ll = marker.getLatLng();
+      var lat, lng;
+      if (typeof ll.lat === 'function') {
+        lat = ll.lat();
+        lng = ll.lng(); // Google LatLng uses methods
+      } else {
+        lat = ll.lat;
+        lng = ll.lng;  // Leaflet just has properties
+      }
+      return app.LatLng(lat,lng);
+    },
+
     markerSet: function (markers) {
       // take an array of markers and create a map specific set of them
       if (M.provider === 'google') {
