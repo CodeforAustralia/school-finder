@@ -411,10 +411,6 @@ ul.school-details {
    -moz-appearance: none;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-   -webkit-padding-end: 20px;
-   -moz-padding-end: 20px;
-   -webkit-padding-start: 2px;
-   -moz-padding-start: 2px;
     background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
    background-position: 97% center;
    background-repeat: no-repeat;
@@ -423,7 +419,7 @@ ul.school-details {
    font-size: inherit;
    margin: 20px 0;
    overflow: hidden;
-   padding: 5px 10px;
+   padding: 5px 30px 5px 2px;
    text-overflow: ellipsis;
    white-space: nowrap;
    width: 300px;
