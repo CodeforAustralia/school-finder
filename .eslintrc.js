@@ -26,10 +26,14 @@ module.exports = {
             "error",
             "unix"
         ],
-        "no-console": 0, // TODO disable for production http://eslint.org/docs/rules/no-console
+        "no-console": [
+            "error",
+            { allow: ["error"] }
+        ],
         "quotes": [
             "warn",
-            "single"
+            "single",
+            { "avoidEscape": true }
         ],
         "semi": [
             "error",

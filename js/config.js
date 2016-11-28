@@ -27,40 +27,40 @@ app = app || {};
     // An array of icon names can be found in L.MakiMarkers.icons or at https://www.mapbox.com/maki/
     // Lowercase letters a-z and digits 0-9 can also be used. A value of null will result in no icon.
     // Color may also be set to null, which will result in a gray marker.
-    pickedIcon: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "l"}),
+    pickedIcon: L.MakiMarkers.icon({icon: 'school', color: '#d72d6c', size: 'l'}),
     pickedIcons: {
-      ssp: L.MakiMarkers.icon({icon: "school", color: "#279644", size: "l"}),
+      ssp: L.MakiMarkers.icon({icon: 'school', color: '#279644', size: 'l'}),
       // TODO: that green looks like the active primary color for color blind people.
-      primary: L.MakiMarkers.icon({icon: "school", color: "#e65c5c", size: "l"}),
-      secondary: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "l"}),
-      central: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "l"}),
-      infants: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
-      environmental: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
-      other: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "l"}),
+      primary: L.MakiMarkers.icon({icon: 'school', color: '#e65c5c', size: 'l'}),
+      secondary: L.MakiMarkers.icon({icon: 'school', color: '#a441b2', size: 'l'}),
+      central: L.MakiMarkers.icon({icon: 'school', color: '#a441b2', size: 'l'}),
+      infants: L.MakiMarkers.icon({icon: 'school', color: '#2a4ce0', size: 'l'}),
+      environmental: L.MakiMarkers.icon({icon: 'school', color: '#2a4ce0', size: 'l'}),
+      other: L.MakiMarkers.icon({icon: 'school', color: '#2a4ce0', size: 'l'}),
     },
-    resultIcon: L.MakiMarkers.icon({icon: "school", color: "#d72d6c", size: "m"}),
+    resultIcon: L.MakiMarkers.icon({icon: 'school', color: '#d72d6c', size: 'm'}),
     resultIcons: {
-      ssp: L.MakiMarkers.icon({icon: "school", color: "#279644", size: "m"}),
+      ssp: L.MakiMarkers.icon({icon: 'school', color: '#279644', size: 'm'}),
       // TODO: that green looks like the active primary color for color blind people.
-      primary: L.MakiMarkers.icon({icon: "school", color: "#e65c5c", size: "m"}),
-      secondary: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "m"}),
-      central: L.MakiMarkers.icon({icon: "school", color: "#a441b2", size: "m"}),
-      infants: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
-      environmental: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
-      other: L.MakiMarkers.icon({icon: "school", color: "#2a4ce0", size: "m"}),
+      primary: L.MakiMarkers.icon({icon: 'school', color: '#e65c5c', size: 'm'}),
+      secondary: L.MakiMarkers.icon({icon: 'school', color: '#a441b2', size: 'm'}),
+      central: L.MakiMarkers.icon({icon: 'school', color: '#a441b2', size: 'm'}),
+      infants: L.MakiMarkers.icon({icon: 'school', color: '#2a4ce0', size: 'm'}),
+      environmental: L.MakiMarkers.icon({icon: 'school', color: '#2a4ce0', size: 'm'}),
+      other: L.MakiMarkers.icon({icon: 'school', color: '#2a4ce0', size: 'm'}),
     },
-    nearbyIcon: L.MakiMarkers.icon({icon: "school", color: "#F5B4CC", size: "m", opacity: 0.5}),
+    nearbyIcon: L.MakiMarkers.icon({icon: 'school', color: '#F5B4CC', size: 'm', opacity: 0.5}),
     nearbyIcons: {
-      ssp: L.MakiMarkers.icon({icon: "school", color: "#6ba87b", size: "m", opacity: 0.5}),
+      ssp: L.MakiMarkers.icon({icon: 'school', color: '#6ba87b', size: 'm', opacity: 0.5}),
       // TODO: that green looks like the active primary color for color blind people.
-      primary: L.MakiMarkers.icon({icon: "school", color: "#ff9191", size: "m", opacity: 0.5}),
-      secondary: L.MakiMarkers.icon({icon: "school", color: "#da99e3", size: "m", opacity: 0.5}),
-      central: L.MakiMarkers.icon({icon: "school", color: "#DA99E3", size: "m", opacity: 0.5}),
-      infants: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
-      environmental: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
-      other: L.MakiMarkers.icon({icon: "school", color: "#2e93c9", size: "m", opacity: 0.5}),
+      primary: L.MakiMarkers.icon({icon: 'school', color: '#ff9191', size: 'm', opacity: 0.5}),
+      secondary: L.MakiMarkers.icon({icon: 'school', color: '#da99e3', size: 'm', opacity: 0.5}),
+      central: L.MakiMarkers.icon({icon: 'school', color: '#DA99E3', size: 'm', opacity: 0.5}),
+      infants: L.MakiMarkers.icon({icon: 'school', color: '#2e93c9', size: 'm', opacity: 0.5}),
+      environmental: L.MakiMarkers.icon({icon: 'school', color: '#2e93c9', size: 'm', opacity: 0.5}),
+      other: L.MakiMarkers.icon({icon: 'school', color: '#2e93c9', size: 'm', opacity: 0.5}),
     },
-    homeIcon:   L.MakiMarkers.icon({icon: "building", color: "#39acc9", size: "m"}),
+    homeIcon:   L.MakiMarkers.icon({icon: 'building', color: '#39acc9', size: 'm'}),
   };
 
   app.config = {
@@ -92,18 +92,18 @@ app = app || {};
   // };
 
   app.supports = [
-    { id: 0, shortcode: "ignoreme" },
-    { id: 1, shortcode: "AU", filter: "Autism", long_description: "students with autism"},
-    { id: 2, shortcode: "BD", filter: "Behaviour disorder", long_description: "students with behaviour disorder"},
-    { id: 3, shortcode: "DB", filter: "Deaf or blind", long_description: "students with deafness or hearing impairment and blindness or vision impairment"},
-    { id: 4, shortcode: "EI", filter: "Early intervention", long_description: "students with early intervention support needs"},
-    { id: 5, shortcode: "ED", filter: "Emotional disturbance", long_description: "students with emotional disturbance"},
-    { id: 6, shortcode: "H", filter: "Hearing impairment", long_description: "students with deafness or hearing impairment"},
-    { id: 7, shortcode: "ID", filter: "Intellectual disability", long_description: "students with intellectual disability"},
-    { id: 8, shortcode: "Multicategorical", filter: "Multicategorical", long_description: "students with a range of disabilities with similar support needs"},
-    { id: 9, shortcode: "P", filter: "Physical disability", long_description: "students with physical disability"},
-    { id: 10, shortcode: "Tut", filter: "Tutorial Centre", long_description: "Tutorial Centre for students with intensive behaviour and educational support needs"},
-    { id: 11, shortcode: "V", filter: "Vision impairment", long_description: "students with blindness or vision impairment"},
+    { id: 0, shortcode: 'ignoreme' },
+    { id: 1, shortcode: 'AU', filter: 'Autism', long_description: 'students with autism'},
+    { id: 2, shortcode: 'BD', filter: 'Behaviour disorder', long_description: 'students with behaviour disorder'},
+    { id: 3, shortcode: 'DB', filter: 'Deaf or blind', long_description: 'students with deafness or hearing impairment and blindness or vision impairment'},
+    { id: 4, shortcode: 'EI', filter: 'Early intervention', long_description: 'students with early intervention support needs'},
+    { id: 5, shortcode: 'ED', filter: 'Emotional disturbance', long_description: 'students with emotional disturbance'},
+    { id: 6, shortcode: 'H', filter: 'Hearing impairment', long_description: 'students with deafness or hearing impairment'},
+    { id: 7, shortcode: 'ID', filter: 'Intellectual disability', long_description: 'students with intellectual disability'},
+    { id: 8, shortcode: 'Multicategorical', filter: 'Multicategorical', long_description: 'students with a range of disabilities with similar support needs'},
+    { id: 9, shortcode: 'P', filter: 'Physical disability', long_description: 'students with physical disability'},
+    { id: 10, shortcode: 'Tut', filter: 'Tutorial Centre', long_description: 'Tutorial Centre for students with intensive behaviour and educational support needs'},
+    { id: 11, shortcode: 'V', filter: 'Vision impairment', long_description: 'students with blindness or vision impairment'},
   ];
 
 }());

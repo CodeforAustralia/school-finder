@@ -35,8 +35,8 @@ app = app || {};
 
     // ensure we're not adding same handler repeatedly
     $('.results-footer-btn').off('click.results-footer-btn');
-    $('.results-footer-btn').on('click.results-footer-btn', function (e) {
-      console.log('clicked "scroll to top" button');
+    $('.results-footer-btn').on('click.results-footer-btn', function () {
+      app.util.log('clicked "scroll to top" button');
       var target = '#search-start';
       app.ui.scrollAndCenter(target);
     });
@@ -60,7 +60,7 @@ app = app || {};
     q.bySchoolCode(schoolCode).run(function (data) {
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
-        console.log("No luck; go fish!");
+        app.util.log('No luck; go fish!');
         $('#noResultsForNameModal').modal();
       } else {
         updateUI(data.rows);
@@ -68,7 +68,7 @@ app = app || {};
     }).error(function (errors) {
       app.ui.resetSearchBtns();
       // errors contains a list of errors
-      console.log("errors:" + errors);
+      app.util.log('errors:' + errors);
     });
   };
 
@@ -88,7 +88,7 @@ app = app || {};
     q.byName(name).run(function (data) {
       app.ui.resetSearchBtns();
       if (data.rows.length < 1) {
-        console.log("No luck; go fish!");
+        app.util.log('No luck; go fish!');
         $('#noResultsForNameModal').modal();
       } else if (data.rows.length > 10) {
         $('#tooManyResultsModal .results-count').text(data.rows.length);
@@ -99,7 +99,7 @@ app = app || {};
     }).error(function (errors) {
       app.ui.resetSearchBtns();
       // errors contains a list of errors
-      console.log("errors:" + errors);
+      app.util.log('errors:' + errors);
     });
   };
 
@@ -121,10 +121,10 @@ app = app || {};
     // generally school level equals age level (set through the big .block-intro buttons)...
     var school_level = app.level;
     // ... but primary aged kids (K-12) can go to either Primary (K-6) or Infant (K-2) schools
-    if (app.level === "primary") {
+    if (app.level === 'primary') {
       school_level = ['primary', 'infants'];
     }
-    q.byCatchment(lat, lng).addFilter("catchment_level", school_level).setSupport(app.support_needed);
+    q.byCatchment(lat, lng).addFilter('catchment_level', school_level).setSupport(app.support_needed);
 
     q.run(function (data) {
       if (data.rows.length < 1) {
@@ -142,7 +142,7 @@ app = app || {};
         q2.setSupport(app.support_needed);
         q2.setSchoolType(types);
         q2.run(function (data) {
-          console.log(data);
+          app.util.log(data);
           if (data.rows.length < 1) {
             app.ui.resetSearchBtns();
 
@@ -154,10 +154,10 @@ app = app || {};
             $('#noResultsForAddressModal').modal();
             $('#noResultsForAddressModal').on('hidden.bs.modal', function () {
               if (app.support_needed) {
-                console.log('searching again, this time sans support');
+                app.util.log('searching again, this time sans support');
                 app.support_needed = false;
                 $('.block-support select').val('no');
-                $("#button-search-address").click();
+                $('#button-search-address').click();
               }
             });
           }
@@ -189,13 +189,13 @@ app = app || {};
       $('#address').val('');
     };
 
-    app.modalNoResultsTemplate = Handlebars.compile($("#modal-no-result-template").html());
+    app.modalNoResultsTemplate = Handlebars.compile($('#modal-no-result-template').html());
 
     var clickSchoolType = function (e) {
       e.preventDefault();
       app.level = e.data.level;
       // jump to the address search
-      $(".block-address").show();
+      $('.block-address').show();
 
       if (!app.support_needed && app.support_needed_previously) {
         app.support = app.support_previously;
@@ -207,47 +207,47 @@ app = app || {};
     };
 
     var clickShowSupport = function (e) {
-        e.preventDefault();
+      e.preventDefault();
 
-        $(".block-show-support").show();
-        app.ui.scrollAndCenter('.block-show-support');
-      };
+      $('.block-show-support').show();
+      app.ui.scrollAndCenter('.block-show-support');
+    };
 
     var clickShowAddress = function (e) {
-          e.preventDefault();
+      e.preventDefault();
 
-          $(".block-address").show();
-          app.ui.scrollAndCenter('.block-address');
-        };
+      $('.block-address').show();
+      app.ui.scrollAndCenter('.block-address');
+    };
 
     var clickSupport = function (e) {
       e.preventDefault();
-      var support_option = $("#soflow").find('option:selected').val();
+      var support_option = $('#soflow').find('option:selected').val();
 
       app.support_needed = app.support_needed_previously = !(support_option === 'no');
       if (app.support_needed) {
         app.support = app.support_previously = support_option;
       }
 
-      $(".block-address").show();
+      $('.block-address').show();
       app.ui.scrollAndCenter('.block-address');
     };
 
-    $(".btn.primary").click({level: 'primary'}, clickSchoolType);
-    $(".btn.secondary").click({level: 'secondary'}, clickSchoolType);
+    $('.btn.primary').click({level: 'primary'}, clickSchoolType);
+    $('.btn.secondary').click({level: 'secondary'}, clickSchoolType);
 
-    $(".btn.show-support").click(clickShowSupport);
-    $(".btn.no-support").click(clickShowAddress);
+    $('.btn.show-support').click(clickShowSupport);
+    $('.btn.no-support').click(clickShowAddress);
 
-    $(".block-show-support .search").click(clickSupport);
+    $('.block-show-support .search').click(clickSupport);
     // $(".btn.search").click(clickShowAddress);
 
-    $("#button-search-address").click(app.ui.searchBtnFunction(function () {
+    $('#button-search-address').click(app.ui.searchBtnFunction(function () {
       // Geocode address then show results
       app.geocodeAddress(app.findByLocation);
     }));
 
-    $("#button-search-name").click(app.ui.searchBtnFunction(function (inputText) {
+    $('#button-search-name').click(app.ui.searchBtnFunction(function (inputText) {
       $('.block-address').hide();
       app.support_needed = false;
       app.support = 'no';
@@ -258,12 +258,12 @@ app = app || {};
 
     // $("#address").keyup(function (event) {
     //   if (event.keyCode === 13) {
-    //     console.log("keyup on #address, fake clicking #button-search-address");
+    //     app.util.log("keyup on #address, fake clicking #button-search-address");
     //     $("#button-search-address").click();
     //   }
     // });
 
-    $("#schoolname").autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
+    $('#schoolname').autocomplete({minLength: 3, delay: 700, source: app.util.schoolNameCompleter });
 
     // DEBUG: jump right to the map
     // $(".btn.primary").click();
@@ -271,19 +271,19 @@ app = app || {};
     // $('#address').val("Newtown, NSW");
     // $("#button-search-address").click();
 
-	var school_code = getUrlVars()["school_code"];
-	if (school_code){
-		app.findBySchoolCode(school_code);
-	}
+    var school_code = getUrlVars()['school_code'];
+    if (school_code){
+      app.findBySchoolCode(school_code);
+    }
   });
 
 }());
 
 function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+  var vars = {};
+  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
     function(m,key,value) {
       vars[key] = value;
     });
-    return vars;
+  return vars;
 }

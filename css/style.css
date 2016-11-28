@@ -1,19 +1,23 @@
-html, body {width:100%; height:100%; padding: 0; margin: 0;}
-body { background-color: #39acc9; color: #3e3e3e;
-	font-family: 'Source Sans Pro','Proxima Nova','Helvetica Neue',Helvetica,'Open Sans',Arial,sans-serif;
-	font-weight: normal;
+html, body { width: 100%; height: 100%; padding: 0; margin: 0; }
+body {
+  background-color: #39acc9;
+  color: #3e3e3e;
+  font-family: 'Source Sans Pro', 'Proxima Nova', 'Helvetica Neue', Helvetica, 'Open Sans', Arial, sans-serif;
+  font-weight: normal;
 }
-.header h3 {color: #f7f6f6;
-	margin-top: 0.5em;
-	padding-bottom: 0px;
-	font-size: 34px;
+
+.header h3 {
+  color: #f7f6f6;
+  margin-top: 0.5em;
+  padding-bottom: 0;
+  font-size: 34px;
 }
 .sitename {
-    text-align: right;
+  text-align: right;
 }
 .sitename, .results-list .btn, .results-footer-btn, footer {
-	text-shadow: 0px 0px 1px #375a63;
-	text-shadow: 0px 0px 1px rgb(55, 90, 99);
+	text-shadow: 0 0 1px #375a63;
+	text-shadow: 0 0 1px rgb(55, 90, 99);
 }
 .org-logo img {
 	height: 48px;
@@ -24,16 +28,16 @@ body { background-color: #39acc9; color: #3e3e3e;
 .results-footer-btn:focus,
 .footer a:focus,
 .school-details a:focus {
-    box-shadow: 0px 0px 10px white; /* stand out against blue page background */
+    box-shadow: 0 0 10px white; /* stand out against blue page background */
 }
 
 .block-intro input, .block-address input, .block-support select {
 	font-weight: normal;
 }
-.container .jumbotron { background-color: #f7f6f6; border-radius: 0px; margin-bottom: 25em;}
+.container .jumbotron { background-color: #f7f6f6; border-radius: 0; margin-bottom: 25em; }
 .btn {
 	border: none;
-	border-radius: 0px;
+	border-radius: 0;
 	background-color: rgb(215, 45, 108);
 	color: white;
 }
@@ -65,31 +69,31 @@ body { background-color: #39acc9; color: #3e3e3e;
 
 
 .footer { margin-bottom: 1.5em; }
-.footer p {color: #f7f6f6;}
+.footer p { color: #f7f6f6; }
 .footer a {
     color: #f7f6f6;
     font-weight: bold;
     padding: 0 0.2em;
 }
-.footer a:hover {  text-decoration: none; border-bottom: 1px solid; }
-.footer .fa-inverse {color:  #76BFD1;}
-.footer .fa-stack {color: #f7f6f6;}
+.footer a:hover { text-decoration: none; border-bottom: 1px solid; }
+.footer .fa-inverse { color:  #76BFD1; }
+.footer .fa-stack { color: #f7f6f6; }
 .footer .icon {
 	position: relative;
 	float: right;
 	top: -5px;
-	margin-left: .3em;
+	margin-left: 0.3em;
 }
 .footer a.icon:hover {
 	border-bottom: none;
 }
 
 a .fa {
-	-webkit-transition: all .33s ease;
-	-moz-transition: all .33s ease;
-	-ms-transition: all .33s ease;
-	-o-transition: all .33s ease;
-	transition: all .33s ease;
+	-webkit-transition: all 0.33s ease;
+	-moz-transition: all 0.33s ease;
+	-ms-transition: all 0.33s ease;
+	-o-transition: all 0.33s ease;
+	transition: all 0.33s ease;
 }
 
 a:hover .fa-circle {
@@ -129,7 +133,7 @@ a:focus .fa-stack-1x {
 .cartodb-logo a:focus:not(:active) img {
     background: rgb(57, 172, 201);
     outline: 1px dashed darkblue !important;
-    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
     padding: 1em;
     color: white;
     display: inline-block;
@@ -147,7 +151,7 @@ a:focus .fa-stack-1x {
     	a.popup-schoolname:focus {
     	    outline: 1px dashed darkblue;
     	    margin: -3px 0;
-    	    padding: 9px 9px;
+    	    padding: 9px;
     	}
 
         /* prevent funny resize (from padding change) when activated (usually by mouse press) */
@@ -169,7 +173,7 @@ a:focus .fa-stack-1x {
 .results-list .btn {
     width: 100%;
     text-align: left;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
     padding: 1em;
 }
 
@@ -191,8 +195,7 @@ a:focus .fa-stack-1x {
 }
 
     .material-radio .btn {
-        /*border: 2px solid transparent;*/
-        transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         color: #333;
         text-shadow: none;
         background-color: transparent;
@@ -203,25 +206,21 @@ a:focus .fa-stack-1x {
 
     .material-radio .btn:hover,
     .material-radio .btn:focus,
-    .material-radio .btn.selected
-    {
+    .material-radio .btn.selected {
         font-weight: bold;
         color: white;
-
         background: rgb(57, 172, 201); /* blue */
     }
     .material-radio .btn.red:hover,
     .material-radio .btn.red:focus,
-    .material-radio .btn.red.selected
-    {
+    .material-radio .btn.red.selected {
         background: rgb(215, 45, 108); /* red */
     }
 
 
     .material-radio .btn:hover,
-    .material-radio .btn:focus
-    {
-        box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    .material-radio .btn:focus {
+        box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
     }
     .material-radio .btn:focus:not(:active) {
         outline: 2px dashed white;
@@ -229,16 +228,15 @@ a:focus .fa-stack-1x {
 
     /* .dimmer added w/ a bit of help from listview.js since CSS can't select backwards */
     /* general sibling ~ selector only goes forwards */
-    /*.material-radio .btn:not(.selected):hover ~ .btn.selected.dimmer,*/
+    /* .material-radio .btn:not(.selected):hover ~ .btn.selected.dimmer, */
     .material-radio .btn.dimmer {
-    	text-shadow: 0 0 1px #3a3a3a;
-
-        background: rgb(154, 208, 213); /* ie8 non-RGBa fallback */
-        background: rgba(57, 172, 201, 0.5); /* lighter blue */
+      text-shadow: 0 0 1px #3a3a3a;
+      background: rgb(154, 208, 213); /* ie8 non-RGBa fallback */
+      background: rgba(57, 172, 201, 0.5); /* lighter blue */
     }
     .material-radio .btn.dimmer.red {
-        background: rgb(233, 145, 167); /* ie8 non-RGBa fallback */
-        background: rgba(215, 45, 108, 0.5); /* lighter red */
+      background: rgb(233, 145, 167); /* ie8 non-RGBa fallback */
+      background: rgba(215, 45, 108, 0.5); /* lighter red */
     }
 
 .results-list .school-distance {
@@ -257,8 +255,8 @@ a:focus .fa-stack-1x {
 
 @media (min-width: 980px) { /* desktop and up */
 	.school-details-container {
-		margin-right: 0px;
-		margin-left: 0px;
+		margin-right: 0;
+		margin-left: 0;
 	}
 	.school-email a, .school-website a {
 		font-size: small; /* so it fits in one line */
@@ -267,7 +265,10 @@ a:focus .fa-stack-1x {
 
 
 #school-info-container {
-    margin-top: -1em; padding-top: 1em; /* hack so that jumping here keeps part of the map in view */
+    /* margin/padding cancel each other out intentionally
+       adjustment so that jumping here keeps part of the map in view */
+    margin-top: -1em;
+    padding-top: 1em;
 }
 
 
@@ -286,16 +287,15 @@ a:focus .fa-stack-1x {
 }
 .school-details .field-label {
 	color: rgb(189, 239, 252); /* based on background blue but lighter for readability */
-	text-shadow: 0px 0px 1px #3e3e3e;
+	text-shadow: 0 0 1px #3e3e3e;
 	font-weight: bold;
 }
 .expandable-text .body { display:none; }
 
 a.readmore {
 	font-weight: bold;
-	color: inherit;
 	text-decoration: none;
-    color: #717171;
+	color: #717171;
 }
 .readmore span {
      margin-left: 4px;
@@ -328,14 +328,13 @@ ul.school-details {
 	height: 100%;
 }
 
-.school-details  a {
+.school-details a {
 	color: white;
 	/* text-decoration: underline; */
 	border-bottom: 1px dotted rgb(225, 225, 225);
 	padding: 0.1em;
 }
-.school-details  a:hover {
-	/*color: #deeef2;*/
+.school-details a:hover {
 	border-bottom: 1px solid white;
 	text-decoration: none;
 }
@@ -384,7 +383,8 @@ ul.school-details {
 	height: 65px;
 	top: 12px;
 	position: relative;
-	margin-right: 5px;}
+	margin-right: 5px;
+}
 
 /* End results */
 
@@ -406,20 +406,22 @@ ul.school-details {
 
 /* -------------------- Select Box Styles: stackoverflow.com Method */
 /* -------------------- Source: http://stackoverflow.com/a/5809186 */
-select#soflow, .styled-select {
+#soflow, .styled-select {
    -webkit-appearance: button;
-   -webkit-border-radius: 2px;
-   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+   -moz-appearance: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
    -webkit-padding-end: 20px;
+   -moz-padding-end: 20px;
    -webkit-padding-start: 2px;
-   -webkit-user-select: none;
+   -moz-padding-start: 2px;
     background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
    background-position: 97% center;
    background-repeat: no-repeat;
    border: 1px solid #AAA;
    color: #555;
    font-size: inherit;
-   margin: 20px 0 20px 0;
+   margin: 20px 0;
    overflow: hidden;
    padding: 5px 10px;
    text-overflow: ellipsis;
@@ -434,17 +436,19 @@ select#soflow, .styled-select {
 	width: 142px;
 }
 .nearby-schools-control {
+	background-color: #f8f8f8;
 	background-color: rgba(255, 255, 255, 0.85);
 	padding: 1em;
 	margin: 1em;
 }
-.nearby-schools-control a.close {
+.nearby-schools-control .close {
     width: 100%;
     font-weight: bold;
     color: black;
+    background: white;
     background: rgba(152, 110, 110, 0);
     border-top: 1px solid rgb(146, 146, 146);
-    padding-top: .25em;
+    padding-top: 0.25em;
 }
 .nearby-schools-control button.toggle-filters {
 	background: none;
@@ -455,8 +459,7 @@ select#soflow, .styled-select {
 	height: 2em;
 }
 .nearby-schools-control button.toggle-filters:hover,
-.nearby-schools-control button.toggle-filters:focus
-{
+.nearby-schools-control button.toggle-filters:focus {
     background: rgb(57, 172, 201);
     color: white;
 }
@@ -479,7 +482,7 @@ select#soflow, .styled-select {
 }
 #nearby-schools-type {
 	width: 210px;
-	margin: 0.5em 0 1em 0;
+	margin: 0.5em 0 1em;
 }
 
 .nearby-schools-filter-explanation {
@@ -507,10 +510,11 @@ select#soflow, .styled-select {
 }
 
 .nearby-schools-control input {
-    margin: 0em 3px 0.25em 0;
+    margin: 0 3px 0.25em 0;
 }
 
-input#nearby-girls {
+/* input#nearby-girls */
+#nearby-girls {
 	margin-left:1em;
 }
 
@@ -527,13 +531,14 @@ input#nearby-girls {
 	}
 }
 .container {
-	padding-left: 0px;
-	padding-right: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .leaflet-popup-content-wrapper {
+	background-color: #f8f8f8; /* fallback */
 	/* give a little transparency so we don't totally hide other markers. */
 	background-color: rgba(255, 255, 255, 0.9);
 }
@@ -578,6 +583,7 @@ input#nearby-girls {
 .results-footer-btn {
 	display: block;
 	padding: 2em;
+	border: 1px solid #64bcd2; /* fallback */
 	border: 1px solid rgba(255, 255, 255, 0.19);
 	background-color: transparent;
 	width: 100%;
@@ -605,13 +611,13 @@ input#nearby-girls {
 	font-size: 18px;
 	margin-bottom: 1em;
 }
-.jumbotron p.lead {
+.jumbotron .lead {
 	margin-bottom: 1em;
 	margin-top: 1em;
 }
 .jumbotron .disclaimer {
 	margin-top: 24px;
-	margin-bottom: 0em;
+	margin-bottom: 0;
 }
 
 .jumbotron .lesser-text {
@@ -664,8 +670,7 @@ input#nearby-girls {
 	}
 }
 
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-	 /*and (orientation : portrait) */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) { /* and (orientation : portrait) */
 	.cartodb-map {
 		height: 310px;
 	}

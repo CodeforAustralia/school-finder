@@ -1,6 +1,6 @@
 @media print {
 
-	.org-logo a, .block-intro, .block-support, .block-address, .results-list, .leaflet-control, .leaflet-popup-close-button, .cartodb-logo, .results-footer, .footer {
+	.org-logo a, .block-intro, .block-support, .block-address, .results-list, .leaflet-control, .leaflet-popup-close-button, .cartodb-logo, .results-footer, .get-directions, .footer {
 		display: none !important;
 	}
 
@@ -11,23 +11,20 @@
 		margin-bottom: 1em;
 	}
 
-	.leaflet-popup-content {margin:0;}
-	.leaflet-popup {bottom:18px !important;}
+	.leaflet-popup-content { margin:0; }
+	.leaflet-popup { bottom:18px !important; }
 
 	.field-label {
 		font-weight: bolder;
 	}
-	a.get-directions {
-		display: none;
-	}
 	.fa-stack-1x {
 		background-color:white !important;
 	}
-	.school-name {margin-bottom: 0;}
+	.school-name { margin-bottom: 0; }
 	.school-email a:after, .school-website a:after {
 		content:none;
 	}
-	.school-info {border-bottom: none;}
+	.school-info { border-bottom: none; }
 
 	.sitename {
 		padding-right: 0;

@@ -101,8 +101,8 @@ app = app || {};
             // google reverse geocoder doesn't take additional restrictions as above
             geocoderOptions = {'location': options.latLng};
           }
-          console.log(googleGeocoder.provider + ' geocoding: ');
-          console.log(geocoderOptions);
+          app.util.log(googleGeocoder.provider + ' geocoding: ');
+          app.util.log(geocoderOptions);
 
           googleGeocoder.service.geocode(geocoderOptions, function (results, status) {
             if (status === google.maps.GeocoderStatus.OK) {

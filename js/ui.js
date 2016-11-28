@@ -18,14 +18,14 @@ app.ui = app.ui || {};
 
   // Put Search button in 'Working' (show status) state
   app.ui.setSearchBtnToWorking = function (btnId) {
-    var $btn = $("#" + btnId);
+    var $btn = $('#' + btnId);
 
     // if we're already working, our work here is done.
     if ($btn.html().indexOf('Working') !== -1) { return; }
 
     $btn.data('default-text', $btn.html());
     $btn.html('Working&hellip;');
-    $btn.addClass("working");
+    $btn.addClass('working');
   };
 
   // make it so next time user hits Tab key, they get to first input (if available)
@@ -42,7 +42,7 @@ app.ui = app.ui || {};
     }
 
     $focusable.focus();
-  }
+  };
 
   // animated scroll to and center element with specified selector
   app.ui.scrollAndCenter = function (selector) {
@@ -54,15 +54,15 @@ app.ui = app.ui || {};
   };
 
   app.ui.viewSchool = function(school_code, selector){
-	  var q = new app.Query();
-	  q.logCatchmentHit(school_code);
+    var q = new app.Query();
+    q.logCatchmentHit(school_code);
     app.ui.scrollTo(selector);
 
     // make the selected school's popup the next thing we'll tab to (from container with silent[1] focus),
     // but don't actually put tab focus there since it'd be distracting to non-keyboard users.
     // 1: silent because the container's style should hide the fact the focus is there.
-    $(selector).find(".popup-schoolname-container").focus();
-  }
+    $(selector).find('.popup-schoolname-container').focus();
+  };
 
   // animated scroll to element with specified selector
   app.ui.scrollTo = function (selector) {
@@ -85,10 +85,10 @@ app.ui = app.ui || {};
       // Use Search button as status
       app.ui.setSearchBtnToWorking(e.target.id);
 
-      var inputText = $("#" + inputId).val();
+      var inputText = $('#' + inputId).val();
 
       if (!inputText) {
-        console.log('nothing entered to search for, not trying!');
+        app.util.log('nothing entered to search for, not trying!');
         setTimeout(function () {app.ui.resetSearchBtns(); }, 200);
       } else {
         processInput(inputText);
