@@ -93,7 +93,14 @@ app = app || {};
         // and call success({address,lat,lng,results}) or failure(error_message) callback after
         geocode: function (options, success, failure) {
 
-          var geocoderOptions = _.extend({}, options, googleGeocoder.options);
+          var geocoderOptions;
+          if (options.address) {
+            // extend with additional options for address based searches (restrict by country etc)
+            geocoderOptions = _.extend({}, options, googleGeocoder.options);
+          } else if (options.latLng) {
+            // google reverse geocoder doesn't take additional restrictions as above
+            geocoderOptions = {'location': options.latLng};
+          }
           console.log(googleGeocoder.provider + ' geocoding: ');
           console.log(geocoderOptions);
 

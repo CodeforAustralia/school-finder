@@ -61,10 +61,10 @@ app = app || {};
   var getOnMarkerDragEnd = function (marker) {
     return function onMarkerDragEnd () {
       marker.closePopup();
-      var ll = marker.getLatLng();
+      var ll = M.getMarkerLatLng(marker);
       console.log(ll);
-      app.lat = ll.lat();
-      app.lng = ll.lng();
+      app.lat = ll.lat;
+      app.lng = ll.lng;
       // reverse geocode to grab the selected address, then get results.
       app.reverseGeocode(app.findByLocation);
       app.mapView.homeMarker = marker;
