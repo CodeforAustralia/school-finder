@@ -11,6 +11,10 @@ app = app || {};
 
   app.MapView = MapView;
 
+  MapView.prototype.hide = function () {
+    this.$el.hide();
+  };
+
   MapView.prototype.update = function (schools) {
     this.schools = schools;
     this.render();
@@ -37,6 +41,8 @@ app = app || {};
     }
 
     this.init();
+
+    this.$el.show();
 
     this.rendered = true;
   };

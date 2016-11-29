@@ -9,6 +9,9 @@ app = app || {};
 
   app.ListView = ListView;
 
+  ListView.prototype.hide = function () {
+    this.$el.hide();
+  };
 
   ListView.prototype.update = function (schools) {
 
@@ -34,6 +37,7 @@ app = app || {};
     // clean up any previous result & re-add
     this.$el.empty();
     this.$el.append(html);
+    this.$el.show();
 
     this.$el.find('.btn').click(function (e) {
       var el = $(this);
@@ -58,7 +62,10 @@ app = app || {};
     function jumpToTop(e) {
       e.preventDefault();
       var target = this.hash;
-      app.ui.scrollAndCenter(target);
+      app.ui.scrollAndCenter(target, function postScroll () {
+        app.resetState();
+        app.ui.reset();
+      });
     }
     this.$el.find('.jump-to-start').click(jumpToTop);
 

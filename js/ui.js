@@ -3,6 +3,27 @@ app.ui = app.ui || {};
 
 (function () {
 
+  // clear input text fields
+  app.ui.clearSearchInputs = function () {
+    $('.block-intro #schoolname').val('');
+    $('.block-address #address').val('');
+  };
+
+  // return UI to initial state
+  app.ui.reset = function () {
+    app.util.log('resetting UI to initial view');
+
+    app.ui.clearSearchInputs();
+
+    // hide any previous resulting UI components
+    $('.block-address').hide();
+    app.listView.hide();
+    app.mapView.hide();
+    app.schoolView.hide();
+    $('.results-footer').hide();
+
+  }
+
   app.ui.resetSearchBtns = function () {
     var $btns = $('.btn.search');
     $btns.each(function () {
@@ -45,11 +66,15 @@ app.ui = app.ui || {};
   };
 
   // animated scroll to and center element with specified selector
-  app.ui.scrollAndCenter = function (selector) {
+  // will call the (optional) postScrollCallback after scroll completes
+  app.ui.scrollAndCenter = function (selector, postScrollCallback) {
     var vOffset = ($(window).height() - $(selector).outerHeight()) / 2;
     var scrollTop = $(selector).offset().top - (vOffset > 0 ? vOffset : 0);
     $('html, body').animate({scrollTop: scrollTop}, 500, function scrollDone () {
       app.ui.setTabFocus(selector);
+      if (postScrollCallback && typeof postScrollCallback === 'function') {
+        postScrollCallback();
+      }
     });
   };
 
@@ -91,6 +116,7 @@ app.ui = app.ui || {};
         app.util.log('nothing entered to search for, not trying!');
         setTimeout(function () {app.ui.resetSearchBtns(); }, 200);
       } else {
+        app.resetState();
         processInput(inputText);
       }
     };

@@ -144,13 +144,13 @@
     legend.innerHTML = 'With feature:';
     fieldset.appendChild(legend);
 
-    fieldset.appendChild(optionControl('radio', 'feature', 'any', 'nearby-any2', 'feature', 'Any', (typeof app.state.nearby.filterFeatureForType[app.state.nearby.type] === 'undefined' || app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'any'), radioClick));
-    var boysGirls = optionControl('radio', 'feature', 'boys', 'nearby-boys', 'feature', 'Boys', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'boys': false, radioClick);
-    boysGirls = optionControl('radio', 'feature', 'girls', 'nearby-girls', 'feature', 'Girls', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'girls': false, radioClick, boysGirls);
+    fieldset.appendChild(optionControl('radio', 'feature', 'any', 'nearby-any2', 'feature-secondary', 'Any', (typeof app.state.nearby.filterFeatureForType[app.state.nearby.type] === 'undefined' || app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'any'), radioClick));
+    var boysGirls = optionControl('radio', 'feature', 'boys', 'nearby-boys', 'feature-secondary', 'Boys', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'boys': false, radioClick);
+    boysGirls = optionControl('radio', 'feature', 'girls', 'nearby-girls', 'feature-secondary', 'Girls', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'girls': false, radioClick, boysGirls);
     fieldset.appendChild(boysGirls);
-    fieldset.appendChild(optionControl('radio', 'feature', 'selective', 'nearby-selective', 'feature', 'Academically selective option', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'selective': false, radioClick));
-    fieldset.appendChild(optionControl('radio', 'feature', 'intensive_english', 'nearby-intensive_english_centre', 'feature', 'Intensive English Centre', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'nearby-intensive_english_centre': false, radioClick));
-    fieldset.appendChild(optionControl('radio', 'feature', 'specialty', 'nearby-specialty', 'feature', 'Specialty option', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'nearby-specialty': false, radioClick));
+    fieldset.appendChild(optionControl('radio', 'feature', 'selective', 'nearby-selective', 'feature-secondary', 'Academically selective option', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'selective': false, radioClick));
+    fieldset.appendChild(optionControl('radio', 'feature', 'intensive_english', 'nearby-intensive_english_centre', 'feature-secondary', 'Intensive English Centre', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'nearby-intensive_english_centre': false, radioClick));
+    fieldset.appendChild(optionControl('radio', 'feature', 'specialty', 'nearby-specialty', 'feature-secondary', 'Specialty option', app.state.nearby.filterFeatureForType[app.state.nearby.type] ?  app.state.nearby.filterFeatureForType[app.state.nearby.type].name == 'nearby-specialty': false, radioClick));
 
     return fieldset;
   };
@@ -343,6 +343,7 @@
 
           app.mapView.updateResultsPopups();
           that.updateFilterUI();
+          that.updateFeaturesUI();
           that.updateOptionsUI();
           app.mapView.loadNearby();
         }
@@ -371,13 +372,13 @@
         toggleFilterButton.setAttribute('aria-label', toggleFilterButton.title);
       }
 
+      this.updateFeaturesUI();
       this.updateOptionsUI();
     },
 
     updateFilterUI: function () {
       var container = this.container,
           type = app.state.nearby.type;
-
 
       var support = app.util.support_description();
       var explanation = support && app.support_needed ? '(supporting ' + support + ')' : ''; // app.support_needed
@@ -391,6 +392,27 @@
 
       $(container).find('.nearby-schools-options fieldset.' + type).show();
       $(container).find('.nearby-schools-options fieldset div.' + type).show();
+    },
+
+    updateFeaturesUI: function () {
+      var container = this.container,
+          type = app.state.nearby.type,
+          feature = app.state.nearby.filterFeatureForType[type];
+
+      if (!type || (type != 'primary' && type != 'secondary')) {
+        // only primary, secondary have any features to update;
+        // skip for other school types
+        return;
+      }
+
+      // uncheck all for this type
+      $('.nearby-schools-feature input[name=feature-' + type + ']:radio', container).prop('checked',false);
+
+      // check just the feature stored in app.state
+      // note that one radio button's `value` should matches the feature's `name`.
+      if (feature) {
+        $('.nearby-schools-feature input[name=feature-' + type +'][value=' + feature.name + ']:radio', container).prop('checked', true);
+      }
     },
 
     updateOptionsUI: function () {
