@@ -353,6 +353,7 @@ ul.school-details {
 }
 .school-details .school-support ul {
   margin-left: 1em;
+  padding-left: 0;
 }
 .school-details .school-support li {
 	margin-left: 1em;
