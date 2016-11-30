@@ -70,6 +70,28 @@ body {
 
 .footer { margin-bottom: 1.5em; }
 .footer p { color: #f7f6f6; }
+.footer p:first-child {
+    max-width: 85ex;
+    /* prevent unreadably long sentences.
+       also prevents long 2nd sentence from looking funny compared to short 1st sentence in our footer. */
+}
+
+.footer .list-inline {
+    display: inline-block; /* keep in-line with mail icon */
+}
+.footer .list-inline li:not(:first-child) {
+    padding-left: 0; /* padding provided by .dot below */
+}
+.footer .list-inline .dot:before {
+    /* dot to separate list items */
+    content: '\b7'; /* middle dot */
+    padding-right: 5px;
+    color: #f7f6f6;
+}
+.footer .list-inline a {
+    padding: 0;
+}
+
 .footer a {
     color: #f7f6f6;
     font-weight: bold;
