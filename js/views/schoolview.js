@@ -10,6 +10,10 @@ app = app || {};
 
   app.SchoolView = SchoolView;
 
+  SchoolView.prototype.hide = function () {
+    this.$el.hide();
+  };
+
   SchoolView.prototype.update = function (schoolOrSchools) {
     if (schoolOrSchools instanceof app.Schools) {
       this.school = schoolOrSchools.selected();
@@ -54,6 +58,7 @@ app = app || {};
     // clean up any previous result & re-add
     this.$el.empty();
     this.$el.append(html);
+    this.$el.show();
 
     if (app.haveUserLocation()) {
       this.insertDistanceToUser();

@@ -3,18 +3,32 @@ app = app || {};
 (function () {
 
   app.sql = new cartodb.SQL({ user: app.db.user });
-  app.state = {}; // UI and application state.
-  app.state.nearby = {}; // info about nearby markers to display
 
-  // set defaults used by map controls too
-  app.state.nearby.showFilters = false;
-  app.state.nearby.filterFeatureForType = {};
-  app.state.showNearby = null;
-  app.state.nearby.othersForType = {
-    primary: ['infants', 'central'],
-    secondary: ['central'],
+  // UI and application state.
+  app.resetState = function () {
+
+    // Start with empty / default application state
+    app.state = {
+      nearby: { // nearby schools app state & map control defaults
+        showFilters: false,
+        filterFeatureForType: { // TODO: rename to 'featureForType' to be like othersForType
+          primary: { name: 'any' },
+          secondary: { name: 'any' }
+        },
+        othersForType: {
+          primary: ['infants', 'central'],
+          secondary: ['central'],
+        },
+      },
+      showNearby: null,
+    };
+    app.lat = null;
+    app.lng = null;
+    app.activeQuery = null;
+    app.address = null;
   };
 
+  app.resetState();
 
   app.schools = new app.Schools(); // schools results collection
 
@@ -36,9 +50,13 @@ app = app || {};
     // ensure we're not adding same handler repeatedly
     $('.results-footer-btn').off('click.results-footer-btn');
     $('.results-footer-btn').on('click.results-footer-btn', function () {
-      app.util.log('clicked "scroll to top" button');
+      app.util.log('clicked "new search" button');
       var target = '#search-start';
-      app.ui.scrollAndCenter(target);
+      app.ui.clearSearchInputs(); // clear inputs *before* scrolling so user doesn't see it happening
+      app.ui.scrollAndCenter(target, function postScroll () {
+        app.resetState();
+        app.ui.reset(); // will remove map etc, *after* scrolling, so user doesn't see it happening
+      });
     });
 
     // usually (with just one result) we'll want to skip right to the map
