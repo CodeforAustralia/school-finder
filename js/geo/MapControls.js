@@ -44,7 +44,7 @@
       {label: 'Any', name: 'any', matchTest: function () { return true; }},
       {label: 'Outside School Hours Care', name: 'oshc', sql: 's.oshc = true', matchLabel: 'This school offers Outside School Hours Care.', mismatchLabel: 'Not offered: Outside School Hours Care.', matchTest: function (s) { return s.oshc; }},
       {label: 'Opportunity Classes', name: 'oc', sql: 's.opportunity_class = true', matchLabel: 'This school offers opportunity classes.', mismatchLabel: 'Not offered: opportunity classes.', matchTest: function (s) { return s.opportunity_class; }},
-      {label: 'Distance Classes', name: 'distance',  sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: 'This is a distance school.', mismatchLabel: 'Not a distance school.', matchTest: function (s) { return s.distance_education !== 'false'; }},
+      {label: 'Distance Classes', name: 'distance',  sql: "(distance_education IN ('C', 'S'))", matchLabel: 'This is a distance school.', mismatchLabel: 'Not a distance school.', matchTest: function (s) { return s.distance_education !== 'false'; }},
       ],
       options: [
       {label: 'Include Infant (K-2)', name: 'infants', type: 'infants'},
@@ -62,7 +62,7 @@
       {label: 'Selective option', name: 'selective', sql: "s.selective_school IN ('Partially Selective', 'Fully Selective')", matchLabel: 'This school offers an academically selective option.', mismatchLabel: 'Not offered: academically selective option.', matchTest: function (s) { return s.selective_school === 'Partially Selective' || s.selective_school === 'Fully Selective'; }},
       {label: 'Intensive English option', name: 'intensive_english', sql: 's.intensive_english_centre ', matchLabel: 'This school has an Intensive English Centre.', mismatchLabel: 'Not offered: Intensive English Centre.', matchTest: function (s) { return s.intensive_english_centre == true; }},
       {label: 'Specialty option', name: 'specialty', sql: "school_specialty_type NOT IN ('Comprehensive')", matchLabel: 'This school offers specialized classes', mismatchLabel: 'Not offered: specialized classes.', matchTest: function (s) { return s.school_specialty_type !== 'Comprehensive'; }},
-      {label: 'Distance Classes', name: 'distance', sql: "(distance_education IN ('null') OR distance_education IS NULL)", matchLabel: 'This is a distance school.', mismatchLabel: 'Not a distance schoool', matchTest: function (s) { return s.distance_education !== false; }},
+      {label: 'Distance Classes', name: 'distance', sql: "(distance_education IN ('C', 'S'))", matchLabel: 'This is a distance school.', mismatchLabel: 'Not a distance schoool', matchTest: function (s) { return s.distance_education !== false; }},
       ],
       options: [
       {label: 'Include Central/Community (K-12)', name: 'central', type: 'central'}
