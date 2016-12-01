@@ -264,8 +264,9 @@ app = app || {};
 
           var markers = addNearbyMarkers(that, data);
 
-          // fit view of map to user location + results
-          var homeMarker = M.marker(app.LatLng(lat, lng), {icon: app.geo.homeIcon});
+          // fit view of map to results + an anchor point
+          // (which is either the user's home or the school searched for by name)
+          var anchorMarker = M.marker(app.LatLng(lat, lng), {icon: app.geo.homeIcon} /* any icon will do */);
 
           // Note that loadNearby is just loading nearby markers and
           // setting the map view based mainly on those.
@@ -275,7 +276,7 @@ app = app || {};
           // ...
           // So! In short, we use the home marker for a calculation here
           // but we aren't trying to actually add it to the map.
-          markers.push(homeMarker);
+          markers.push(anchorMarker);
 
           var bounds = M.getBounds(markers);
           // app.util.log('map fitbounds() w/ bounds:');
