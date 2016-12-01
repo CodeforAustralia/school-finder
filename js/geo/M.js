@@ -273,7 +273,9 @@ app.M = (function() {
       // (see http://stackoverflow.com/a/4540249/1024811)
     }
     else {
-      gmapsInfowindow = new google.maps.InfoWindow();
+      gmapsInfowindow = new google.maps.InfoWindow({
+        disableAutoPan: true, // prevent jerky map panning (https://github.com/CodeforAustralia/school-finder/issues/301)
+      });
     }
 
     gmapsInfowindow.setContent(this.marker.popup);
