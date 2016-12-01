@@ -171,7 +171,7 @@ app = app || {};
   };
 
 
-  var addMarkers = function (mapview, data) {
+  var addNearbyMarkers = function (mapview, data) {
     var markers = [];
     data.rows.forEach(function (row) {
       var marker = M.marker(app.LatLng(row.latitude, row.longitude), {icon: app.geo.nearbyIcons[row.type]});
@@ -196,7 +196,10 @@ app = app || {};
   };
 
   // Fetch nearby schools and add them to the map for context
-  MapView.prototype.loadNearby = function () {
+  // By default, if no results are found we'll zoom out to show nearest result;
+  // disable that behavior by passing `disableZoom: true` in the optional
+  // options object parameter.
+  MapView.prototype.loadNearby = function (options) {
     app.util.log('loadNearby()');
     if (!app.state.showNearby) {
       if (this.nearbyMarkers) {
@@ -208,6 +211,7 @@ app = app || {};
     }
     var that = this;
     var school = this.schools.selected();
+    var zoomToNearest = !options || !options.disableZoom; // set default
 
     // get current view's bounding box
     var bounds = this.mapX.getBounds();
@@ -235,7 +239,12 @@ app = app || {};
     q.run(function (data) {
       // add schools (except this one, already added) to map
       app.util.log(data);
-      if (data.rows.length < 1) {
+
+      if (data.rows.length >= 1) {
+
+        addNearbyMarkers(that, data);
+
+      } else if (zoomToNearest) { // no result found in view, zoom to show nearest:
 
         app.util.log('No results visible; re-doing search and zooming...');
         var q2 = new app.Query();
@@ -262,10 +271,11 @@ app = app || {};
           //  WHERE ((s.type = 'secondary' OR s.type = 'central') AND s.school_code NOT IN (1735) AND s.gender = 'boys')
           //  ORDER BY dist LIMIT 1
 
-          var markers = addMarkers(that, data);
+          var markers = addNearbyMarkers(that, data);
 
-          // fit view of map to user location + results
-          var homeMarker = M.marker(app.LatLng(lat, lng), {icon: app.geo.homeIcon});
+          // fit view of map to results + an anchor point
+          // (which is either the user's home or the school searched for by name)
+          var anchorMarker = M.marker(app.LatLng(lat, lng), {icon: app.geo.homeIcon} /* any icon will do */);
 
           // Note that loadNearby is just loading nearby markers and
           // setting the map view based mainly on those.
@@ -275,7 +285,7 @@ app = app || {};
           // ...
           // So! In short, we use the home marker for a calculation here
           // but we aren't trying to actually add it to the map.
-          markers.push(homeMarker);
+          markers.push(anchorMarker);
 
           var bounds = M.getBounds(markers);
           // app.util.log('map fitbounds() w/ bounds:');
@@ -283,8 +293,6 @@ app = app || {};
           that.map.fitBounds(bounds);
         });
 		
-      } else {
-        addMarkers(that, data);
       }
     });
   };
@@ -483,7 +491,7 @@ app = app || {};
       this.map = map;
 
       var newBoundsRequery = function newBoundsRequery () {
-        that.loadNearby();
+        that.loadNearby({disableZoom: true});
         that.mapX.updateForAccessibility(); // accessbility fix needed any time map updates
         that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
       };
