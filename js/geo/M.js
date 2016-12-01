@@ -234,7 +234,20 @@ app.M = (function() {
   };
 
   function GoogleMarker (latLng, options) {
-    this.marker = new google.maps.Marker({draggable: options.draggable});
+
+    var icon = options.icon;
+    var iconSize = L.point(icon.options.iconSize);
+    var iconWidth = iconSize.x;
+    var iconHeight = iconSize.y;
+
+    this.marker = new google.maps.Marker({
+      draggable: options.draggable,
+      // shape: "defines the clickable region of a marker image" - GMaps API
+      shape: {
+        type: "rect",
+        coords: [0, 0, iconWidth, iconHeight / 2], // only top half of Maki icon is the visible marker
+      }
+    });
 
     // this.marker.infoWindow = null;
     this.marker.setPosition(latLng);
