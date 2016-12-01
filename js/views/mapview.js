@@ -171,7 +171,7 @@ app = app || {};
   };
 
 
-  var addMarkers = function (mapview, data) {
+  var addNearbyMarkers = function (mapview, data) {
     var markers = [];
     data.rows.forEach(function (row) {
       var marker = M.marker(app.LatLng(row.latitude, row.longitude), {icon: app.geo.nearbyIcons[row.type]});
@@ -262,7 +262,7 @@ app = app || {};
           //  WHERE ((s.type = 'secondary' OR s.type = 'central') AND s.school_code NOT IN (1735) AND s.gender = 'boys')
           //  ORDER BY dist LIMIT 1
 
-          var markers = addMarkers(that, data);
+          var markers = addNearbyMarkers(that, data);
 
           // fit view of map to user location + results
           var homeMarker = M.marker(app.LatLng(lat, lng), {icon: app.geo.homeIcon});
@@ -284,7 +284,7 @@ app = app || {};
         });
 		
       } else {
-        addMarkers(that, data);
+        addNearbyMarkers(that, data);
       }
     });
   };
