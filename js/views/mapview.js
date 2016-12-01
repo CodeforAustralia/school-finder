@@ -235,7 +235,12 @@ app = app || {};
     q.run(function (data) {
       // add schools (except this one, already added) to map
       app.util.log(data);
-      if (data.rows.length < 1) {
+
+      if (data.rows.length >= 1) {
+
+        addNearbyMarkers(that, data);
+
+      } else { // no result found in view, zoom to show nearest:
 
         app.util.log('No results visible; re-doing search and zooming...');
         var q2 = new app.Query();
@@ -284,8 +289,6 @@ app = app || {};
           that.map.fitBounds(bounds);
         });
 		
-      } else {
-        addNearbyMarkers(that, data);
       }
     });
   };
