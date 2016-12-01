@@ -37,7 +37,7 @@ openFinder = function(){
 	if (document.getElementById("agree").checked){
 		var h = screen.height;
 		var w = screen.width;
-		var mypopup = window.open('www.schools.nsw.edu.au/gotoschool/nswps-finder/index.html', '_blank');
+		var mypopup = window.open('http://www.schools.nsw.edu.au/gotoschool/nswps-finder/index.html', '_blank');
 	}
 	else
 		document.getElementById("mustAgree").style.visibility = "visible";
@@ -49,7 +49,7 @@ resetMustAgree = function(){
 </head>
 <body style='text-align: center'>
 <img class="displayed" src="sfimage.png" alt="School Finder launch image" ><br />
-<form action="www.schools.nsw.edu.au/gotoschool/nswps-finder/index.html" method="POST" onsubmit="return checkCheckBox(this)">
+<form action="http://www.schools.nsw.edu.au/gotoschool/nswps-finder/index.html" method="POST" onsubmit="return checkCheckBox(this)">
 <p>I accept the Terms of Use: <input type="checkbox" value="0" name="agree" id="agree" onclick="javascript:resetMustAgree();">&nbsp;&nbsp;
 <input type="button" class="button" value="Open School Finder" onclick="javascript:openFinder();"></p>
 <div id='mustAgree' style='visibility:hidden; color:red; '>You must accept our terms of use before proceeding</div>
