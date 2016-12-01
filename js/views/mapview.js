@@ -196,7 +196,10 @@ app = app || {};
   };
 
   // Fetch nearby schools and add them to the map for context
-  MapView.prototype.loadNearby = function () {
+  // By default, if no results are found we'll zoom out to show nearest result;
+  // disable that behavior by passing `disableZoom: true` in the optional
+  // options object parameter.
+  MapView.prototype.loadNearby = function (options) {
     app.util.log('loadNearby()');
     if (!app.state.showNearby) {
       if (this.nearbyMarkers) {
@@ -208,6 +211,7 @@ app = app || {};
     }
     var that = this;
     var school = this.schools.selected();
+    var zoomToNearest = !options || !options.disableZoom; // set default
 
     // get current view's bounding box
     var bounds = this.mapX.getBounds();
@@ -240,7 +244,7 @@ app = app || {};
 
         addNearbyMarkers(that, data);
 
-      } else { // no result found in view, zoom to show nearest:
+      } else if (zoomToNearest) { // no result found in view, zoom to show nearest:
 
         app.util.log('No results visible; re-doing search and zooming...');
         var q2 = new app.Query();
@@ -487,7 +491,7 @@ app = app || {};
       this.map = map;
 
       var newBoundsRequery = function newBoundsRequery () {
-        that.loadNearby();
+        that.loadNearby({disableZoom: true});
         that.mapX.updateForAccessibility(); // accessbility fix needed any time map updates
         that.$el.find('.cartodb-logo a, .leaflet-control-attribution a').attr('tabindex', '-2');
       };
