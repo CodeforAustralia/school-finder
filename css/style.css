@@ -669,7 +669,7 @@ ul.school-details {
 @media only screen and (max-width: 320px) {
 	.sitename {
 		font-size: 18px;
-		padding-right: 0;
+		padding-left: 0;
 	}
 	.org-logo img {
 		height: 22px;
