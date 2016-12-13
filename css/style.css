@@ -205,6 +205,9 @@ a:focus .fa-stack-1x {
         but we want these spans to look like block elements */
     }
 
+.btn.school-option {
+    white-space: normal; /* override bootstrap .btn: allow long button names to break into multiple lines */
+}
 
 /* A quasi-radio button control with raised buttons inspired by Material Design. */
 /* Unlike a radio button set, you use Tab (vs left/rigth/up/down) to change focus
