@@ -136,8 +136,9 @@ app = app || {};
           googleGeocoder.service = new google.maps.Geocoder();
 
           googleGeocoder.options = {};
+          var autocompleteOptions = {};
           if (app.config.geocoder.country) {
-            googleGeocoder.options.componentRestrictions = {
+        	  autocompleteOptions.componentRestrictions = {
               country: app.config.geocoder.country
             };
           }
@@ -148,9 +149,10 @@ app = app || {};
             }).getBounds();
           }
 
-          var autocompleteOptions = _.extend({}, googleGeocoder.options, {
+          autocompleteOptions = _.extend({}, googleGeocoder.options, {
             types: ['geocode']
-          });
+          },
+          autocompleteOptions);
           $('input[data-geocode-autocomplete]').each(function () {
             new google.maps.places.Autocomplete(this, autocompleteOptions);
           });
