@@ -132,8 +132,29 @@ app = app || {};
           });
         },
 
+        // converts to object format similar to that returned by our app.google.Geocoder
+        // inputStr: the text of the input field
+        // placeResult: a google.maps.places.PlaceResult
+        _convertGooglePlaceToAppGeocoderResult: function (inputStr, placeResult) {
+          return {
+            address: inputStr, // or place.formatted_address, ?
+            lat: placeResult.geometry.location.lat(),
+            lng: placeResult.geometry.location.lng(),
+            results: [ // some duplication, yeah. :-/
+              {
+                address: inputStr,
+                lat: placeResult.geometry.location.lat(),
+                lng: placeResult.geometry.location.lng(),
+              }
+            ]
+          };
+        },
+
         initialize: function() {
           googleGeocoder.service = new google.maps.Geocoder();
+
+          // Geocoder API uses `componentRestrictions` & `bounds` options
+          // https://developers.google.com/maps/documentation/javascript/geocoding#GeocodingRequests
 
           googleGeocoder.options = {};
           if (app.config.geocoder.country) {
@@ -148,11 +169,36 @@ app = app || {};
             }).getBounds();
           }
 
-          var autocompleteOptions = _.extend({}, googleGeocoder.options, {
-            types: ['geocode']
-          });
+          // Places JS API (AutocompleteOptions) uses `componentRestrictions` & `bounds` options
+          // (same as Geocoder API) plus the `types` option which should be either
+          // ['geocode'] or ['address'], see https://developers.google.com/places/supported_types#table3
+          // https://developers.google.com/maps/documentation/javascript/reference#AutocompleteOptions
+
+          var autocompleteOptions = _.extend({}, googleGeocoder.options);
+          autocompleteOptions.types = ['address']; // or ['geocode'];
+
           $('input[data-geocode-autocomplete]').each(function () {
-            new google.maps.places.Autocomplete(this, autocompleteOptions);
+            var input = this;
+            var autocomplete = new google.maps.places.Autocomplete(input, autocompleteOptions);
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+              var place = autocomplete.getPlace();
+
+              // cache this place in the geocoder results,
+              // as a place search should be at least as accurate as any geocoding result
+              app.geocoder.cacheResult(
+                input.value,
+                googleGeocoder._convertGooglePlaceToAppGeocoderResult(input.value, place)
+              );
+
+              app.util.log('Place input:', input.value);
+              app.util.log('Google Place:', place);
+              app.util.log('Place coordinates:', {
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+              });
+            });
+
           });
 
           return googleGeocoder;

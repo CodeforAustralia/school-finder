@@ -147,6 +147,11 @@ $(function () {
 
       initialize: function () { return cachingGeocoder; },
 
+      // key should be either address:string or '<lng>,<lat>'
+      cacheResult: function (key, data) {
+        cache[key] = data;
+      },
+
       geocode: function (options, success, failure) {
 
         var key;
@@ -169,7 +174,7 @@ $(function () {
           return geocoder.geocode(
             options,
             function cacheOnSuccess(data) {
-              cache[key] = data;
+              cachingGeocoder.cacheResult(key, data);
               success(data);
             },
             failure);
