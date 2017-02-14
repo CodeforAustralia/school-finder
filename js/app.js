@@ -290,37 +290,6 @@ app = app || {};
     // $("#button-search-address").click();
           
     var sel = '.m';
-    var fixM = function () {
-       var hrf = 'hr' + 'ef',
-       a = 'mai',
-       b = 'lto:',
-       c = 'schoolfinder',
-       at = '@',
-       d = 'detco', 
-       e = 'rpcomms',
-       dot = '.',
-       f = 'zend',
-       g = 'esk',
-       h = 'com',
-       i = '?',
-       j = 'cc',
-       k = '=', 
-       l = 'nsw-',
-       m = 'codef',
-       n = 'oraustralia',
-       o = 'or',
-       p = 'g',
-       q = '&subject=School Finder Feedback';
-      if ($(this).attr(hrf) == ''){
-         $(this).attr(hrf, a + b + c + at + d + e + dot + f + g + dot + h + i + j + k + l + c + at + m + n + dot + o + p + q);
-      }
-      else{
-		 $(this).removeAttr(hrf);
-         $(this).attr(hrf, '');
-      }
-       
-      return false;
-    }
     var hrf = 'hr' + 'ef';
     var addM = function () {
        a = 'mai',
@@ -343,22 +312,20 @@ app = app || {};
        p = 'g',
        q = '&subject=School Finder Feedback';
        $(this).attr(hrf, a + b + c + at + d + e + dot + f + g + dot + h + i + j + k + l + c + at + m + n + dot + o + p + q);
-	   
-	   console.log('add' + $(this).attr('href'));
+   
        return false;
     }
 
     var removeM = function () {
-	  $(this).removeAttr(hrf);
-      $(this).attr(hrf, '');
-	   console.log('rem' + $(this).attr('href'));
-	  
+       $(this).removeAttr(hrf);
+       $(this).attr(hrf, '');
+  
       return false;
     }
-	
+
     sel += 'To';
-	$(sel).focus(addM);
-	$(sel).focusout(removeM);
+    $(sel).focus(addM);
+    $(sel).focusout(removeM);
 
     $(sel).on('mouseenter', addM);
     $(sel).on('mouseleave', removeM);
