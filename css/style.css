@@ -366,7 +366,7 @@ ul.school-details {
 
 .school-details .school-website, .school-details .school-enrollment, .school-details .school-oshc {
 	/* keeps similar info grouped together */
-	margin-bottom: 1.5em;
+	margin-bottom: 0.5em;
 }
 
 .school-details .school-address a {
@@ -740,4 +740,26 @@ ul.school-details {
 .ios textarea:focus,
 .ios input:focus {
 	font-size: 16px;
+}
+
+
+
+li.school-more-info {
+    margin-bottom: 1em;
+}
+
+li.school-admin-info {
+    border-top: 1px solid white;
+    padding-top: 0.5em;
+}
+
+li.school-admin-info div, li.school-admin-info span.field-label {
+    margin-left: 1em;
+}
+
+.school-admin-info span.field-label {
+    font-weight: normal;
+}
+span.field-category {
+    font-weight: bold;
 }
