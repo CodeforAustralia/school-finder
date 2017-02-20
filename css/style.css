@@ -366,7 +366,7 @@ ul.school-details {
 
 .school-details .school-website, .school-details .school-enrollment, .school-details .school-oshc {
 	/* keeps similar info grouped together */
-	margin-bottom: 1.5em;
+	margin-bottom: 0.5em;
 }
 
 .school-details .school-address a {
