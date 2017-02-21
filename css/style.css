@@ -741,3 +741,25 @@ ul.school-details {
 .ios input:focus {
 	font-size: 16px;
 }
+
+
+
+li.school-more-info {
+    margin-bottom: 1em;
+}
+
+li.school-admin-info {
+    border-top: 1px solid white;
+    padding-top: 0.5em;
+}
+
+li.school-admin-info div, li.school-admin-info span.field-label {
+    margin-left: 1em;
+}
+
+.school-admin-info span.field-label {
+    font-weight: normal;
+}
+span.field-category {
+    font-weight: bold;
+}
