@@ -20,7 +20,7 @@ app = app || {};
     attribution: 'Mapbox <a href="https://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>',
     // CartoCSS for various map layers
     backgroundCSS: '{polygon-fill: #F0F0F0; polygon-opacity: 0; line-color: #7E599D; line-width: 0.3; line-opacity: 1; line-dasharray: 10,4;}',
-    catchmentCSS: '{polygon-fill: rgba(164, 65, 178, 0.15); line-color: #0B6138; line-width: 2; line-opacity: 1; }',
+    catchmentCSS: '{polygon-fill: rgba(164, 65, 178, 0.15); line-color: rgba(164, 65, 178, 1); line-width: 2; line-opacity: 1; }',
     catchmentCSS1ary: '{polygon-fill: #FE9A2E; polygon-opacity: 0.15; line-color: #FE9A2E; line-width: 2; line-opacity: 1; line-offset:2; }',
 
     // Specify a Maki icon name, hex color, and size (s, m, or l).
