@@ -323,12 +323,15 @@ app = app || {};
       return false;
     };
 
-    sel += 'To';
-    $(sel).focus(addM);
-    $(sel).focusout(removeM);
+    if (!app.whitelabel) {
+      // not whitelabel, so add our email address
+      sel += 'To';
+      $(sel).focus(addM);
+      $(sel).focusout(removeM);
 
-    $(sel).on('mouseenter', addM);
-    $(sel).on('mouseleave', removeM);
+      $(sel).on('mouseenter', addM);
+      $(sel).on('mouseleave', removeM);
+    }
 
     var school_code = getUrlVars()['school_code'];
     if (school_code){
