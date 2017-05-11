@@ -10,6 +10,9 @@ If you would like to contribute to this project, to start, you can
 in the [issue queue][issues]. We typically will have discussion there,
 then create a pull request (PR) once we agree on what needs doing.
 
+[new-issue]: https://github.com/CodeforAustralia/school-finder/issues/new "Create a new issue"
+[issues]: https://github.com/CodeforAustralia/school-finder/issues "View list of issues"
+
 ## To create a pull request:
 
 Fork, then clone the repo:
