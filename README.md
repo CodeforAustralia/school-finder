@@ -68,8 +68,7 @@ Version two is intended to increase useability, through the changed presentation
 
 ## Contributing
 
-If you would like to contribute to this project, you can [report issues][new-issue] or [suggest enhancements][new-issue] in the [issue queue][issues].
-
+Please read the [contributing guide](CONTRIBUTING.md).
 
 
 [new-issue]: https://github.com/CodeforAustralia/school-finder/issues/new "Create a new issue"
