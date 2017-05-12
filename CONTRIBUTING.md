@@ -13,6 +13,8 @@ then create a pull request (PR) once we agree on what needs doing.
 [new-issue]: https://github.com/CodeforAustralia/school-finder/issues/new "Create a new issue"
 [issues]: https://github.com/CodeforAustralia/school-finder/issues "View list of issues"
 
+By contributing to this project, you agree to the terms set out in the project's LICENSE file, as well as the contributor license agreement for the project (you'll be prompted to sign that when you submit a pull request).
+
 ## To create a pull request:
 
 Fork, then clone the repo:
