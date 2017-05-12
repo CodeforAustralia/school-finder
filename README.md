@@ -5,6 +5,15 @@
 
 See http://codeforaustralia.github.io/school-finder/
 
+## Data
+
+The School Finder NSW instance uses open data provided by the Department of Education in New South Wales, Australia. You can find data on [schools] and their [intake areas] (aka catchment areas) at the [NSW Education Datahub]. 
+ 
+[schools]: https://data.cese.nsw.gov.au/data/dataset/nsw-public-schools-master-dataset
+[intake areas]: https://data.cese.nsw.gov.au/data/dataset/school-intake-zones-catchment-areas-for-nsw-government-schools
+[NSW Education Datahub]: https://data.cese.nsw.gov.au/
+
+
 ## Screen shots
 
 ### Users can search by type of school or a specific school
