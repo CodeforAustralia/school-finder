@@ -83,4 +83,7 @@ Please read the [contributing guide](CONTRIBUTING.md).
 [new-issue]: https://github.com/CodeforAustralia/school-finder/issues/new "Create a new issue"
 [issues]: https://github.com/CodeforAustralia/school-finder/issues "View list of issues"
 
+# License
+
+Please see the [LICENSE](LICENSE) file.
 
