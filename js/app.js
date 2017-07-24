@@ -274,6 +274,10 @@ app = app || {};
       app.findByName(inputText);
     }));
 
+    $('#specialist-support-click').click(function(){
+    	$('#specialist-support-info').toggle()
+    });
+
     // $("#address").keyup(function (event) {
     //   if (event.keyCode === 13) {
     //     app.util.log("keyup on #address, fake clicking #button-search-address");
