@@ -51,7 +51,7 @@ app.util = app.util || {};
 
     // ask cartodb for all school names starting with the request
     // SELECT * FROM dec_schools WHERE school_name ILIKE '%sydney%'
-    var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '" + request.term + "%' ORDER BY school_name";
+    var query = "SELECT school_name FROM dec_schools WHERE school_name ILIKE '%" + request.term + "%' ORDER BY school_name";
     app.sql.execute(query).done(processResults);
   };
 

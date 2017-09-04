@@ -259,7 +259,7 @@
 
       var labelUI = document.createElement('label');
       labelUI.htmlFor = 'nearby-schools-control-expand';
-      labelUI.innerHTML = 'Nearby schools';
+      labelUI.innerHTML = 'Show nearby schools';
       toggleUI.appendChild(labelUI);
 
       var buttonUI = document.createElement('button');
